@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+<LangVersion>9.0</LangVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{60D15F17-0770-4B6C-89FD-B8007247BD8F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Services__ArqBase_</RootNamespace>
+    <AssemblyName>Services %28ArqBase%29</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Bll\IdiomaService.cs" />
+    <Compile Include="Bll\LoggerConfiguration.cs" />
+    <Compile Include="Bll\UsuarioBll.cs" />
+    <Compile Include="Dal\IdiomaRepository.cs" />
+    <Compile Include="Dal\Implementations\Adapters\FamiliaAdapter.cs" />
+    <Compile Include="Dal\Implementations\Adapters\PatenteAdapter.cs" />
+    <Compile Include="Dal\Implementations\Adapters\UsuarioAdapter.cs" />
+    <Compile Include="Dal\Implementations\FamiliaFamiliaRepository.cs" />
+    <Compile Include="Dal\Implementations\FamiliaPatenteRepository.cs" />
+    <Compile Include="Dal\Implementations\FamiliaRepository.cs" />
+    <Compile Include="Dal\Implementations\FileLogger.cs" />
+    <Compile Include="Dal\Implementations\PatenteRepository.cs" />
+    <Compile Include="Dal\Implementations\UsuarioFamiliaRepository.cs" />
+    <Compile Include="Dal\Implementations\UsuarioPatenteRepository.cs" />
+    <Compile Include="Dal\Implementations\UsuarioRepository.cs" />
+    <Compile Include="Dal\Interfaces\IAdapter.cs" />
+    <Compile Include="Dal\Interfaces\IFamiliaRepository.cs" />
+    <Compile Include="Dal\Interfaces\IJoinRepository.cs" />
+    <Compile Include="Dal\Interfaces\ILogger.cs" />
+    <Compile Include="Dal\Interfaces\IPatenteRepository.cs" />
+    <Compile Include="Dal\Interfaces\IUsuarioRepository.cs" />
+    <Compile Include="Dal\Tools\SqlHelper.cs" />
+    <Compile Include="DomainModel\Composite\Component.cs" />
+    <Compile Include="DomainModel\Composite\Familia.cs" />
+    <Compile Include="DomainModel\Composite\Patente.cs" />
+    <Compile Include="DomainModel\Composite\Usuario.cs" />
+    <Compile Include="DomainModel\Exceptions\WordNotFoundException.cs" />
+    <Compile Include="DomainModel\Logging\LogEntry.cs" />
+    <Compile Include="DomainModel\Logging\LogLevel.cs" />
+    <Compile Include="Facade\CryptographyService.cs" />
+    <Compile Include="Facade\Extensions\IdiomaExtension.cs" />
+    <Compile Include="Facade\LoggerService.cs" />
+    <Compile Include="Facade\LoginService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Dal\DataBase\scriptNEWSecutiry.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Dal\DataBase\SecurityDB.bak" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

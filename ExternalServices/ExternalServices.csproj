@@ -2,14 +2,13 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <LangVersion>9.0</LangVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D4B24116-831E-4BE2-9343-DC9113A7582F}</ProjectGuid>
+    <ProjectGuid>{DE545C08-190C-482E-A00C-163AD49CE7B9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BLL</RootNamespace>
-    <AssemblyName>BLL</AssemblyName>
+    <RootNamespace>ExternalServices</RootNamespace>
+    <AssemblyName>ExternalServices</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -42,40 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ejemplo BORRAR\CustomerService.cs" />
-    <Compile Include="Ejemplo BORRAR\ICustomerService.cs" />
-    <Compile Include="Interfaces\ICanchaHorarioService.cs" />
-    <Compile Include="Interfaces\ICanchaService.cs" />
-    <Compile Include="Interfaces\IClasificacionService.cs" />
-    <Compile Include="Interfaces\IClienteService.cs" />
-    <Compile Include="Interfaces\ICompeticionService.cs" />
-    <Compile Include="Interfaces\IEquipoService.cs" />
-    <Compile Include="Interfaces\IFixtureService.cs" />
-    <Compile Include="Interfaces\IGenericService.cs" />
-    <Compile Include="Interfaces\IJugadorService.cs" />
+    <Compile Include="BLL\PagoService.cs" />
+    <Compile Include="DomainModel\Mensaje.cs" />
+    <Compile Include="DomainModel\Pago.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\CanchaHorarioService.cs" />
-    <Compile Include="Services\CanchaService.cs" />
-    <Compile Include="Services\ClasificacionService.cs" />
-    <Compile Include="Services\ClienteService.cs" />
-    <Compile Include="Services\CompeticionService.cs" />
-    <Compile Include="Services\EquipoService.cs" />
-    <Compile Include="Services\FixtureService.cs" />
-    <Compile Include="Services\JugadorService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DomainModel\DomainModel.csproj">
-      <Project>{46e9d10d-0793-43dd-9914-6ba92de4d639}</Project>
-      <Name>DomainModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ExternalServices\ExternalServices.csproj">
-      <Project>{de545c08-190c-482e-a00c-163ad49ce7b9}</Project>
-      <Name>ExternalServices</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Services %28ArqBase%29\Services %28ArqBase%29.csproj">
-      <Project>{60d15f17-0770-4b6c-89fd-b8007247bd8f}</Project>
-      <Name>Services %28ArqBase%29</Name>
-    </ProjectReference>
+    <Folder Include="BLL\Interfaces\" />
+    <Folder Include="DAL\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
