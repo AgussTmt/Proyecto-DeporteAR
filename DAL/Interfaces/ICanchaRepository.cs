@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dal.Interfaces;
+using DomainModel;
 
 namespace DAL.Interfaces
 {
-    internal interface ICanchaRepository
+    //Con IGenericRepository es suficiente
+    internal interface ICanchaRepository : IGenericRepository <Cancha>
     {
     }
 }
