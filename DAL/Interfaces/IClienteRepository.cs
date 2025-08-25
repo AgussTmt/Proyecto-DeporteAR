@@ -7,7 +7,7 @@ using DomainModel;
 
 namespace DAL.Interfaces
 {
-    internal interface IClienteRepository
+    public interface IClienteRepository
     {
         void Add(Cliente cliente);
 

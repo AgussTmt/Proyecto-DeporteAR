@@ -8,7 +8,7 @@ using DomainModel;
 
 namespace DAL.Interfaces
 {
-    internal interface ICanchaHorarioRepository : IGenericRepository <CanchaHorario>
+    public interface ICanchaHorarioRepository : IGenericRepository <CanchaHorario>
     {
         List<CanchaHorario> GetByTimeRange(DateTime dateTime);
 

@@ -7,7 +7,7 @@ using DomainModel;
 
 namespace DAL.Interfaces
 {
-    internal interface IClasificacionRepository
+    public interface IClasificacionRepository
     {
         void Update(Clasificacion clasificacion);
 

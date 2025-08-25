@@ -8,7 +8,7 @@ using DomainModel;
 
 namespace DAL.Interfaces
 {
-    internal interface IFixtureRepository : IGenericRepository <Fixture>
+    public interface IFixtureRepository : IGenericRepository <Fixture>
     {
         List<Fixture> GetByCompeticion(Competicion competicion);
 

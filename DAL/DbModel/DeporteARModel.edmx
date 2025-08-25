@@ -1,0 +1,1266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DeporteARModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DbCancha">
+          <Key>
+            <PropertyRef Name="IdCancha" />
+          </Key>
+          <Property Name="IdCancha" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Capacidad" Type="int" />
+          <Property Name="IdDeporte" Type="uniqueidentifier" />
+          <Property Name="DuracionXPartido" Type="time" Precision="7" />
+          <Property Name="FechaDeCreacion" Type="datetime" />
+          <Property Name="EstadoCancha" Type="bit" />
+          <Property Name="FranjaHoraria" Type="varchar" MaxLength="50" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="Precio" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="DbCancha Horario">
+          <Key>
+            <PropertyRef Name="IdCancha-Horario" />
+          </Key>
+          <Property Name="IdCancha" Type="uniqueidentifier" />
+          <Property Name="Horario" Type="datetime" />
+          <Property Name="IdCliente" Type="uniqueidentifier" />
+          <Property Name="Abonada" Type="bit" />
+          <Property Name="FueCambiada" Type="bit" />
+          <Property Name="IdEstadoReserva" Type="uniqueidentifier" />
+          <Property Name="IdCancha-Horario" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CantReservas" Type="int" />
+        </EntityType>
+        <EntityType Name="DbClasificacion">
+          <Key>
+            <PropertyRef Name="IdClasificacion" />
+          </Key>
+          <Property Name="IdClasificacion" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CantDerrotas" Type="int" />
+          <Property Name="CantEmpates" Type="int" />
+          <Property Name="CantVictorias" Type="int" />
+          <Property Name="PartidosJugados" Type="int" />
+          <Property Name="NombreEquipo" Type="varchar" MaxLength="50" />
+          <Property Name="IdCompeticion" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="DbCliente">
+          <Key>
+            <PropertyRef Name="IdCliente" />
+          </Key>
+          <Property Name="IdCliente" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="Telefono" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="DbCompeticion">
+          <Key>
+            <PropertyRef Name="IdCompeticion" />
+          </Key>
+          <Property Name="IdCompeticion" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Cupos" Type="int" />
+          <Property Name="Cupos_min" Type="int" />
+          <Property Name="Estado" Type="varchar" MaxLength="50" />
+          <Property Name="FechaCreacion" Type="datetime" />
+          <Property Name="FechaInicio" Type="datetime" />
+          <Property Name="IdFormato" Type="uniqueidentifier" />
+          <Property Name="FranjaHoraria" Type="varchar" MaxLength="50" />
+          <Property Name="Frecuencia" Type="int" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="PrecioInscripcion" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="IdCancha" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="DbDeporte">
+          <Key>
+            <PropertyRef Name="IdDeporte" />
+          </Key>
+          <Property Name="IdDeporte" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="DbEquipo">
+          <Key>
+            <PropertyRef Name="IdEquipo" />
+          </Key>
+          <Property Name="IdEquipo" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CantAusencias" Type="int" />
+          <Property Name="IdCliente" Type="uniqueidentifier" />
+          <Property Name="IdEstadoAsistencia" Type="uniqueidentifier" />
+          <Property Name="FechaDeCreacion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="DbEquipoCompeticion">
+          <Key>
+            <PropertyRef Name="IdCompeticion" />
+            <PropertyRef Name="IdEquipo" />
+          </Key>
+          <Property Name="IdCompeticion" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IdEquipo" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DbEstadoAsistencia">
+          <Key>
+            <PropertyRef Name="IdEstadoAsistencia" />
+          </Key>
+          <Property Name="IdEstadoAsistencia" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="DbEstadoFixture">
+          <Key>
+            <PropertyRef Name="IdEstadoFixture" />
+          </Key>
+          <Property Name="IdEstadoFixture" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="DbEstadoReserva">
+          <Key>
+            <PropertyRef Name="IdEstadoReserva" />
+          </Key>
+          <Property Name="IdEstadoReserva" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="DbFixture">
+          <Key>
+            <PropertyRef Name="IdFixture" />
+          </Key>
+          <Property Name="IdFixture" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IdCompeticion" Type="uniqueidentifier" />
+          <Property Name="IdEstadoFixture" Type="uniqueidentifier" />
+          <Property Name="Resultado" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="DbFixtureEquipo">
+          <Key>
+            <PropertyRef Name="IdFixture" />
+            <PropertyRef Name="IdEquipo" />
+          </Key>
+          <Property Name="IdFixture" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IdEquipo" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DbFormato">
+          <Key>
+            <PropertyRef Name="IdFormato" />
+          </Key>
+          <Property Name="IdFormato" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="DbJugador">
+          <Key>
+            <PropertyRef Name="IdJugador" />
+          </Key>
+          <Property Name="IdJugador" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IdEquipo" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="PartidosJugados" Type="int" />
+          <Property Name="Mvp" Type="int" />
+          <Property Name="Apellido" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="DbMensaje">
+          <Key>
+            <PropertyRef Name="IdMensaje" />
+          </Key>
+          <Property Name="IdMensaje" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IdCliente" Type="uniqueidentifier" />
+          <Property Name="Contenido" Type="text" />
+          <Property Name="EstadoEnvio" Type="varchar" MaxLength="50" />
+          <Property Name="FechaEnvio" Type="datetime" />
+          <Property Name="FechaEstado" Type="datetime" />
+        </EntityType>
+        <EntityType Name="DbPagos">
+          <Key>
+            <PropertyRef Name="IdPagos" />
+          </Key>
+          <Property Name="IdPagos" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IdMensaje" Type="uniqueidentifier" />
+          <Property Name="Monto" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="EstadoPago" Type="varchar" MaxLength="50" />
+          <Property Name="IdTransaccion" Type="varchar" MaxLength="50" />
+          <Property Name="FechaCreacion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="DbPuntuacion">
+          <Key>
+            <PropertyRef Name="IdPuntuacion" />
+          </Key>
+          <Property Name="IdPuntuacion" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" />
+          <Property Name="Cantidad" Type="int" />
+          <Property Name="IdJugador" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="DbSanciones">
+          <Key>
+            <PropertyRef Name="IdSancion" />
+          </Key>
+          <Property Name="IdSancion" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" />
+          <Property Name="Cantidad" Type="int" />
+          <Property Name="IdJugador" Type="uniqueidentifier" />
+        </EntityType>
+        <Association Name="FK_Cancha Horario_Cancha">
+          <End Role="DbCancha" Type="Self.DbCancha" Multiplicity="0..1" />
+          <End Role="DbCancha Horario" Type="Self.DbCancha Horario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbCancha">
+              <PropertyRef Name="IdCancha" />
+            </Principal>
+            <Dependent Role="DbCancha Horario">
+              <PropertyRef Name="IdCancha" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cancha Horario_Cliente">
+          <End Role="DbCliente" Type="Self.DbCliente" Multiplicity="0..1" />
+          <End Role="DbCancha Horario" Type="Self.DbCancha Horario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbCliente">
+              <PropertyRef Name="IdCliente" />
+            </Principal>
+            <Dependent Role="DbCancha Horario">
+              <PropertyRef Name="IdCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cancha Horario_EstadoReserva">
+          <End Role="DbEstadoReserva" Type="Self.DbEstadoReserva" Multiplicity="0..1" />
+          <End Role="DbCancha Horario" Type="Self.DbCancha Horario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbEstadoReserva">
+              <PropertyRef Name="IdEstadoReserva" />
+            </Principal>
+            <Dependent Role="DbCancha Horario">
+              <PropertyRef Name="IdEstadoReserva" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cancha_Deporte">
+          <End Role="DbDeporte" Type="Self.DbDeporte" Multiplicity="0..1" />
+          <End Role="DbCancha" Type="Self.DbCancha" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbDeporte">
+              <PropertyRef Name="IdDeporte" />
+            </Principal>
+            <Dependent Role="DbCancha">
+              <PropertyRef Name="IdDeporte" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Clasificacion_Competicion">
+          <End Role="DbCompeticion" Type="Self.DbCompeticion" Multiplicity="0..1" />
+          <End Role="DbClasificacion" Type="Self.DbClasificacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbCompeticion">
+              <PropertyRef Name="IdCompeticion" />
+            </Principal>
+            <Dependent Role="DbClasificacion">
+              <PropertyRef Name="IdCompeticion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Competicion_Cancha">
+          <End Role="DbCancha" Type="Self.DbCancha" Multiplicity="0..1" />
+          <End Role="DbCompeticion" Type="Self.DbCompeticion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbCancha">
+              <PropertyRef Name="IdCancha" />
+            </Principal>
+            <Dependent Role="DbCompeticion">
+              <PropertyRef Name="IdCancha" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Competicion_Formato">
+          <End Role="DbFormato" Type="Self.DbFormato" Multiplicity="0..1" />
+          <End Role="DbCompeticion" Type="Self.DbCompeticion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbFormato">
+              <PropertyRef Name="IdFormato" />
+            </Principal>
+            <Dependent Role="DbCompeticion">
+              <PropertyRef Name="IdFormato" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Equipo_Cliente">
+          <End Role="DbCliente" Type="Self.DbCliente" Multiplicity="0..1" />
+          <End Role="DbEquipo" Type="Self.DbEquipo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbCliente">
+              <PropertyRef Name="IdCliente" />
+            </Principal>
+            <Dependent Role="DbEquipo">
+              <PropertyRef Name="IdCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Equipo_EstadoAsistencia">
+          <End Role="DbEstadoAsistencia" Type="Self.DbEstadoAsistencia" Multiplicity="0..1" />
+          <End Role="DbEquipo" Type="Self.DbEquipo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbEstadoAsistencia">
+              <PropertyRef Name="IdEstadoAsistencia" />
+            </Principal>
+            <Dependent Role="DbEquipo">
+              <PropertyRef Name="IdEstadoAsistencia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EquipoCompeticion_Competicion">
+          <End Role="DbCompeticion" Type="Self.DbCompeticion" Multiplicity="1" />
+          <End Role="DbEquipoCompeticion" Type="Self.DbEquipoCompeticion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbCompeticion">
+              <PropertyRef Name="IdCompeticion" />
+            </Principal>
+            <Dependent Role="DbEquipoCompeticion">
+              <PropertyRef Name="IdCompeticion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EquipoCompeticion_Equipo">
+          <End Role="DbEquipo" Type="Self.DbEquipo" Multiplicity="1" />
+          <End Role="DbEquipoCompeticion" Type="Self.DbEquipoCompeticion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbEquipo">
+              <PropertyRef Name="IdEquipo" />
+            </Principal>
+            <Dependent Role="DbEquipoCompeticion">
+              <PropertyRef Name="IdEquipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Fixture_Competicion">
+          <End Role="DbCompeticion" Type="Self.DbCompeticion" Multiplicity="0..1" />
+          <End Role="DbFixture" Type="Self.DbFixture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbCompeticion">
+              <PropertyRef Name="IdCompeticion" />
+            </Principal>
+            <Dependent Role="DbFixture">
+              <PropertyRef Name="IdCompeticion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Fixture_EstadoFixture">
+          <End Role="DbEstadoFixture" Type="Self.DbEstadoFixture" Multiplicity="0..1" />
+          <End Role="DbFixture" Type="Self.DbFixture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbEstadoFixture">
+              <PropertyRef Name="IdEstadoFixture" />
+            </Principal>
+            <Dependent Role="DbFixture">
+              <PropertyRef Name="IdEstadoFixture" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FixtureEquipo_Equipo">
+          <End Role="DbEquipo" Type="Self.DbEquipo" Multiplicity="1" />
+          <End Role="DbFixtureEquipo" Type="Self.DbFixtureEquipo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbEquipo">
+              <PropertyRef Name="IdEquipo" />
+            </Principal>
+            <Dependent Role="DbFixtureEquipo">
+              <PropertyRef Name="IdEquipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FixtureEquipo_Fixture">
+          <End Role="DbFixture" Type="Self.DbFixture" Multiplicity="1" />
+          <End Role="DbFixtureEquipo" Type="Self.DbFixtureEquipo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbFixture">
+              <PropertyRef Name="IdFixture" />
+            </Principal>
+            <Dependent Role="DbFixtureEquipo">
+              <PropertyRef Name="IdFixture" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Jugador_Equipo">
+          <End Role="DbEquipo" Type="Self.DbEquipo" Multiplicity="1" />
+          <End Role="DbJugador" Type="Self.DbJugador" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbEquipo">
+              <PropertyRef Name="IdEquipo" />
+            </Principal>
+            <Dependent Role="DbJugador">
+              <PropertyRef Name="IdEquipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mensaje_Cliente">
+          <End Role="DbCliente" Type="Self.DbCliente" Multiplicity="0..1" />
+          <End Role="DbMensaje" Type="Self.DbMensaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbCliente">
+              <PropertyRef Name="IdCliente" />
+            </Principal>
+            <Dependent Role="DbMensaje">
+              <PropertyRef Name="IdCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pagos_Mensaje">
+          <End Role="DbMensaje" Type="Self.DbMensaje" Multiplicity="0..1" />
+          <End Role="DbPagos" Type="Self.DbPagos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbMensaje">
+              <PropertyRef Name="IdMensaje" />
+            </Principal>
+            <Dependent Role="DbPagos">
+              <PropertyRef Name="IdMensaje" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Puntuacion_Jugador">
+          <End Role="DbJugador" Type="Self.DbJugador" Multiplicity="0..1" />
+          <End Role="DbPuntuacion" Type="Self.DbPuntuacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbJugador">
+              <PropertyRef Name="IdJugador" />
+            </Principal>
+            <Dependent Role="DbPuntuacion">
+              <PropertyRef Name="IdJugador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sanciones_Jugador">
+          <End Role="DbJugador" Type="Self.DbJugador" Multiplicity="0..1" />
+          <End Role="DbSanciones" Type="Self.DbSanciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbJugador">
+              <PropertyRef Name="IdJugador" />
+            </Principal>
+            <Dependent Role="DbSanciones">
+              <PropertyRef Name="IdJugador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DeporteARModelStoreContainer">
+          <EntitySet Name="DbCancha" EntityType="Self.DbCancha" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DbCancha Horario" EntityType="Self.DbCancha Horario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DbClasificacion" EntityType="Self.DbClasificacion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DbCliente" EntityType="Self.DbCliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DbCompeticion" EntityType="Self.DbCompeticion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DbDeporte" EntityType="Self.DbDeporte" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DbEquipo" EntityType="Self.DbEquipo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DbEquipoCompeticion" EntityType="Self.DbEquipoCompeticion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DbEstadoAsistencia" EntityType="Self.DbEstadoAsistencia" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DbEstadoFixture" EntityType="Self.DbEstadoFixture" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DbEstadoReserva" EntityType="Self.DbEstadoReserva" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DbFixture" EntityType="Self.DbFixture" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DbFixtureEquipo" EntityType="Self.DbFixtureEquipo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DbFormato" EntityType="Self.DbFormato" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DbJugador" EntityType="Self.DbJugador" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DbMensaje" EntityType="Self.DbMensaje" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DbPagos" EntityType="Self.DbPagos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DbPuntuacion" EntityType="Self.DbPuntuacion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DbSanciones" EntityType="Self.DbSanciones" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Cancha Horario_Cancha" Association="Self.FK_Cancha Horario_Cancha">
+            <End Role="DbCancha" EntitySet="DbCancha" />
+            <End Role="DbCancha Horario" EntitySet="DbCancha Horario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cancha Horario_Cliente" Association="Self.FK_Cancha Horario_Cliente">
+            <End Role="DbCliente" EntitySet="DbCliente" />
+            <End Role="DbCancha Horario" EntitySet="DbCancha Horario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cancha Horario_EstadoReserva" Association="Self.FK_Cancha Horario_EstadoReserva">
+            <End Role="DbEstadoReserva" EntitySet="DbEstadoReserva" />
+            <End Role="DbCancha Horario" EntitySet="DbCancha Horario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cancha_Deporte" Association="Self.FK_Cancha_Deporte">
+            <End Role="DbDeporte" EntitySet="DbDeporte" />
+            <End Role="DbCancha" EntitySet="DbCancha" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Clasificacion_Competicion" Association="Self.FK_Clasificacion_Competicion">
+            <End Role="DbCompeticion" EntitySet="DbCompeticion" />
+            <End Role="DbClasificacion" EntitySet="DbClasificacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Competicion_Cancha" Association="Self.FK_Competicion_Cancha">
+            <End Role="DbCancha" EntitySet="DbCancha" />
+            <End Role="DbCompeticion" EntitySet="DbCompeticion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Competicion_Formato" Association="Self.FK_Competicion_Formato">
+            <End Role="DbFormato" EntitySet="DbFormato" />
+            <End Role="DbCompeticion" EntitySet="DbCompeticion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Equipo_Cliente" Association="Self.FK_Equipo_Cliente">
+            <End Role="DbCliente" EntitySet="DbCliente" />
+            <End Role="DbEquipo" EntitySet="DbEquipo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Equipo_EstadoAsistencia" Association="Self.FK_Equipo_EstadoAsistencia">
+            <End Role="DbEstadoAsistencia" EntitySet="DbEstadoAsistencia" />
+            <End Role="DbEquipo" EntitySet="DbEquipo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EquipoCompeticion_Competicion" Association="Self.FK_EquipoCompeticion_Competicion">
+            <End Role="DbCompeticion" EntitySet="DbCompeticion" />
+            <End Role="DbEquipoCompeticion" EntitySet="DbEquipoCompeticion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EquipoCompeticion_Equipo" Association="Self.FK_EquipoCompeticion_Equipo">
+            <End Role="DbEquipo" EntitySet="DbEquipo" />
+            <End Role="DbEquipoCompeticion" EntitySet="DbEquipoCompeticion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fixture_Competicion" Association="Self.FK_Fixture_Competicion">
+            <End Role="DbCompeticion" EntitySet="DbCompeticion" />
+            <End Role="DbFixture" EntitySet="DbFixture" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fixture_EstadoFixture" Association="Self.FK_Fixture_EstadoFixture">
+            <End Role="DbEstadoFixture" EntitySet="DbEstadoFixture" />
+            <End Role="DbFixture" EntitySet="DbFixture" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FixtureEquipo_Equipo" Association="Self.FK_FixtureEquipo_Equipo">
+            <End Role="DbEquipo" EntitySet="DbEquipo" />
+            <End Role="DbFixtureEquipo" EntitySet="DbFixtureEquipo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FixtureEquipo_Fixture" Association="Self.FK_FixtureEquipo_Fixture">
+            <End Role="DbFixture" EntitySet="DbFixture" />
+            <End Role="DbFixtureEquipo" EntitySet="DbFixtureEquipo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Jugador_Equipo" Association="Self.FK_Jugador_Equipo">
+            <End Role="DbEquipo" EntitySet="DbEquipo" />
+            <End Role="DbJugador" EntitySet="DbJugador" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mensaje_Cliente" Association="Self.FK_Mensaje_Cliente">
+            <End Role="DbCliente" EntitySet="DbCliente" />
+            <End Role="DbMensaje" EntitySet="DbMensaje" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pagos_Mensaje" Association="Self.FK_Pagos_Mensaje">
+            <End Role="DbMensaje" EntitySet="DbMensaje" />
+            <End Role="DbPagos" EntitySet="DbPagos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Puntuacion_Jugador" Association="Self.FK_Puntuacion_Jugador">
+            <End Role="DbJugador" EntitySet="DbJugador" />
+            <End Role="DbPuntuacion" EntitySet="DbPuntuacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sanciones_Jugador" Association="Self.FK_Sanciones_Jugador">
+            <End Role="DbJugador" EntitySet="DbJugador" />
+            <End Role="DbSanciones" EntitySet="DbSanciones" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DeporteARModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DbCancha">
+          <Key>
+            <PropertyRef Name="IdCancha" />
+          </Key>
+          <Property Name="IdCancha" Type="Guid" Nullable="false" />
+          <Property Name="Capacidad" Type="Int32" />
+          <Property Name="IdDeporte" Type="Guid" />
+          <Property Name="DuracionXPartido" Type="Time" Precision="7" />
+          <Property Name="FechaDeCreacion" Type="DateTime" Precision="3" />
+          <Property Name="EstadoCancha" Type="Boolean" />
+          <Property Name="FranjaHoraria" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Precio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DbCancha_Horario" Relationship="Self.FK_Cancha_Horario_Cancha" FromRole="DbCancha" ToRole="DbCancha_Horario" />
+          <NavigationProperty Name="DbDeporte" Relationship="Self.FK_Cancha_Deporte" FromRole="DbCancha" ToRole="DbDeporte" />
+          <NavigationProperty Name="DbCompeticion" Relationship="Self.FK_Competicion_Cancha" FromRole="DbCancha" ToRole="DbCompeticion" />
+        </EntityType>
+        <EntityType Name="DbCancha_Horario">
+          <Key>
+            <PropertyRef Name="IdCancha_Horario" />
+          </Key>
+          <Property Name="IdCancha" Type="Guid" />
+          <Property Name="Horario" Type="DateTime" Precision="3" />
+          <Property Name="IdCliente" Type="Guid" />
+          <Property Name="Abonada" Type="Boolean" />
+          <Property Name="FueCambiada" Type="Boolean" />
+          <Property Name="IdEstadoReserva" Type="Guid" />
+          <Property Name="IdCancha_Horario" Type="Guid" Nullable="false" />
+          <Property Name="CantReservas" Type="Int32" />
+          <NavigationProperty Name="DbCancha" Relationship="Self.FK_Cancha_Horario_Cancha" FromRole="DbCancha_Horario" ToRole="DbCancha" />
+          <NavigationProperty Name="DbCliente" Relationship="Self.FK_Cancha_Horario_Cliente" FromRole="DbCancha_Horario" ToRole="DbCliente" />
+          <NavigationProperty Name="DbEstadoReserva" Relationship="Self.FK_Cancha_Horario_EstadoReserva" FromRole="DbCancha_Horario" ToRole="DbEstadoReserva" />
+        </EntityType>
+        <EntityType Name="DbClasificacion">
+          <Key>
+            <PropertyRef Name="IdClasificacion" />
+          </Key>
+          <Property Name="IdClasificacion" Type="Guid" Nullable="false" />
+          <Property Name="CantDerrotas" Type="Int32" />
+          <Property Name="CantEmpates" Type="Int32" />
+          <Property Name="CantVictorias" Type="Int32" />
+          <Property Name="PartidosJugados" Type="Int32" />
+          <Property Name="NombreEquipo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IdCompeticion" Type="Guid" />
+          <NavigationProperty Name="DbCompeticion" Relationship="Self.FK_Clasificacion_Competicion" FromRole="DbClasificacion" ToRole="DbCompeticion" />
+        </EntityType>
+        <EntityType Name="DbCliente">
+          <Key>
+            <PropertyRef Name="IdCliente" />
+          </Key>
+          <Property Name="IdCliente" Type="Guid" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DbCancha_Horario" Relationship="Self.FK_Cancha_Horario_Cliente" FromRole="DbCliente" ToRole="DbCancha_Horario" />
+          <NavigationProperty Name="DbEquipo" Relationship="Self.FK_Equipo_Cliente" FromRole="DbCliente" ToRole="DbEquipo" />
+          <NavigationProperty Name="DbMensaje" Relationship="Self.FK_Mensaje_Cliente" FromRole="DbCliente" ToRole="DbMensaje" />
+        </EntityType>
+        <EntityType Name="DbCompeticion">
+          <Key>
+            <PropertyRef Name="IdCompeticion" />
+          </Key>
+          <Property Name="IdCompeticion" Type="Guid" Nullable="false" />
+          <Property Name="Cupos" Type="Int32" />
+          <Property Name="Cupos_min" Type="Int32" />
+          <Property Name="Estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Precision="3" />
+          <Property Name="FechaInicio" Type="DateTime" Precision="3" />
+          <Property Name="IdFormato" Type="Guid" />
+          <Property Name="FranjaHoraria" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Frecuencia" Type="Int32" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PrecioInscripcion" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="IdCancha" Type="Guid" />
+          <NavigationProperty Name="DbCancha" Relationship="Self.FK_Competicion_Cancha" FromRole="DbCompeticion" ToRole="DbCancha" />
+          <NavigationProperty Name="DbClasificacion" Relationship="Self.FK_Clasificacion_Competicion" FromRole="DbCompeticion" ToRole="DbClasificacion" />
+          <NavigationProperty Name="DbFormato" Relationship="Self.FK_Competicion_Formato" FromRole="DbCompeticion" ToRole="DbFormato" />
+          <NavigationProperty Name="DbFixture" Relationship="Self.FK_Fixture_Competicion" FromRole="DbCompeticion" ToRole="DbFixture" />
+          <NavigationProperty Name="DbEquipo" Relationship="Self.DbEquipoCompeticion" FromRole="DbCompeticion" ToRole="DbEquipo" />
+        </EntityType>
+        <EntityType Name="DbDeporte">
+          <Key>
+            <PropertyRef Name="IdDeporte" />
+          </Key>
+          <Property Name="IdDeporte" Type="Guid" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DbCancha" Relationship="Self.FK_Cancha_Deporte" FromRole="DbDeporte" ToRole="DbCancha" />
+        </EntityType>
+        <EntityType Name="DbEquipo">
+          <Key>
+            <PropertyRef Name="IdEquipo" />
+          </Key>
+          <Property Name="IdEquipo" Type="Guid" Nullable="false" />
+          <Property Name="CantAusencias" Type="Int32" />
+          <Property Name="IdCliente" Type="Guid" />
+          <Property Name="IdEstadoAsistencia" Type="Guid" />
+          <Property Name="FechaDeCreacion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="DbCliente" Relationship="Self.FK_Equipo_Cliente" FromRole="DbEquipo" ToRole="DbCliente" />
+          <NavigationProperty Name="DbEstadoAsistencia" Relationship="Self.FK_Equipo_EstadoAsistencia" FromRole="DbEquipo" ToRole="DbEstadoAsistencia" />
+          <NavigationProperty Name="DbJugador" Relationship="Self.FK_Jugador_Equipo" FromRole="DbEquipo" ToRole="DbJugador" />
+          <NavigationProperty Name="DbCompeticion" Relationship="Self.DbEquipoCompeticion" FromRole="DbEquipo" ToRole="DbCompeticion" />
+          <NavigationProperty Name="DbFixture" Relationship="Self.DbFixtureEquipo" FromRole="DbEquipo" ToRole="DbFixture" />
+        </EntityType>
+        <EntityType Name="DbEstadoAsistencia">
+          <Key>
+            <PropertyRef Name="IdEstadoAsistencia" />
+          </Key>
+          <Property Name="IdEstadoAsistencia" Type="Guid" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DbEquipo" Relationship="Self.FK_Equipo_EstadoAsistencia" FromRole="DbEstadoAsistencia" ToRole="DbEquipo" />
+        </EntityType>
+        <EntityType Name="DbEstadoFixture">
+          <Key>
+            <PropertyRef Name="IdEstadoFixture" />
+          </Key>
+          <Property Name="IdEstadoFixture" Type="Guid" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DbFixture" Relationship="Self.FK_Fixture_EstadoFixture" FromRole="DbEstadoFixture" ToRole="DbFixture" />
+        </EntityType>
+        <EntityType Name="DbEstadoReserva">
+          <Key>
+            <PropertyRef Name="IdEstadoReserva" />
+          </Key>
+          <Property Name="IdEstadoReserva" Type="Guid" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DbCancha_Horario" Relationship="Self.FK_Cancha_Horario_EstadoReserva" FromRole="DbEstadoReserva" ToRole="DbCancha_Horario" />
+        </EntityType>
+        <EntityType Name="DbFixture">
+          <Key>
+            <PropertyRef Name="IdFixture" />
+          </Key>
+          <Property Name="IdFixture" Type="Guid" Nullable="false" />
+          <Property Name="IdCompeticion" Type="Guid" />
+          <Property Name="IdEstadoFixture" Type="Guid" />
+          <Property Name="Resultado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DbCompeticion" Relationship="Self.FK_Fixture_Competicion" FromRole="DbFixture" ToRole="DbCompeticion" />
+          <NavigationProperty Name="DbEstadoFixture" Relationship="Self.FK_Fixture_EstadoFixture" FromRole="DbFixture" ToRole="DbEstadoFixture" />
+          <NavigationProperty Name="DbEquipo" Relationship="Self.DbFixtureEquipo" FromRole="DbFixture" ToRole="DbEquipo" />
+        </EntityType>
+        <EntityType Name="DbFormato">
+          <Key>
+            <PropertyRef Name="IdFormato" />
+          </Key>
+          <Property Name="IdFormato" Type="Guid" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DbCompeticion" Relationship="Self.FK_Competicion_Formato" FromRole="DbFormato" ToRole="DbCompeticion" />
+        </EntityType>
+        <EntityType Name="DbJugador">
+          <Key>
+            <PropertyRef Name="IdJugador" />
+          </Key>
+          <Property Name="IdJugador" Type="Guid" Nullable="false" />
+          <Property Name="IdEquipo" Type="Guid" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PartidosJugados" Type="Int32" />
+          <Property Name="Mvp" Type="Int32" />
+          <Property Name="Apellido" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DbEquipo" Relationship="Self.FK_Jugador_Equipo" FromRole="DbJugador" ToRole="DbEquipo" />
+          <NavigationProperty Name="DbPuntuacion" Relationship="Self.FK_Puntuacion_Jugador" FromRole="DbJugador" ToRole="DbPuntuacion" />
+          <NavigationProperty Name="DbSanciones" Relationship="Self.FK_Sanciones_Jugador" FromRole="DbJugador" ToRole="DbSanciones" />
+        </EntityType>
+        <EntityType Name="DbMensaje">
+          <Key>
+            <PropertyRef Name="IdMensaje" />
+          </Key>
+          <Property Name="IdMensaje" Type="Guid" Nullable="false" />
+          <Property Name="IdCliente" Type="Guid" />
+          <Property Name="Contenido" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="EstadoEnvio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FechaEnvio" Type="DateTime" Precision="3" />
+          <Property Name="FechaEstado" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="DbCliente" Relationship="Self.FK_Mensaje_Cliente" FromRole="DbMensaje" ToRole="DbCliente" />
+          <NavigationProperty Name="DbPagos" Relationship="Self.FK_Pagos_Mensaje" FromRole="DbMensaje" ToRole="DbPagos" />
+        </EntityType>
+        <EntityType Name="DbPagos">
+          <Key>
+            <PropertyRef Name="IdPagos" />
+          </Key>
+          <Property Name="IdPagos" Type="Guid" Nullable="false" />
+          <Property Name="IdMensaje" Type="Guid" />
+          <Property Name="Monto" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="EstadoPago" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IdTransaccion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FechaCreacion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="DbMensaje" Relationship="Self.FK_Pagos_Mensaje" FromRole="DbPagos" ToRole="DbMensaje" />
+        </EntityType>
+        <EntityType Name="DbPuntuacion">
+          <Key>
+            <PropertyRef Name="IdPuntuacion" />
+          </Key>
+          <Property Name="IdPuntuacion" Type="Guid" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Cantidad" Type="Int32" />
+          <Property Name="IdJugador" Type="Guid" />
+          <NavigationProperty Name="DbJugador" Relationship="Self.FK_Puntuacion_Jugador" FromRole="DbPuntuacion" ToRole="DbJugador" />
+        </EntityType>
+        <EntityType Name="DbSanciones">
+          <Key>
+            <PropertyRef Name="IdSancion" />
+          </Key>
+          <Property Name="IdSancion" Type="Guid" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Cantidad" Type="Int32" />
+          <Property Name="IdJugador" Type="Guid" />
+          <NavigationProperty Name="DbJugador" Relationship="Self.FK_Sanciones_Jugador" FromRole="DbSanciones" ToRole="DbJugador" />
+        </EntityType>
+        <Association Name="FK_Cancha_Horario_Cancha">
+          <End Role="DbCancha" Type="Self.DbCancha" Multiplicity="0..1" />
+          <End Role="DbCancha_Horario" Type="Self.DbCancha_Horario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbCancha">
+              <PropertyRef Name="IdCancha" />
+            </Principal>
+            <Dependent Role="DbCancha_Horario">
+              <PropertyRef Name="IdCancha" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cancha_Deporte">
+          <End Role="DbDeporte" Type="Self.DbDeporte" Multiplicity="0..1" />
+          <End Role="DbCancha" Type="Self.DbCancha" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbDeporte">
+              <PropertyRef Name="IdDeporte" />
+            </Principal>
+            <Dependent Role="DbCancha">
+              <PropertyRef Name="IdDeporte" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Competicion_Cancha">
+          <End Role="DbCancha" Type="Self.DbCancha" Multiplicity="0..1" />
+          <End Role="DbCompeticion" Type="Self.DbCompeticion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbCancha">
+              <PropertyRef Name="IdCancha" />
+            </Principal>
+            <Dependent Role="DbCompeticion">
+              <PropertyRef Name="IdCancha" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cancha_Horario_Cliente">
+          <End Role="DbCliente" Type="Self.DbCliente" Multiplicity="0..1" />
+          <End Role="DbCancha_Horario" Type="Self.DbCancha_Horario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbCliente">
+              <PropertyRef Name="IdCliente" />
+            </Principal>
+            <Dependent Role="DbCancha_Horario">
+              <PropertyRef Name="IdCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cancha_Horario_EstadoReserva">
+          <End Role="DbEstadoReserva" Type="Self.DbEstadoReserva" Multiplicity="0..1" />
+          <End Role="DbCancha_Horario" Type="Self.DbCancha_Horario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbEstadoReserva">
+              <PropertyRef Name="IdEstadoReserva" />
+            </Principal>
+            <Dependent Role="DbCancha_Horario">
+              <PropertyRef Name="IdEstadoReserva" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Clasificacion_Competicion">
+          <End Role="DbCompeticion" Type="Self.DbCompeticion" Multiplicity="0..1" />
+          <End Role="DbClasificacion" Type="Self.DbClasificacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbCompeticion">
+              <PropertyRef Name="IdCompeticion" />
+            </Principal>
+            <Dependent Role="DbClasificacion">
+              <PropertyRef Name="IdCompeticion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Equipo_Cliente">
+          <End Role="DbCliente" Type="Self.DbCliente" Multiplicity="0..1" />
+          <End Role="DbEquipo" Type="Self.DbEquipo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbCliente">
+              <PropertyRef Name="IdCliente" />
+            </Principal>
+            <Dependent Role="DbEquipo">
+              <PropertyRef Name="IdCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mensaje_Cliente">
+          <End Role="DbCliente" Type="Self.DbCliente" Multiplicity="0..1" />
+          <End Role="DbMensaje" Type="Self.DbMensaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbCliente">
+              <PropertyRef Name="IdCliente" />
+            </Principal>
+            <Dependent Role="DbMensaje">
+              <PropertyRef Name="IdCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Competicion_Formato">
+          <End Role="DbFormato" Type="Self.DbFormato" Multiplicity="0..1" />
+          <End Role="DbCompeticion" Type="Self.DbCompeticion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbFormato">
+              <PropertyRef Name="IdFormato" />
+            </Principal>
+            <Dependent Role="DbCompeticion">
+              <PropertyRef Name="IdFormato" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Fixture_Competicion">
+          <End Role="DbCompeticion" Type="Self.DbCompeticion" Multiplicity="0..1" />
+          <End Role="DbFixture" Type="Self.DbFixture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbCompeticion">
+              <PropertyRef Name="IdCompeticion" />
+            </Principal>
+            <Dependent Role="DbFixture">
+              <PropertyRef Name="IdCompeticion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Equipo_EstadoAsistencia">
+          <End Role="DbEstadoAsistencia" Type="Self.DbEstadoAsistencia" Multiplicity="0..1" />
+          <End Role="DbEquipo" Type="Self.DbEquipo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbEstadoAsistencia">
+              <PropertyRef Name="IdEstadoAsistencia" />
+            </Principal>
+            <Dependent Role="DbEquipo">
+              <PropertyRef Name="IdEstadoAsistencia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Jugador_Equipo">
+          <End Role="DbEquipo" Type="Self.DbEquipo" Multiplicity="1" />
+          <End Role="DbJugador" Type="Self.DbJugador" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbEquipo">
+              <PropertyRef Name="IdEquipo" />
+            </Principal>
+            <Dependent Role="DbJugador">
+              <PropertyRef Name="IdEquipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Fixture_EstadoFixture">
+          <End Role="DbEstadoFixture" Type="Self.DbEstadoFixture" Multiplicity="0..1" />
+          <End Role="DbFixture" Type="Self.DbFixture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbEstadoFixture">
+              <PropertyRef Name="IdEstadoFixture" />
+            </Principal>
+            <Dependent Role="DbFixture">
+              <PropertyRef Name="IdEstadoFixture" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Puntuacion_Jugador">
+          <End Role="DbJugador" Type="Self.DbJugador" Multiplicity="0..1" />
+          <End Role="DbPuntuacion" Type="Self.DbPuntuacion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbJugador">
+              <PropertyRef Name="IdJugador" />
+            </Principal>
+            <Dependent Role="DbPuntuacion">
+              <PropertyRef Name="IdJugador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sanciones_Jugador">
+          <End Role="DbJugador" Type="Self.DbJugador" Multiplicity="0..1" />
+          <End Role="DbSanciones" Type="Self.DbSanciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbJugador">
+              <PropertyRef Name="IdJugador" />
+            </Principal>
+            <Dependent Role="DbSanciones">
+              <PropertyRef Name="IdJugador" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Pagos_Mensaje">
+          <End Role="DbMensaje" Type="Self.DbMensaje" Multiplicity="0..1" />
+          <End Role="DbPagos" Type="Self.DbPagos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbMensaje">
+              <PropertyRef Name="IdMensaje" />
+            </Principal>
+            <Dependent Role="DbPagos">
+              <PropertyRef Name="IdMensaje" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="DbEquipoCompeticion">
+          <End Role="DbCompeticion" Type="Self.DbCompeticion" Multiplicity="*" />
+          <End Role="DbEquipo" Type="Self.DbEquipo" Multiplicity="*" />
+        </Association>
+        <Association Name="DbFixtureEquipo">
+          <End Role="DbEquipo" Type="Self.DbEquipo" Multiplicity="*" />
+          <End Role="DbFixture" Type="Self.DbFixture" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="DeporteARContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DbCancha" EntityType="Self.DbCancha" />
+          <EntitySet Name="DbCancha_Horario" EntityType="Self.DbCancha_Horario" />
+          <EntitySet Name="DbClasificacion" EntityType="Self.DbClasificacion" />
+          <EntitySet Name="DbCliente" EntityType="Self.DbCliente" />
+          <EntitySet Name="DbCompeticion" EntityType="Self.DbCompeticion" />
+          <EntitySet Name="DbDeporte" EntityType="Self.DbDeporte" />
+          <EntitySet Name="DbEquipo" EntityType="Self.DbEquipo" />
+          <EntitySet Name="DbEstadoAsistencia" EntityType="Self.DbEstadoAsistencia" />
+          <EntitySet Name="DbEstadoFixture" EntityType="Self.DbEstadoFixture" />
+          <EntitySet Name="DbEstadoReserva" EntityType="Self.DbEstadoReserva" />
+          <EntitySet Name="DbFixture" EntityType="Self.DbFixture" />
+          <EntitySet Name="DbFormato" EntityType="Self.DbFormato" />
+          <EntitySet Name="DbJugador" EntityType="Self.DbJugador" />
+          <EntitySet Name="DbMensaje" EntityType="Self.DbMensaje" />
+          <EntitySet Name="DbPagos" EntityType="Self.DbPagos" />
+          <EntitySet Name="DbPuntuacion" EntityType="Self.DbPuntuacion" />
+          <EntitySet Name="DbSanciones" EntityType="Self.DbSanciones" />
+          <AssociationSet Name="FK_Cancha_Horario_Cancha" Association="Self.FK_Cancha_Horario_Cancha">
+            <End Role="DbCancha" EntitySet="DbCancha" />
+            <End Role="DbCancha_Horario" EntitySet="DbCancha_Horario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cancha_Deporte" Association="Self.FK_Cancha_Deporte">
+            <End Role="DbDeporte" EntitySet="DbDeporte" />
+            <End Role="DbCancha" EntitySet="DbCancha" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Competicion_Cancha" Association="Self.FK_Competicion_Cancha">
+            <End Role="DbCancha" EntitySet="DbCancha" />
+            <End Role="DbCompeticion" EntitySet="DbCompeticion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cancha_Horario_Cliente" Association="Self.FK_Cancha_Horario_Cliente">
+            <End Role="DbCliente" EntitySet="DbCliente" />
+            <End Role="DbCancha_Horario" EntitySet="DbCancha_Horario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cancha_Horario_EstadoReserva" Association="Self.FK_Cancha_Horario_EstadoReserva">
+            <End Role="DbEstadoReserva" EntitySet="DbEstadoReserva" />
+            <End Role="DbCancha_Horario" EntitySet="DbCancha_Horario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Clasificacion_Competicion" Association="Self.FK_Clasificacion_Competicion">
+            <End Role="DbCompeticion" EntitySet="DbCompeticion" />
+            <End Role="DbClasificacion" EntitySet="DbClasificacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Equipo_Cliente" Association="Self.FK_Equipo_Cliente">
+            <End Role="DbCliente" EntitySet="DbCliente" />
+            <End Role="DbEquipo" EntitySet="DbEquipo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mensaje_Cliente" Association="Self.FK_Mensaje_Cliente">
+            <End Role="DbCliente" EntitySet="DbCliente" />
+            <End Role="DbMensaje" EntitySet="DbMensaje" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Competicion_Formato" Association="Self.FK_Competicion_Formato">
+            <End Role="DbFormato" EntitySet="DbFormato" />
+            <End Role="DbCompeticion" EntitySet="DbCompeticion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fixture_Competicion" Association="Self.FK_Fixture_Competicion">
+            <End Role="DbCompeticion" EntitySet="DbCompeticion" />
+            <End Role="DbFixture" EntitySet="DbFixture" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Equipo_EstadoAsistencia" Association="Self.FK_Equipo_EstadoAsistencia">
+            <End Role="DbEstadoAsistencia" EntitySet="DbEstadoAsistencia" />
+            <End Role="DbEquipo" EntitySet="DbEquipo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Jugador_Equipo" Association="Self.FK_Jugador_Equipo">
+            <End Role="DbEquipo" EntitySet="DbEquipo" />
+            <End Role="DbJugador" EntitySet="DbJugador" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fixture_EstadoFixture" Association="Self.FK_Fixture_EstadoFixture">
+            <End Role="DbEstadoFixture" EntitySet="DbEstadoFixture" />
+            <End Role="DbFixture" EntitySet="DbFixture" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Puntuacion_Jugador" Association="Self.FK_Puntuacion_Jugador">
+            <End Role="DbJugador" EntitySet="DbJugador" />
+            <End Role="DbPuntuacion" EntitySet="DbPuntuacion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sanciones_Jugador" Association="Self.FK_Sanciones_Jugador">
+            <End Role="DbJugador" EntitySet="DbJugador" />
+            <End Role="DbSanciones" EntitySet="DbSanciones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Pagos_Mensaje" Association="Self.FK_Pagos_Mensaje">
+            <End Role="DbMensaje" EntitySet="DbMensaje" />
+            <End Role="DbPagos" EntitySet="DbPagos" />
+          </AssociationSet>
+          <AssociationSet Name="DbEquipoCompeticion" Association="Self.DbEquipoCompeticion">
+            <End Role="DbCompeticion" EntitySet="DbCompeticion" />
+            <End Role="DbEquipo" EntitySet="DbEquipo" />
+          </AssociationSet>
+          <AssociationSet Name="DbFixtureEquipo" Association="Self.DbFixtureEquipo">
+            <End Role="DbEquipo" EntitySet="DbEquipo" />
+            <End Role="DbFixture" EntitySet="DbFixture" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DeporteARModelStoreContainer" CdmEntityContainer="DeporteARContext">
+          <EntitySetMapping Name="DbCancha">
+            <EntityTypeMapping TypeName="DeporteARModel.DbCancha">
+              <MappingFragment StoreEntitySet="DbCancha">
+                <ScalarProperty Name="IdCancha" ColumnName="IdCancha" />
+                <ScalarProperty Name="Capacidad" ColumnName="Capacidad" />
+                <ScalarProperty Name="IdDeporte" ColumnName="IdDeporte" />
+                <ScalarProperty Name="DuracionXPartido" ColumnName="DuracionXPartido" />
+                <ScalarProperty Name="FechaDeCreacion" ColumnName="FechaDeCreacion" />
+                <ScalarProperty Name="EstadoCancha" ColumnName="EstadoCancha" />
+                <ScalarProperty Name="FranjaHoraria" ColumnName="FranjaHoraria" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DbCancha_Horario">
+            <EntityTypeMapping TypeName="DeporteARModel.DbCancha_Horario">
+              <MappingFragment StoreEntitySet="DbCancha Horario">
+                <ScalarProperty Name="IdCancha" ColumnName="IdCancha" />
+                <ScalarProperty Name="Horario" ColumnName="Horario" />
+                <ScalarProperty Name="IdCliente" ColumnName="IdCliente" />
+                <ScalarProperty Name="Abonada" ColumnName="Abonada" />
+                <ScalarProperty Name="FueCambiada" ColumnName="FueCambiada" />
+                <ScalarProperty Name="IdEstadoReserva" ColumnName="IdEstadoReserva" />
+                <ScalarProperty Name="IdCancha_Horario" ColumnName="IdCancha-Horario" />
+                <ScalarProperty Name="CantReservas" ColumnName="CantReservas" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DbClasificacion">
+            <EntityTypeMapping TypeName="DeporteARModel.DbClasificacion">
+              <MappingFragment StoreEntitySet="DbClasificacion">
+                <ScalarProperty Name="IdClasificacion" ColumnName="IdClasificacion" />
+                <ScalarProperty Name="CantDerrotas" ColumnName="CantDerrotas" />
+                <ScalarProperty Name="CantEmpates" ColumnName="CantEmpates" />
+                <ScalarProperty Name="CantVictorias" ColumnName="CantVictorias" />
+                <ScalarProperty Name="PartidosJugados" ColumnName="PartidosJugados" />
+                <ScalarProperty Name="NombreEquipo" ColumnName="NombreEquipo" />
+                <ScalarProperty Name="IdCompeticion" ColumnName="IdCompeticion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DbCliente">
+            <EntityTypeMapping TypeName="DeporteARModel.DbCliente">
+              <MappingFragment StoreEntitySet="DbCliente">
+                <ScalarProperty Name="IdCliente" ColumnName="IdCliente" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DbCompeticion">
+            <EntityTypeMapping TypeName="DeporteARModel.DbCompeticion">
+              <MappingFragment StoreEntitySet="DbCompeticion">
+                <ScalarProperty Name="IdCompeticion" ColumnName="IdCompeticion" />
+                <ScalarProperty Name="Cupos" ColumnName="Cupos" />
+                <ScalarProperty Name="Cupos_min" ColumnName="Cupos_min" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
+                <ScalarProperty Name="IdFormato" ColumnName="IdFormato" />
+                <ScalarProperty Name="FranjaHoraria" ColumnName="FranjaHoraria" />
+                <ScalarProperty Name="Frecuencia" ColumnName="Frecuencia" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="PrecioInscripcion" ColumnName="PrecioInscripcion" />
+                <ScalarProperty Name="IdCancha" ColumnName="IdCancha" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DbDeporte">
+            <EntityTypeMapping TypeName="DeporteARModel.DbDeporte">
+              <MappingFragment StoreEntitySet="DbDeporte">
+                <ScalarProperty Name="IdDeporte" ColumnName="IdDeporte" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DbEquipo">
+            <EntityTypeMapping TypeName="DeporteARModel.DbEquipo">
+              <MappingFragment StoreEntitySet="DbEquipo">
+                <ScalarProperty Name="IdEquipo" ColumnName="IdEquipo" />
+                <ScalarProperty Name="CantAusencias" ColumnName="CantAusencias" />
+                <ScalarProperty Name="IdCliente" ColumnName="IdCliente" />
+                <ScalarProperty Name="IdEstadoAsistencia" ColumnName="IdEstadoAsistencia" />
+                <ScalarProperty Name="FechaDeCreacion" ColumnName="FechaDeCreacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DbEstadoAsistencia">
+            <EntityTypeMapping TypeName="DeporteARModel.DbEstadoAsistencia">
+              <MappingFragment StoreEntitySet="DbEstadoAsistencia">
+                <ScalarProperty Name="IdEstadoAsistencia" ColumnName="IdEstadoAsistencia" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DbEstadoFixture">
+            <EntityTypeMapping TypeName="DeporteARModel.DbEstadoFixture">
+              <MappingFragment StoreEntitySet="DbEstadoFixture">
+                <ScalarProperty Name="IdEstadoFixture" ColumnName="IdEstadoFixture" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DbEstadoReserva">
+            <EntityTypeMapping TypeName="DeporteARModel.DbEstadoReserva">
+              <MappingFragment StoreEntitySet="DbEstadoReserva">
+                <ScalarProperty Name="IdEstadoReserva" ColumnName="IdEstadoReserva" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DbFixture">
+            <EntityTypeMapping TypeName="DeporteARModel.DbFixture">
+              <MappingFragment StoreEntitySet="DbFixture">
+                <ScalarProperty Name="IdFixture" ColumnName="IdFixture" />
+                <ScalarProperty Name="IdCompeticion" ColumnName="IdCompeticion" />
+                <ScalarProperty Name="IdEstadoFixture" ColumnName="IdEstadoFixture" />
+                <ScalarProperty Name="Resultado" ColumnName="Resultado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DbFormato">
+            <EntityTypeMapping TypeName="DeporteARModel.DbFormato">
+              <MappingFragment StoreEntitySet="DbFormato">
+                <ScalarProperty Name="IdFormato" ColumnName="IdFormato" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DbJugador">
+            <EntityTypeMapping TypeName="DeporteARModel.DbJugador">
+              <MappingFragment StoreEntitySet="DbJugador">
+                <ScalarProperty Name="IdJugador" ColumnName="IdJugador" />
+                <ScalarProperty Name="IdEquipo" ColumnName="IdEquipo" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="PartidosJugados" ColumnName="PartidosJugados" />
+                <ScalarProperty Name="Mvp" ColumnName="Mvp" />
+                <ScalarProperty Name="Apellido" ColumnName="Apellido" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DbMensaje">
+            <EntityTypeMapping TypeName="DeporteARModel.DbMensaje">
+              <MappingFragment StoreEntitySet="DbMensaje">
+                <ScalarProperty Name="IdMensaje" ColumnName="IdMensaje" />
+                <ScalarProperty Name="IdCliente" ColumnName="IdCliente" />
+                <ScalarProperty Name="Contenido" ColumnName="Contenido" />
+                <ScalarProperty Name="EstadoEnvio" ColumnName="EstadoEnvio" />
+                <ScalarProperty Name="FechaEnvio" ColumnName="FechaEnvio" />
+                <ScalarProperty Name="FechaEstado" ColumnName="FechaEstado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DbPagos">
+            <EntityTypeMapping TypeName="DeporteARModel.DbPagos">
+              <MappingFragment StoreEntitySet="DbPagos">
+                <ScalarProperty Name="IdPagos" ColumnName="IdPagos" />
+                <ScalarProperty Name="IdMensaje" ColumnName="IdMensaje" />
+                <ScalarProperty Name="Monto" ColumnName="Monto" />
+                <ScalarProperty Name="EstadoPago" ColumnName="EstadoPago" />
+                <ScalarProperty Name="IdTransaccion" ColumnName="IdTransaccion" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DbPuntuacion">
+            <EntityTypeMapping TypeName="DeporteARModel.DbPuntuacion">
+              <MappingFragment StoreEntitySet="DbPuntuacion">
+                <ScalarProperty Name="IdPuntuacion" ColumnName="IdPuntuacion" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="IdJugador" ColumnName="IdJugador" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DbSanciones">
+            <EntityTypeMapping TypeName="DeporteARModel.DbSanciones">
+              <MappingFragment StoreEntitySet="DbSanciones">
+                <ScalarProperty Name="IdSancion" ColumnName="IdSancion" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="IdJugador" ColumnName="IdJugador" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="DbEquipoCompeticion" TypeName="DeporteARModel.DbEquipoCompeticion" StoreEntitySet="DbEquipoCompeticion">
+            <EndProperty Name="DbCompeticion">
+              <ScalarProperty Name="IdCompeticion" ColumnName="IdCompeticion" />
+            </EndProperty>
+            <EndProperty Name="DbEquipo">
+              <ScalarProperty Name="IdEquipo" ColumnName="IdEquipo" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="DbFixtureEquipo" TypeName="DeporteARModel.DbFixtureEquipo" StoreEntitySet="DbFixtureEquipo">
+            <EndProperty Name="DbEquipo">
+              <ScalarProperty Name="IdEquipo" ColumnName="IdEquipo" />
+            </EndProperty>
+            <EndProperty Name="DbFixture">
+              <ScalarProperty Name="IdFixture" ColumnName="IdFixture" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DAL.DbModel;
 using DAL.Interfaces;
 using DomainModel;
 
@@ -12,7 +13,13 @@ namespace DAL.Implementations.SqlServer
     {
         public void Add(Cliente cliente)
         {
-            throw new NotImplementedException();
+            using (var db = new DeporteARContext())
+            {
+                var clienteDb = new DbCliente { Nombre = cliente.Nombre, Telefono = cliente.Telefono };
+
+                db.DbCliente.Add(clienteDb);
+                db.SaveChanges();
+            }
         }
 
         public Cliente GetByNumero(string Numero)

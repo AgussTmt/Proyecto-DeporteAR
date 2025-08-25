@@ -7,7 +7,7 @@ using DomainModel;
 
 namespace DAL.Interfaces
 {
-    internal interface IEquipoRepository
+    public interface IEquipoRepository
     {
         void Update(Equipo equipo);
 

@@ -9,7 +9,7 @@ using DomainModel;
 namespace DAL.Interfaces
 {
     //Con IGenericRepository es suficiente
-    internal interface ICanchaRepository : IGenericRepository <Cancha>
+    public interface ICanchaRepository : IGenericRepository <Cancha>
     {
     }
 }

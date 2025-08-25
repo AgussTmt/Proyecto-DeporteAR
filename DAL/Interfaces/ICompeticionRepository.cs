@@ -8,7 +8,7 @@ using DomainModel;
 
 namespace DAL.Interfaces
 {
-    internal interface ICompeticionRepository : IGenericRepository <Competicion>
+    public interface ICompeticionRepository : IGenericRepository <Competicion>
     {
         List<Competicion> GetByTimeAndCancha(Competicion competicion);
 

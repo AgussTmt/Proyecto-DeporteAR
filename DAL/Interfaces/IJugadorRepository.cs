@@ -8,7 +8,7 @@ using DomainModel;
 
 namespace DAL.Interfaces
 {
-    internal interface IJugadorRepository : IGenericRepository <Jugador>
+    public interface IJugadorRepository : IGenericRepository <Jugador>
     {
     }
 }
