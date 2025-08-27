@@ -1,6 +1,6 @@
 ﻿namespace WinUI
 {
-    partial class FrmLogin
+    partial class Login
     {
         /// <summary>
         /// Required designer variable.
@@ -34,7 +34,11 @@
             this.txtContraseña = new System.Windows.Forms.TextBox();
             this.btnIniciar = new System.Windows.Forms.Button();
             this.lnkRecuperacion = new System.Windows.Forms.LinkLabel();
-            this.LinkRegistro = new System.Windows.Forms.LinkLabel();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.mnuVentas = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmGestionVentas = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmNuevaVenta = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblUsuario
@@ -60,7 +64,7 @@
             // txtUsuario
             // 
             this.txtUsuario.Location = new System.Drawing.Point(129, 69);
-            this.txtUsuario.Margin = new System.Windows.Forms.Padding(2);
+            this.txtUsuario.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtUsuario.Name = "txtUsuario";
             this.txtUsuario.Size = new System.Drawing.Size(139, 20);
             this.txtUsuario.TabIndex = 2;
@@ -68,7 +72,7 @@
             // txtContraseña
             // 
             this.txtContraseña.Location = new System.Drawing.Point(129, 129);
-            this.txtContraseña.Margin = new System.Windows.Forms.Padding(2);
+            this.txtContraseña.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtContraseña.Name = "txtContraseña";
             this.txtContraseña.PasswordChar = '*';
             this.txtContraseña.Size = new System.Drawing.Size(139, 20);
@@ -77,7 +81,7 @@
             // btnIniciar
             // 
             this.btnIniciar.Location = new System.Drawing.Point(127, 187);
-            this.btnIniciar.Margin = new System.Windows.Forms.Padding(2);
+            this.btnIniciar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnIniciar.Name = "btnIniciar";
             this.btnIniciar.Size = new System.Drawing.Size(108, 25);
             this.btnIniciar.TabIndex = 4;
@@ -88,7 +92,7 @@
             // lnkRecuperacion
             // 
             this.lnkRecuperacion.AutoSize = true;
-            this.lnkRecuperacion.Location = new System.Drawing.Point(116, 214);
+            this.lnkRecuperacion.Location = new System.Drawing.Point(119, 239);
             this.lnkRecuperacion.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lnkRecuperacion.Name = "lnkRecuperacion";
             this.lnkRecuperacion.Size = new System.Drawing.Size(119, 13);
@@ -96,34 +100,59 @@
             this.lnkRecuperacion.TabStop = true;
             this.lnkRecuperacion.Text = "¿Olvidó su contraseña?";
             // 
-            // LinkRegistro
+            // menuStrip1
             // 
-            this.LinkRegistro.AutoSize = true;
-            this.LinkRegistro.Location = new System.Drawing.Point(106, 239);
-            this.LinkRegistro.Name = "LinkRegistro";
-            this.LinkRegistro.Size = new System.Drawing.Size(143, 13);
-            this.LinkRegistro.TabIndex = 6;
-            this.LinkRegistro.TabStop = true;
-            this.LinkRegistro.Text = "No tiene usuario? Registrese";
-            this.LinkRegistro.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkRegistro_LinkClicked);
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuVentas});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
+            this.menuStrip1.Size = new System.Drawing.Size(314, 24);
+            this.menuStrip1.TabIndex = 6;
+            this.menuStrip1.Text = "menuStrip1";
             // 
-            // FrmLogin
+            // mnuVentas
+            // 
+            this.mnuVentas.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmGestionVentas,
+            this.tsmNuevaVenta});
+            this.mnuVentas.Name = "mnuVentas";
+            this.mnuVentas.Size = new System.Drawing.Size(53, 22);
+            this.mnuVentas.Text = "Ventas";
+            // 
+            // tsmGestionVentas
+            // 
+            this.tsmGestionVentas.Name = "tsmGestionVentas";
+            this.tsmGestionVentas.Size = new System.Drawing.Size(114, 22);
+            this.tsmGestionVentas.Text = "Gestión";
+            // 
+            // tsmNuevaVenta
+            // 
+            this.tsmNuevaVenta.Name = "tsmNuevaVenta";
+            this.tsmNuevaVenta.Size = new System.Drawing.Size(114, 22);
+            this.tsmNuevaVenta.Text = "Nueva";
+            // 
+            // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(337, 327);
-            this.Controls.Add(this.LinkRegistro);
+            this.ClientSize = new System.Drawing.Size(314, 278);
             this.Controls.Add(this.lnkRecuperacion);
             this.Controls.Add(this.btnIniciar);
             this.Controls.Add(this.txtContraseña);
             this.Controls.Add(this.txtUsuario);
             this.Controls.Add(this.lblContraseña);
             this.Controls.Add(this.lblUsuario);
-            this.Margin = new System.Windows.Forms.Padding(2);
-            this.Name = "FrmLogin";
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Name = "Login";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
             this.Load += new System.EventHandler(this.Login_Load);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -137,6 +166,9 @@
         private System.Windows.Forms.TextBox txtContraseña;
         private System.Windows.Forms.Button btnIniciar;
         private System.Windows.Forms.LinkLabel lnkRecuperacion;
-        private System.Windows.Forms.LinkLabel LinkRegistro;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem mnuVentas;
+        private System.Windows.Forms.ToolStripMenuItem tsmGestionVentas;
+        private System.Windows.Forms.ToolStripMenuItem tsmNuevaVenta;
     }
 }

@@ -13,9 +13,9 @@ using WinUI.WinForms;
 
 namespace WinUI
 {
-    public partial class FrmLogin : Form
+    public partial class Login : Form
     {
-        public FrmLogin()
+        public Login()
         {
             InitializeComponent();
         }
@@ -37,10 +37,8 @@ namespace WinUI
 
                 //Cerramos el formulario de login
                 this.Hide();
-                new FrmPrincipal(usuario).ShowDialog();
+                new Principal(usuario).ShowDialog();
                 this.Show();
-                txtContraseña.Clear();
-                txtUsuario.Clear();
             }
             catch (Exception ex)
             {
@@ -58,13 +56,6 @@ namespace WinUI
 
             //Console.WriteLine($"Contraseña: {CryptographyService.HashMd5("admin")}");
 
-        }
-
-        private void LinkRegistro_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            FrmRegistrar frmRegistrar = new FrmRegistrar();
-            this.Hide();
-            frmRegistrar.Show();
         }
     }
 }
