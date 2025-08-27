@@ -37,7 +37,7 @@ namespace WinUI
 
                 //Cerramos el formulario de login
                 this.Hide();
-                new FrmPrincipal(usuario).ShowDialog();
+                new FrmMain(usuario).ShowDialog();
                 this.Show();
                 txtContraseña.Clear();
                 txtUsuario.Clear();

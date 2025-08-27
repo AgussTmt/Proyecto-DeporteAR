@@ -7,7 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Services.DomainModel;
 using WinUI.WinForms.Main;
+using WinUI.WinForms.Gestiones;
 
 namespace WinUI.WinForms
 {
@@ -17,9 +19,12 @@ namespace WinUI.WinForms
         private Button currentButton;
         private Random random;
         private int tempIndex;
-        public FrmMain()
+        private Form activeForm;
+        public FrmMain(Usuario user)
         {
+            
             InitializeComponent();
+            random = new Random();
         }
 
         private Color SelectThemeColor()
@@ -50,7 +55,7 @@ namespace WinUI.WinForms
                     panelLogo.BackColor = ThemeColor.ChangeColorBrightness(color, -0.3);
                     ThemeColor.PrimaryColor = color;
                     ThemeColor.SecondaryColor = ThemeColor.ChangeColorBrightness(color, -0.3);
-                    btnCloseChildForm.Visible = true;
+                    //btnCloseChildForm.Visible = true; 
                 }
             }
         }
@@ -68,6 +73,23 @@ namespace WinUI.WinForms
             }
         }
 
+
+        private void OpenChildForm(Form childForm, object btnSender)
+        {
+            if (activeForm != null)
+                activeForm.Close();
+            ActivateButton(btnSender);
+            activeForm = childForm;
+            childForm.TopLevel = false;
+            childForm.FormBorderStyle = FormBorderStyle.None;
+            childForm.Dock = DockStyle.Fill;
+            this.panelDesktopPane.Controls.Add(childForm);
+            this.panelDesktopPane.Tag = childForm;
+            childForm.BringToFront();
+            childForm.Show();
+            LblTitle.Text = childForm.Text;
+        }
+
         private void FrmMain_Load(object sender, EventArgs e)
         {
 
@@ -75,32 +97,32 @@ namespace WinUI.WinForms
 
         private void BtnCalendario_Click(object sender, EventArgs e)
         {
-
+            OpenChildForm(new FrmCalendario(), sender);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void BtnCancha_Click(object sender, EventArgs e)
         {
-
+            OpenChildForm(new FrmCanchas(), sender);
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void BtnCompeticion_Click(object sender, EventArgs e)
         {
-
+            OpenChildForm(new FrmCompeticion(), sender);
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void BtnReportes_Click(object sender, EventArgs e)
         {
-
+            OpenChildForm(new FrmReportes(), sender);
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void BtnSettings_Click(object sender, EventArgs e)
         {
-
+            OpenChildForm(new FrmSettings(), sender);
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void BtnLogout_Click(object sender, EventArgs e)
         {
-
+            this.Close();
         }
     }
 }

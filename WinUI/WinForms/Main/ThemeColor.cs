@@ -13,35 +13,33 @@ namespace WinUI.WinForms.Main
         public static Color SecondaryColor { get; set; }
         public static List<string> ColorList = new List<string>()
         {
-                                                                    "#3F51B5",
-                                                                    "#009688",
-                                                                    "#FF5722",
-                                                                    "#607D8B",
-                                                                    "#FF9800",
-                                                                    "#9C27B0",
-                                                                    "#2196F3",
-                                                                    "#EA676C",
-                                                                    "#E41A4A",
-                                                                    "#5978BB",
-                                                                    "#018790",
-                                                                    "#0E3441",
-                                                                    "#00B0AD",
-                                                                    "#721D47",
-                                                                    "#EA4833",
-                                                                    "#EF937E",
-                                                                    "#F37521",
-                                                                    "#A12059",
-                                                                    "#126881",
-                                                                    "#8BC240",
-                                                                    "#364D5B",
-                                                                    "#C7DC5B",
-                                                                    "#0094BC",
-                                                                    "#E4126B",
-                                                                    "#43B76E",
-                                                                    "#7BCFE9",
-                                                                    "#B71C46"
-
-                       };
+            "#1A237E",  // Indigo
+            "#004D40",  // Teal
+            "#BF360C",  // Deep Orange
+            "#37474F",  // Blue Grey
+            
+            "#4A148C",  // Purple
+            "#0D47A1",  // Blue
+            
+            "#B71C1C",  // Dark Red
+            "#283593",  // Indigo 
+            
+            "#1565C0",  // Blue
+            "#00838F",  // Cyan
+            "#6A1B9A",  // Purple
+            
+            "#E53935",  // Red
+            
+            "#4527A0",  // Deep Purple
+            "#004D40",  // Teal
+            "#263238",  // Blue Grey
+            
+            "#00695C",  // Teal
+            
+            
+            "#006064",  // Cyan
+            
+        };
 
         public static Color ChangeColorBrightness(Color color, double correctionFactor)
         {
