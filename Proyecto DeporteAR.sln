@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainModel", "DomainModel\DomainModel.csproj", "{46E9D10D-0793-43DD-9914-6BA92DE4D639}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services (ArqBase)", "Services (ArqBase)\Services (ArqBase).csproj", "{60D15F17-0770-4B6C-89FD-B8007247BD8F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services (ArqBase)\Services.csproj", "{60D15F17-0770-4B6C-89FD-B8007247BD8F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "UI\UI.csproj", "{BC67B791-95A8-4FA5-B010-00727263747C}"
 EndProject
