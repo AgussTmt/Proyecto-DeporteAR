@@ -82,9 +82,9 @@
       <Project>{de545c08-190c-482e-a00c-163ad49ce7b9}</Project>
       <Name>ExternalServices</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Services %28ArqBase%29\Services %28ArqBase%29.csproj">
+    <ProjectReference Include="..\Services %28ArqBase%29\Services.csproj">
       <Project>{60d15f17-0770-4b6c-89fd-b8007247bd8f}</Project>
-      <Name>Services %28ArqBase%29</Name>
+      <Name>Services</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

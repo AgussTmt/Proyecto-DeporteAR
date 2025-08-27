@@ -6,14 +6,16 @@ using System.Linq;
 
 namespace Dal.Tools
 {
-    internal static class SqlHelper
+    public static class SqlHelper
     {
-        readonly static string conString;
+        private static string conString;
 
-        static SqlHelper()
+        // Método para inicializar la cadena de conexión
+        public static void Initialize(string connectionString)
         {
-            conString = ConfigurationManager.ConnectionStrings["SecurityString"].ConnectionString;
+            conString = connectionString;
         }
+
         public static Int32 ExecuteNonQuery(String commandText,
             CommandType commandType, params SqlParameter[] parameters)
         {
