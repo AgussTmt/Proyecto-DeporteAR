@@ -38,7 +38,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.TxtSearch = new System.Windows.Forms.TextBox();
             this.LblSearchUser = new System.Windows.Forms.Label();
-            this.BtnSearch = new System.Windows.Forms.Button();
             this.DgvListaUsuarios = new System.Windows.Forms.DataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.TbconUserList.SuspendLayout();
@@ -135,7 +134,6 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panel1.Controls.Add(this.TxtSearch);
             this.panel1.Controls.Add(this.LblSearchUser);
-            this.panel1.Controls.Add(this.BtnSearch);
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(804, 69);
@@ -143,16 +141,15 @@
             // 
             // TxtSearch
             // 
-            this.TxtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.TxtSearch.Location = new System.Drawing.Point(2, 46);
+            this.TxtSearch.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.TxtSearch.Location = new System.Drawing.Point(0, 49);
             this.TxtSearch.Name = "TxtSearch";
-            this.TxtSearch.Size = new System.Drawing.Size(691, 20);
+            this.TxtSearch.Size = new System.Drawing.Size(804, 20);
             this.TxtSearch.TabIndex = 0;
             this.TxtSearch.TextChanged += new System.EventHandler(this.TxtSearch_TextChanged);
             // 
             // LblSearchUser
             // 
-            this.LblSearchUser.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.LblSearchUser.AutoSize = true;
             this.LblSearchUser.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LblSearchUser.Location = new System.Drawing.Point(2, 29);
@@ -160,16 +157,6 @@
             this.LblSearchUser.Size = new System.Drawing.Size(96, 17);
             this.LblSearchUser.TabIndex = 1;
             this.LblSearchUser.Text = "Buscar usuario:";
-            // 
-            // BtnSearch
-            // 
-            this.BtnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BtnSearch.Location = new System.Drawing.Point(699, 37);
-            this.BtnSearch.Name = "BtnSearch";
-            this.BtnSearch.Size = new System.Drawing.Size(102, 32);
-            this.BtnSearch.TabIndex = 2;
-            this.BtnSearch.Text = "Buscar";
-            this.BtnSearch.UseVisualStyleBackColor = true;
             // 
             // DgvListaUsuarios
             // 
@@ -227,7 +214,6 @@
         private System.Windows.Forms.Button BtnUpdateFamilia;
         private System.Windows.Forms.Label LblSearchUser;
         private System.Windows.Forms.Button BtnCreateFamilia;
-        private System.Windows.Forms.Button BtnSearch;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel1;
     }

@@ -20,11 +20,13 @@ namespace WinUI.WinForms
         private Random random;
         private int tempIndex;
         private Form activeForm;
+        private Usuario _user;
         public FrmMain(Usuario user)
         {
             
             InitializeComponent();
             random = new Random();
+            _user = user;
         }
 
         private Color SelectThemeColor()
@@ -76,18 +78,28 @@ namespace WinUI.WinForms
 
         private void OpenChildForm(Form childForm, object btnSender)
         {
-            if (activeForm != null)
-                activeForm.Close();
-            ActivateButton(btnSender);
-            activeForm = childForm;
-            childForm.TopLevel = false;
-            childForm.FormBorderStyle = FormBorderStyle.None;
-            childForm.Dock = DockStyle.Fill;
-            this.panelDesktopPane.Controls.Add(childForm);
-            this.panelDesktopPane.Tag = childForm;
-            childForm.BringToFront();
-            childForm.Show();
-            LblTitle.Text = childForm.Text;
+            if (!TienePermiso(childForm))
+            {
+                MessageBox.Show($"No tienes permisos para acceder a {childForm.Text}, acceso denegado");
+                return;
+            }
+            else
+            {
+                if (activeForm != null)
+                    activeForm.Close();
+                ActivateButton(btnSender);
+                activeForm = childForm;
+                childForm.TopLevel = false;
+                childForm.FormBorderStyle = FormBorderStyle.None;
+                childForm.Dock = DockStyle.Fill;
+                this.panelDesktopPane.Controls.Add(childForm);
+                this.panelDesktopPane.Tag = childForm;
+                childForm.BringToFront();
+                childForm.Show();
+                LblTitle.Text = childForm.Text.Substring(3);
+            }
+
+           
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
@@ -123,6 +135,11 @@ namespace WinUI.WinForms
         private void BtnLogout_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private bool TienePermiso(Form childForm)
+        {
+            return _user.Patentes.Any(p => p.DataKey == childForm.GetType().Name);
         }
     }
 }
