@@ -1,4 +1,5 @@
-﻿using Services.DomainModel;
+﻿using System.Collections.Generic;
+using Services.DomainModel;
 
 namespace Services.Bll
 {
@@ -6,5 +7,7 @@ namespace Services.Bll
     {
         void RegistrarUsuario(Usuario usuario);
         Usuario GetByCredentials(string user, string password);
+
+        public List<Usuario> GetAll();
     }
 }

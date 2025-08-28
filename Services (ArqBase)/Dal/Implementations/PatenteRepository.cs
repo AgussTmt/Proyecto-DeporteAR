@@ -14,9 +14,45 @@ namespace Services.Dal.Implementations
 {
     internal class PatenteRepository : IPatenteRepository
     {
+
+
+        #region Statements
+        private string SelectAllStatement
+        {
+            get => "SELECT IdPatente, DataKey, TipoAcceso FROM [dbo].[Patente]";
+        }
+
+        private string SelectByIdStatement
+        {
+            get => "SELECT IdPatente, DataKey, TipoAcceso FROM [dbo].[Patente] WHERE IdPatente = @IdPatente";
+        }
+        #endregion
+
+
+        public List<Patente> GetAll()
+        {
+            List<Patente> ListPatentes = new List<Patente>();
+
+            using (SqlDataReader reader = SqlHelper.ExecuteReader(SelectAllStatement,
+                                                                    CommandType.Text,
+                                                                    new SqlParameter[] { }))
+            {
+                while (reader.Read())
+                {
+                    object[] data = new object[reader.FieldCount];
+                    reader.GetValues(data);
+
+                    Patente patente = PatenteAdapter.Current.Get(data);
+                    ListPatentes.Add(patente);
+                }
+            }
+
+            return ListPatentes;
+        }
+
         public Patente GetById(Guid id)
         {
-            string SelectByIdStatement = "SELECT IdPatente, DataKey, TipoAcceso FROM [dbo].[Patente] WHERE IdPatente = @IdPatente";
+
 
             using (SqlDataReader reader = SqlHelper.ExecuteReader(SelectByIdStatement,
                                                      CommandType.Text,

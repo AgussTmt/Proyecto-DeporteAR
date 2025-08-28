@@ -13,9 +13,40 @@ namespace Services.Dal.Implementations
 {
     internal class FamiliaRepository : IFamiliaRepository
     {
+        #region Statements
+        private string SelectAllStatement
+        {
+            get => "SELECT IdFamilia, Nombre FROM [dbo].[Familia]";
+        }
+
+        private string SelectByIdStatement
+        {
+            get => "SELECT IdFamilia, Nombre FROM [dbo].[Familia] WHERE IdFamilia = @IdFamilia";
+        }
+        #endregion
+        public List<Familia> GetAll()
+        {
+            List<Familia> ListFamilias = new List<Familia>();
+
+            using (SqlDataReader reader = SqlHelper.ExecuteReader(SelectAllStatement,
+                                                                    CommandType.Text,
+                                                                    new SqlParameter[] { }))
+            {
+                while (reader.Read())
+                {
+                    object[] data = new object[reader.FieldCount];
+                    reader.GetValues(data);
+
+                    Familia patente = FamiliaAdapter.Current.Get(data);
+                    ListFamilias.Add(patente);
+                }
+            }
+
+            return ListFamilias;
+        }
+
         public Familia GetById(Guid id)
         {
-            string SelectByIdStatement = "SELECT IdFamilia, Nombre FROM [dbo].[Familia] WHERE IdFamilia = @IdFamilia";
             using (SqlDataReader reader = SqlHelper.ExecuteReader(SelectByIdStatement,
                                                      CommandType.Text,
                                                      new SqlParameter[] { new SqlParameter("@IdFamilia", id) }))

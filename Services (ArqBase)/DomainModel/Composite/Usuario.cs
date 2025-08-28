@@ -35,6 +35,34 @@ namespace Services.DomainModel
             }
         }
 
+        public string PatentesAsignadas
+        {
+            get
+            {
+                var patentes = Patentes; 
+                var nombresPatentes = patentes.Select(p => p.DataKey);
+                return string.Join(", ", nombresPatentes);
+            }
+        }
+
+        
+        public string RolesAsignados
+        {
+            get
+            {
+                var familias = Privilegios
+                .Where(c => c is Familia)
+                .Select(c => c as Familia)
+                .ToList();
+
+                
+                var nombresFamilias = familias.Select(f => f.Nombre);
+
+                return string.Join(", ", nombresFamilias);
+            }
+        }
+
+
         /// <summary>
         /// Recorre las familias y patentes de un usuario
         /// </summary>
@@ -55,6 +83,8 @@ namespace Services.DomainModel
                 }
             }
         }
+
+
 
         public string Password
         {
@@ -81,6 +111,15 @@ namespace Services.DomainModel
         public Usuario(Guid idUsuario, string nombre, string email, string password, bool habilitado = true) : this(nombre, email, password, habilitado)
         {
             IdUsuario = idUsuario;
+        }
+
+        public Usuario(Guid idUsuario, string nombre, string email, bool habilitado = true)
+        {
+            IdUsuario = idUsuario;
+            Nombre = nombre;
+            Email = email;
+            Habilitado = habilitado;
+            
         }
     }
 }

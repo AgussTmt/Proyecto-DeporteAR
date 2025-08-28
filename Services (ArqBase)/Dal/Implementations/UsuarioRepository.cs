@@ -15,6 +15,12 @@ namespace Services.Dal.Implementations
 {
     internal class UsuarioRepository : IUsuarioRepository
     {
+        #region Statements
+        private string SelectAllStatement
+        {
+            get => "SELECT IdUsuario, Nombre, Email, Habilitado FROM [dbo].[Usuario]";
+        }
+        #endregion
         public void RegistrarUsuario(Usuario usuario)
         {
             usuario.IdUsuario = Guid.NewGuid(); // Generar un nuevo Id para el usuario
@@ -45,6 +51,27 @@ namespace Services.Dal.Implementations
                 }
                 return null;
             }
+        }
+
+        public List<Usuario> GetAll()
+        {
+            List<Usuario> ListUsuarios = new List<Usuario>();
+
+            using (SqlDataReader reader = SqlHelper.ExecuteReader("SELECT * FROM [dbo].[Usuario]",
+                                                                    CommandType.Text,
+                                                                    new SqlParameter[] {} ))
+            {
+                while (reader.Read())
+                {
+                    object[] data = new object[reader.FieldCount];
+                    reader.GetValues(data);
+
+                    Usuario usuario = UsuarioAdapter.Current.Get(data);
+                    ListUsuarios.Add(usuario);
+                }
+            }
+
+            return ListUsuarios;
         }
     }
 }

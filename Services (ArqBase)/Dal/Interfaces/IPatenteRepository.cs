@@ -10,5 +10,7 @@ namespace Services.Dal.Interfaces
     internal interface IPatenteRepository
     {
         Patente GetById(Guid id);
+
+        public List<Patente> GetAll();
     }
 }

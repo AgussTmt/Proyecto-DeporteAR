@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Services.Bll
 {
-    internal static class UsuarioBll
+    public static class UsuarioBll
     {
         private static IUsuarioRepository _usuarioRepository;
 
@@ -56,6 +56,12 @@ namespace Services.Bll
                 //Escribir nuestra regla de negocio como exception
                 throw new Exception("El usuario no pudo ser registrado.");
             }    
+        }
+
+        public static List<Usuario> TraerUsuarios()
+        {
+            List<Usuario> usuarios = _usuarioRepository.GetAll();
+            return usuarios;
         }
     }
 }
