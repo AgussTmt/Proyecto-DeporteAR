@@ -8,27 +8,76 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Services.Bll;
+using Services.DomainModel;
 
 namespace WinUI.WinForms.Gestiones
 {
     public partial class FrmSettings : Form
     {
+        private BindingSource BsListaUsuarios;
         public FrmSettings()
         {
             InitializeComponent();
         }
-        //7d9875d7-965d-4ef3-9ae7-39236678c57c
-        //0a7c5d0d-7d9d-4fcd-b8b3-7b80f8306181
         private void FrmSettings_Load(object sender, EventArgs e)
         {
-            DgvListaUsuarios.DataSource = UsuarioBll.TraerUsuarios();
-            DgvListaUsuarios.Columns["IdUsuario"].Visible = false;
-            DgvListaUsuarios.Columns["Password"].Visible = false;
-        }
+            var usuarios = UsuarioBll.TraerUsuarios();
+
+            if(usuarios is not null && usuarios.Count > 0)
+            {
+
+                DataTable DtUsuarios = ConvertUserListToDT(usuarios);
+                BsListaUsuarios = new BindingSource();
+
+                BsListaUsuarios.DataSource = DtUsuarios;
+
+                DgvListaUsuarios.DataSource = BsListaUsuarios;
+            }
+
+            else
+            {
+                MessageBox.Show("no se encontraro usuarios");
+            }
+        }    
+        
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void TxtSearch_TextChanged(object sender, EventArgs e)
+        {
+            string filtro = TxtSearch.Text;
+
+            if (string.IsNullOrEmpty(filtro))
+            {
+                BsListaUsuarios.RemoveFilter();
+            }
+
+            else
+            {
+                BsListaUsuarios.Filter = $"Nombre LIKE '%{filtro}%'";
+            }
+        }
+
+        private DataTable ConvertUserListToDT(List<Usuario> usuarios)
+        {
+            var dt = new DataTable();
+
+            dt.Columns.Add("Nombre", typeof(string));
+            dt.Columns.Add("Email", typeof(string));
+            dt.Columns.Add("PatentesAsignadas", typeof(string));
+            dt.Columns.Add("RolesAsignados", typeof(string));
+            dt.Columns.Add("Habilitado", typeof(bool));
+
+
+            foreach (var u in usuarios)
+            {
+                dt.Rows.Add(u.Nombre, u.Email, u.PatentesAsignadas, u.RolesAsignados, u.Habilitado);
+            }
+
+            return dt;
         }
     }
 }

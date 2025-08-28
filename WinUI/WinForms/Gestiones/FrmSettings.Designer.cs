@@ -36,7 +36,7 @@
             this.BtnCreateFamilia = new System.Windows.Forms.Button();
             this.BtnAsignarFamilia = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.TxtSearch = new System.Windows.Forms.TextBox();
             this.LblSearchUser = new System.Windows.Forms.Label();
             this.BtnSearch = new System.Windows.Forms.Button();
             this.DgvListaUsuarios = new System.Windows.Forms.DataGridView();
@@ -133,7 +133,7 @@
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.panel1.Controls.Add(this.textBox1);
+            this.panel1.Controls.Add(this.TxtSearch);
             this.panel1.Controls.Add(this.LblSearchUser);
             this.panel1.Controls.Add(this.BtnSearch);
             this.panel1.Location = new System.Drawing.Point(3, 3);
@@ -141,13 +141,14 @@
             this.panel1.Size = new System.Drawing.Size(804, 69);
             this.panel1.TabIndex = 8;
             // 
-            // textBox1
+            // TxtSearch
             // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBox1.Location = new System.Drawing.Point(2, 46);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(691, 20);
-            this.textBox1.TabIndex = 0;
+            this.TxtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.TxtSearch.Location = new System.Drawing.Point(2, 46);
+            this.TxtSearch.Name = "TxtSearch";
+            this.TxtSearch.Size = new System.Drawing.Size(691, 20);
+            this.TxtSearch.TabIndex = 0;
+            this.TxtSearch.TextChanged += new System.EventHandler(this.TxtSearch_TextChanged);
             // 
             // LblSearchUser
             // 
@@ -221,7 +222,7 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.DataGridView DgvListaUsuarios;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox TxtSearch;
         private System.Windows.Forms.Button BtnAsignarFamilia;
         private System.Windows.Forms.Button BtnUpdateFamilia;
         private System.Windows.Forms.Label LblSearchUser;
