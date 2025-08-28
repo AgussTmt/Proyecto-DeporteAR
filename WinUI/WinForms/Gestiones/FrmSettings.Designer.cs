@@ -142,7 +142,7 @@
             // DgvListaUsuarios
             // 
             this.DgvListaUsuarios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DgvListaUsuarios.Dock = System.Windows.Forms.DockStyle.Top;
+            this.DgvListaUsuarios.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DgvListaUsuarios.Location = new System.Drawing.Point(3, 78);
             this.DgvListaUsuarios.Name = "DgvListaUsuarios";
             this.DgvListaUsuarios.Size = new System.Drawing.Size(804, 379);
