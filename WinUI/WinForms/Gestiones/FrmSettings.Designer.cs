@@ -29,19 +29,24 @@
         private void InitializeComponent()
         {
             this.TbconUserList = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.DgvListaUsuarios = new System.Windows.Forms.DataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.BtnSearch = new System.Windows.Forms.Button();
             this.BtnCreateFamilia = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.LblSearchUser = new System.Windows.Forms.Label();
-            this.BtnAsignarFamilia = new System.Windows.Forms.Button();
             this.BtnUpdateFamilia = new System.Windows.Forms.Button();
+            this.BtnAsignarFamilia = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.DgvListaUsuarios = new System.Windows.Forms.DataGridView();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.TbconUserList.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DgvListaUsuarios)).BeginInit();
+            this.tabPage1.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // TbconUserList
@@ -52,48 +57,23 @@
             this.TbconUserList.Location = new System.Drawing.Point(0, 0);
             this.TbconUserList.Name = "TbconUserList";
             this.TbconUserList.SelectedIndex = 0;
-            this.TbconUserList.Size = new System.Drawing.Size(989, 543);
+            this.TbconUserList.Size = new System.Drawing.Size(996, 492);
             this.TbconUserList.TabIndex = 0;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.tableLayoutPanel1);
-            this.tabPage1.Controls.Add(this.BtnAsignarFamilia);
-            this.tabPage1.Controls.Add(this.BtnUpdateFamilia);
-            this.tabPage1.Controls.Add(this.LblSearchUser);
-            this.tabPage1.Controls.Add(this.BtnCreateFamilia);
-            this.tabPage1.Controls.Add(this.textBox1);
-            this.tabPage1.Controls.Add(this.DgvListaUsuarios);
-            this.tabPage1.Controls.Add(this.BtnSearch);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(981, 517);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // DgvListaUsuarios
-            // 
-            this.DgvListaUsuarios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DgvListaUsuarios.Location = new System.Drawing.Point(48, 112);
-            this.DgvListaUsuarios.Name = "DgvListaUsuarios";
-            this.DgvListaUsuarios.Size = new System.Drawing.Size(795, 375);
-            this.DgvListaUsuarios.TabIndex = 3;
             // 
             // tabPage2
             // 
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(974, 524);
+            this.tabPage2.Size = new System.Drawing.Size(1106, 566);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // BtnSearch
             // 
-            this.BtnSearch.Location = new System.Drawing.Point(741, 74);
+            this.BtnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.BtnSearch.Location = new System.Drawing.Point(699, 37);
             this.BtnSearch.Name = "BtnSearch";
             this.BtnSearch.Size = new System.Drawing.Size(102, 32);
             this.BtnSearch.TabIndex = 2;
@@ -102,73 +82,130 @@
             // 
             // BtnCreateFamilia
             // 
-            this.BtnCreateFamilia.Location = new System.Drawing.Point(854, 208);
+            this.BtnCreateFamilia.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnCreateFamilia.Location = new System.Drawing.Point(0, 42);
             this.BtnCreateFamilia.Name = "BtnCreateFamilia";
-            this.BtnCreateFamilia.Size = new System.Drawing.Size(127, 42);
+            this.BtnCreateFamilia.Size = new System.Drawing.Size(166, 42);
             this.BtnCreateFamilia.TabIndex = 4;
             this.BtnCreateFamilia.Text = "Crear familia";
             this.BtnCreateFamilia.UseVisualStyleBackColor = true;
             // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(48, 86);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(685, 20);
-            this.textBox1.TabIndex = 0;
-            // 
             // LblSearchUser
             // 
+            this.LblSearchUser.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.LblSearchUser.AutoSize = true;
             this.LblSearchUser.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LblSearchUser.Location = new System.Drawing.Point(45, 66);
+            this.LblSearchUser.Location = new System.Drawing.Point(2, 29);
             this.LblSearchUser.Name = "LblSearchUser";
             this.LblSearchUser.Size = new System.Drawing.Size(96, 17);
             this.LblSearchUser.TabIndex = 1;
             this.LblSearchUser.Text = "Buscar usuario:";
             // 
-            // BtnAsignarFamilia
-            // 
-            this.BtnAsignarFamilia.Location = new System.Drawing.Point(858, 256);
-            this.BtnAsignarFamilia.Name = "BtnAsignarFamilia";
-            this.BtnAsignarFamilia.Size = new System.Drawing.Size(127, 42);
-            this.BtnAsignarFamilia.TabIndex = 6;
-            this.BtnAsignarFamilia.Text = "Asignar familia";
-            this.BtnAsignarFamilia.UseVisualStyleBackColor = true;
-            // 
             // BtnUpdateFamilia
             // 
-            this.BtnUpdateFamilia.Location = new System.Drawing.Point(849, 160);
+            this.BtnUpdateFamilia.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnUpdateFamilia.Location = new System.Drawing.Point(0, 84);
             this.BtnUpdateFamilia.Name = "BtnUpdateFamilia";
-            this.BtnUpdateFamilia.Size = new System.Drawing.Size(127, 42);
+            this.BtnUpdateFamilia.Size = new System.Drawing.Size(166, 42);
             this.BtnUpdateFamilia.TabIndex = 5;
             this.BtnUpdateFamilia.Text = "Modificar familia";
             this.BtnUpdateFamilia.UseVisualStyleBackColor = true;
             // 
+            // BtnAsignarFamilia
+            // 
+            this.BtnAsignarFamilia.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnAsignarFamilia.Location = new System.Drawing.Point(0, 0);
+            this.BtnAsignarFamilia.Name = "BtnAsignarFamilia";
+            this.BtnAsignarFamilia.Size = new System.Drawing.Size(166, 42);
+            this.BtnAsignarFamilia.TabIndex = 6;
+            this.BtnAsignarFamilia.Text = "Asignar familia";
+            this.BtnAsignarFamilia.UseVisualStyleBackColor = true;
+            // 
             // tableLayoutPanel1
             // 
+            this.tableLayoutPanel1.AutoSize = true;
             this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 90F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(763, 409);
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 82.53275F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 17.46725F));
+            this.tableLayoutPanel1.Controls.Add(this.panel2, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.DgvListaUsuarios, 0, 1);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(200, 100);
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.41791F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 83.58209F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(982, 460);
             this.tableLayoutPanel1.TabIndex = 7;
+            // 
+            // DgvListaUsuarios
+            // 
+            this.DgvListaUsuarios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DgvListaUsuarios.Dock = System.Windows.Forms.DockStyle.Top;
+            this.DgvListaUsuarios.Location = new System.Drawing.Point(3, 78);
+            this.DgvListaUsuarios.Name = "DgvListaUsuarios";
+            this.DgvListaUsuarios.Size = new System.Drawing.Size(804, 379);
+            this.DgvListaUsuarios.TabIndex = 3;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.textBox1.Location = new System.Drawing.Point(2, 46);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(691, 20);
+            this.textBox1.TabIndex = 0;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.tableLayoutPanel1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(988, 466);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.panel1.Controls.Add(this.textBox1);
+            this.panel1.Controls.Add(this.LblSearchUser);
+            this.panel1.Controls.Add(this.BtnSearch);
+            this.panel1.Location = new System.Drawing.Point(3, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(804, 69);
+            this.panel1.TabIndex = 8;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.BtnUpdateFamilia);
+            this.panel2.Controls.Add(this.BtnCreateFamilia);
+            this.panel2.Controls.Add(this.BtnAsignarFamilia);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel2.Location = new System.Drawing.Point(813, 78);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(166, 379);
+            this.panel2.TabIndex = 8;
             // 
             // FrmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(989, 543);
+            this.ClientSize = new System.Drawing.Size(996, 492);
             this.Controls.Add(this.TbconUserList);
             this.Name = "FrmSettings";
             this.Text = "FrmSettings";
             this.Load += new System.EventHandler(this.FrmSettings_Load);
             this.TbconUserList.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DgvListaUsuarios)).EndInit();
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DgvListaUsuarios)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -176,15 +213,17 @@
         #endregion
 
         private System.Windows.Forms.TabControl TbconUserList;
-        private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.DataGridView DgvListaUsuarios;
-        private System.Windows.Forms.Label LblSearchUser;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button BtnUpdateFamilia;
         private System.Windows.Forms.Button BtnAsignarFamilia;
+        private System.Windows.Forms.Button BtnUpdateFamilia;
+        private System.Windows.Forms.Label LblSearchUser;
         private System.Windows.Forms.Button BtnCreateFamilia;
         private System.Windows.Forms.Button BtnSearch;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panel1;
     }
 }
