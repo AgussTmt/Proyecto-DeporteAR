@@ -23,6 +23,11 @@ namespace Services.Dal.Implementations
         {
             get => "SELECT IdFamilia, Nombre FROM [dbo].[Familia] WHERE IdFamilia = @IdFamilia";
         }
+
+        public void Add(Familia familia)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
         public List<Familia> GetAll()
         {

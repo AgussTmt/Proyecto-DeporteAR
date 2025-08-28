@@ -9,5 +9,7 @@ namespace Services.Dal.Implementations
         Familia GetById(Guid id);
 
         public List<Familia> GetAll();
+
+        void Add(Familia familia);
     }
 }

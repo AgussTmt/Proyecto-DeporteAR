@@ -22,6 +22,8 @@ namespace WinUI.WinForms.Gestiones
         private void FrmSettings_Load(object sender, EventArgs e)
         {
             DgvListaUsuarios.DataSource = UsuarioBll.TraerUsuarios();
+            DgvListaUsuarios.Columns["IdUsuario"].Visible = false;
+            DgvListaUsuarios.Columns["Password"].Visible = false;
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
