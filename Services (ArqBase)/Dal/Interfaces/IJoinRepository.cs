@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Services.Dal.Interfaces
 {
-    internal interface IJoinRepository <T, Y>
+    internal interface IJoinRepository<T, Y>
     {
         List<T> GetByObject(Y obj);
+        
+        void Add(Y obj, T obj2);
     }
 }

@@ -13,6 +13,16 @@ namespace Services.Dal.Implementations
 {
     internal class UsuarioFamiliaRepository : IJoinRepository<Familia, Usuario>
     {
+        public void Add(Usuario obj, Familia obj2)
+        {
+            {
+                string commandText = "INSERT INTO UsuarioFamilia (IdUsuario, IdFamilia) VALUES (@IdUsuario, @IdFamilia)";
+                SqlHelper.ExecuteNonQuery(commandText, CommandType.Text,
+                    new SqlParameter("@IdUsuario", obj.IdUsuario),
+                    new SqlParameter("@IdFamilia", obj2.Id));
+            }
+        }
+
         public List<Familia> GetByObject(Usuario obj)
         {
             List<Familia> familias = new List<Familia>();
@@ -32,4 +42,6 @@ namespace Services.Dal.Implementations
             return familias;
         }
     }
+
+    
 }
