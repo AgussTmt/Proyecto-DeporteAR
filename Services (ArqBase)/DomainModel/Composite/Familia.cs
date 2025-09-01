@@ -29,8 +29,9 @@ namespace Services.DomainModel
 
         public string Nombre { get; set; }
 
-        public Familia(){
-
+		public Familia() { }
+        public Familia(Guid id){
+			Id = id;
 		}
 
 

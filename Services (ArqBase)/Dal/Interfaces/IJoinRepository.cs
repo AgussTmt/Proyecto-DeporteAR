@@ -8,8 +8,8 @@ namespace Services.Dal.Interfaces
 {
     internal interface IJoinRepository<T, Y>
     {
-        List<T> GetByObject(Y obj);
+        List<Y> GetByObject(T obj);
         
-        void Add(Y obj, T obj2);
+        void Add(T obj, Y obj2);
     }
 }

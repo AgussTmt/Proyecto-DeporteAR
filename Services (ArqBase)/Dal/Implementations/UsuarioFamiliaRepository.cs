@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Services.Dal.Implementations
 {
-    internal class UsuarioFamiliaRepository : IJoinRepository<Familia, Usuario>
+    internal class UsuarioFamiliaRepository : IJoinRepository<Usuario, Familia>
     {
         public void Add(Usuario obj, Familia obj2)
         {

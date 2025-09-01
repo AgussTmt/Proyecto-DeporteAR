@@ -44,8 +44,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bll\IdiomaService.cs" />
+    <Compile Include="Bll\Interfaces\IPermisosService.cs" />
     <Compile Include="Bll\LoggerConfiguration.cs" />
     <Compile Include="Bll\PemisosService.cs" />
+    <Compile Include="Bll\PermisosGenericService.cs" />
     <Compile Include="Bll\UsuarioBll.cs" />
     <Compile Include="Dal\IdiomaRepository.cs" />
     <Compile Include="Dal\Implementations\Adapters\FamiliaAdapter.cs" />

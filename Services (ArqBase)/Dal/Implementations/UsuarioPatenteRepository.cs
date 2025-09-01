@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Services.Dal.Implementations
 {
-    internal class UsuarioPatenteRepository : IJoinRepository<Patente, Usuario>
+    internal class UsuarioPatenteRepository : IJoinRepository<Usuario, Patente>
     {
         public void Add(Usuario obj, Patente obj2)
         {

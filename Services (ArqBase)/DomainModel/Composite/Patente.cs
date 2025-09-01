@@ -24,8 +24,11 @@ namespace Services.DomainModel
         public string DataKey { get; set; }
 
         public TipoAcceso TipoAcceso { get; set; }
-        public Patente(){
 
+		public Patente() { }
+        public Patente(Guid id)
+		{
+			Id = id;
 		}
 
 
