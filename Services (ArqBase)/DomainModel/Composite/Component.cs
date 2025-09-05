@@ -24,6 +24,8 @@ namespace Services.DomainModel {
     public abstract class Component {
 
         public Guid Id { get; set; }
+
+        public bool Habilitado { get; set; }
         public Component(){
 
 		}

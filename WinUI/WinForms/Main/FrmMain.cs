@@ -141,5 +141,10 @@ namespace WinUI.WinForms
         {
             return _user.Patentes.Any(p => p.DataKey == childForm.GetType().Name);
         }
+
+        private void panelDesktopPane_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

@@ -37,9 +37,9 @@
             this.BtnCancha = new System.Windows.Forms.Button();
             this.BtnCalendario = new System.Windows.Forms.Button();
             this.panelLogo = new System.Windows.Forms.Panel();
+            this.l = new System.Windows.Forms.Label();
             this.panelTitleBar = new System.Windows.Forms.Panel();
             this.LblTitle = new System.Windows.Forms.Label();
-            this.l = new System.Windows.Forms.Label();
             this.panelDesktopPane = new System.Windows.Forms.Panel();
             this.panelMenu.SuspendLayout();
             this.panelLogo.SuspendLayout();
@@ -186,6 +186,17 @@
             this.panelLogo.Size = new System.Drawing.Size(220, 71);
             this.panelLogo.TabIndex = 1;
             // 
+            // l
+            // 
+            this.l.AutoSize = true;
+            this.l.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.l.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.l.Location = new System.Drawing.Point(47, 21);
+            this.l.Name = "l";
+            this.l.Size = new System.Drawing.Size(103, 25);
+            this.l.TabIndex = 0;
+            this.l.Text = "DeporteAR";
+            // 
             // panelTitleBar
             // 
             this.panelTitleBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(39)))), ((int)(((byte)(44)))));
@@ -208,17 +219,6 @@
             this.LblTitle.TabIndex = 0;
             this.LblTitle.Text = "Home";
             // 
-            // l
-            // 
-            this.l.AutoSize = true;
-            this.l.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.l.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.l.Location = new System.Drawing.Point(47, 21);
-            this.l.Name = "l";
-            this.l.Size = new System.Drawing.Size(103, 25);
-            this.l.TabIndex = 0;
-            this.l.Text = "DeporteAR";
-            // 
             // panelDesktopPane
             // 
             this.panelDesktopPane.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -226,6 +226,7 @@
             this.panelDesktopPane.Name = "panelDesktopPane";
             this.panelDesktopPane.Size = new System.Drawing.Size(848, 506);
             this.panelDesktopPane.TabIndex = 2;
+            this.panelDesktopPane.Paint += new System.Windows.Forms.PaintEventHandler(this.panelDesktopPane_Paint);
             // 
             // FrmMain
             // 

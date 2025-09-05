@@ -27,15 +27,18 @@ namespace Services.Dal.Implementations
         {
             List<Familia> familias = new List<Familia>();
 
-            using (SqlDataReader dataReader = SqlHelper.ExecuteReader("SELECT IdFamiliaHijo FROM FamiliaFamilia WHERE IdFamiliaPadre = @IdFamiliaPadre",
+            using (SqlDataReader dataReader = SqlHelper.ExecuteReader("SELECT IdFamiliaHijo, Habilitado FROM FamiliaFamilia WHERE IdFamiliaPadre = @IdFamiliaPadre",
                 CommandType.Text,
                 new SqlParameter("@IdFamiliaPadre", obj.Id)))
             {
                 while (dataReader.Read())
                 {
                     Guid idFamilia = dataReader.GetGuid(0);
+                    bool habilitado = dataReader.GetBoolean(1);
 
-                    familias.Add(new FamiliaRepository().GetById(idFamilia));
+                    Familia familia = new FamiliaRepository().GetById(idFamilia);
+                    familia.Habilitado = habilitado;
+                    familias.Add(familia);
                 }
             }
 

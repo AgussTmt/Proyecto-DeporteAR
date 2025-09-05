@@ -27,15 +27,19 @@ namespace Services.Dal.Implementations
         {
             List<Patente> patentes = new List<Patente>();
 
-            using (SqlDataReader dataReader = SqlHelper.ExecuteReader("SELECT IdPatente FROM FamiliaPatente WHERE IdFamilia = @IdFamilia",
+            using (SqlDataReader dataReader = SqlHelper.ExecuteReader("SELECT IdPatente, Habilitado FROM FamiliaPatente WHERE IdFamilia = @IdFamilia",
                 CommandType.Text,
                 new SqlParameter("@IdFamilia", obj.Id)))
             {
                 while (dataReader.Read())
                 {
                     Guid idPatente = dataReader.GetGuid(0);
+                    bool habilitado = dataReader.GetBoolean(1);
 
-                    patentes.Add(new PatenteRepository().GetById(idPatente));
+                    Patente patente = new PatenteRepository().GetById(idPatente);
+                    patente.Habilitado = habilitado;
+
+                    patentes.Add(patente);
                 }
             }
 

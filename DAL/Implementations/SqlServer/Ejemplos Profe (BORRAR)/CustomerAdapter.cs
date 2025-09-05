@@ -37,12 +37,12 @@ namespace Dal.Implementations.SqlServer.Adapters
                 Name = values[(int)CustomerFields.Name].ToString()
             };
 
-            /* return new Product()
-            {
-                IdCustomer = values[(int)CustomerFields.IdCustomer] != DBNull.Value ? values[(int)CustomerFields.IdCustomer].ToString() : string.Empty,
-                Description = values[(int)CustomerFields.Description] != DBNull.Value ? values[(int)CustomerFields.Description].ToString() : string.Empty,
-                Categoria = CategoryRepository.GetById(values[(int)CustomerFields.IdCategory]),
-            };*/
+            //    return new Product()
+            //    {
+            //        IdCustomer = values[(int)CustomerFields.IdCustomer] != DBNull.Value ? values[(int)CustomerFields.IdCustomer].ToString() : string.Empty,
+            //        Description = values[(int)CustomerFields.Description] != DBNull.Value ? values[(int)CustomerFields.Description].ToString() : string.Empty,
+            //        Categoria = CategoryRepository.GetById(values[(int)CustomerFields.IdCategory]),
+            //    };
         }
     }
 

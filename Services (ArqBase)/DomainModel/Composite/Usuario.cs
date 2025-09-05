@@ -40,7 +40,8 @@ namespace Services.DomainModel
             get
             {
                 var patentes = Patentes; 
-                var nombresPatentes = patentes.Select(p => p.DataKey);
+                var nombresPatentes = patentes.Where(p => p.Habilitado)
+                    .Select(p => p.DataKey);
                 return string.Join(", ", nombresPatentes);
             }
         }
@@ -51,11 +52,11 @@ namespace Services.DomainModel
             get
             {
                 var familias = Privilegios
-                .Where(c => c is Familia)
-                .Select(c => c as Familia)
+                .OfType<Familia>()            
+                .Where(f => f.Habilitado)  
                 .ToList();
 
-                
+
                 var nombresFamilias = familias.Select(f => f.Nombre);
 
                 return string.Join(", ", nombresFamilias);
@@ -72,15 +73,20 @@ namespace Services.DomainModel
         {
             foreach (var componente in componentes)
             {
-                if (componente is Patente patente)
+                if (componente.Habilitado)
                 {
-                    if(!patentes.Exists(p => p.Id == patente.Id))
-                        patentes.Add(patente);
+                    if (componente is Patente patente)
+                    {
+                        if (!patentes.Exists(p => p.Id == patente.Id))
+                            patentes.Add(patente);
+                    }
+                    else if (componente is Familia familia)
+                    {
+                        RecorrerFamilias(patentes, familia.GetHijos());
+                    }
                 }
-                else if (componente is Familia familia)
-                {
-                    RecorrerFamilias(patentes, familia.GetHijos());
-                }
+                
+               
             }
         }
 

@@ -22,8 +22,7 @@ namespace WinUI
 
         private void btnIniciar_Click(object sender, EventArgs e)
         {
-            try
-            {
+            
                 //Validamos las credenciales del usuario
                 Usuario usuario = LoginService.ValidarCredenciales(txtUsuario.Text, txtContraseña.Text);
                 //Si las credenciales son correctas, mostramos un mensaje de bienvenida
@@ -41,12 +40,11 @@ namespace WinUI
                 this.Show();
                 txtContraseña.Clear();
                 txtUsuario.Clear();
-            }
-            catch (Exception ex)
-            {
-                //Si hay un error, mostramos un mensaje de error
-                MessageBox.Show(ex.Message);
-            }
+
+            //6f5e615b-70c2-4b05-aaf7-c12f88d3645a
+            //3075A247-1996-47F6-9ADC-B52ADB6E501E
+            
+          
 
         }
 
