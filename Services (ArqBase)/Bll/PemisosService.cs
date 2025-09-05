@@ -5,6 +5,7 @@ using Services__ArqBase_.Bll.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,55 +13,55 @@ namespace Services__ArqBase_.Bll
 {
     internal class PemisosService : IPermisosService
     {
-        private static IFamiliaRepository _familiaRepository;
-        private static IJoinRepository<Familia, Patente> _familiaPatenteRepository;
+
         public PemisosService()
         {
-            _familiaRepository = new FamiliaRepository();
-            _familiaPatenteRepository = new FamiliaPatenteRepository();
-        }
 
-        public void AsignarPatentesAUser(Usuario usuario, List<Patente> patentes)
-        {
-            throw new NotImplementedException();
         }
-
-        public void AsignarRolAUser(Usuario usuario, List<Familia> familia)
+        public void AsignarPermisos<T1, T2>(T1 ObjMain, List<T2> ObjSecu)
         {
-            throw new NotImplementedException();
-        }
+            IJoinRepository<T1, T2> repository = null;
+            Assembly dalAssembly = typeof(FamiliaRepository).Assembly;
 
-        public void AñadirPatentesARol(Familia familia, List<Patente> patentes)
-        {
-            foreach (Patente patente in patentes)
+            //Type[] typeRepo = dalAssembly.GetTypes();
+
+            string NombreRepository = $"{typeof(T1).Name}{typeof(T2).Name}Repository";
+
+            Type tipoRepositorio = dalAssembly.GetTypes()
+                .Where(t => t.IsClass && t.Name == NombreRepository)
+                .FirstOrDefault();
+            if (tipoRepositorio != null)
             {
-                _familiaPatenteRepository.Add(familia, patente);
+                Console.WriteLine(tipoRepositorio.Name);
+                repository = Activator.CreateInstance(tipoRepositorio) as IJoinRepository<T1, T2>;
             }
+
+            if (repository != null)
+            {
+                Console.WriteLine($"Instancia del repositorio '{repository.GetType().Name}' creada exitosamente.");
+
+                foreach (var obj in ObjSecu)
+                {
+                    repository.Add(ObjMain, obj);
+                }
+            }
+            else
+            {
+                Console.WriteLine("No se instancio correctamente");
+            }
+
         }
+
 
         public void crearRol(Familia familia)
         {
-            _familiaRepository.Add(familia);
         }
 
-        public void crearRolConPatentes(Familia familia, List<Patente> patentes)
+        public void QuitarPermisos<T1, T2>(T1 ObjMain, List<T2> ObjSecu)
         {
             throw new NotImplementedException();
         }
 
-        public void QuitarPatentesARol(Familia familia, List<Patente> patente)
-        {
-            throw new NotImplementedException();
-        }
 
-        public void QuitarPatentesAUser(Usuario usuario, List<Patente> patentes)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void QuitarRolAUSer(Usuario usuario, List<Familia> familia)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -39,9 +39,6 @@ namespace Services__ArqBase_.Bll
                     {
                         repository.Add(ObjMain, obj);
                     }
-                    
-                
-                
             }
             else
             {
