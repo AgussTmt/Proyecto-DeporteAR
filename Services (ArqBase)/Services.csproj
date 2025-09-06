@@ -46,8 +46,7 @@
     <Compile Include="Bll\IdiomaService.cs" />
     <Compile Include="Bll\Interfaces\IPermisosService.cs" />
     <Compile Include="Bll\LoggerConfiguration.cs" />
-    <Compile Include="Bll\PemisosService.cs" />
-    <Compile Include="Bll\PermisosGenericService.cs" />
+    <Compile Include="Bll\PermisosService.cs" />
     <Compile Include="Bll\UsuarioBll.cs" />
     <Compile Include="Dal\IdiomaRepository.cs" />
     <Compile Include="Dal\Implementations\Adapters\FamiliaAdapter.cs" />
@@ -58,6 +57,7 @@
     <Compile Include="Dal\Implementations\FamiliaRepository.cs" />
     <Compile Include="Dal\Implementations\FileLogger.cs" />
     <Compile Include="Dal\Implementations\PatenteRepository.cs" />
+    <Compile Include="Dal\Implementations\UpdateGenericRepository.cs" />
     <Compile Include="Dal\Implementations\UsuarioFamiliaRepository.cs" />
     <Compile Include="Dal\Implementations\UsuarioPatenteRepository.cs" />
     <Compile Include="Dal\Implementations\UsuarioRepository.cs" />

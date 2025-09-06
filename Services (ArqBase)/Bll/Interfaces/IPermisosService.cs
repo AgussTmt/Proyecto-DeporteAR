@@ -10,11 +10,11 @@ namespace Services__ArqBase_.Bll.Interfaces
 {
     internal interface IPermisosService
     {
-        void crearRol(Familia familia);
+        void CrearRol(Familia familia);
 
         void AsignarPermisos<T1, T2>(T1 ObjMain, List<T2> ObjSecu);
 
-        void QuitarPermisos<T1, T2>(T1 ObjMain, List<T2> ObjSecu);
+        void CambiarHabilitado<T1, T2>(T1 ObjMain, List<T2> ObjSecu);
 
         
     }

@@ -2,6 +2,7 @@
 using Services.Dal.Interfaces;
 using Services.DomainModel;
 using Services__ArqBase_.Bll.Interfaces;
+using Services__ArqBase_.Dal.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,10 @@ using System.Threading.Tasks;
 
 namespace Services__ArqBase_.Bll
 {
-    internal class PemisosService : IPermisosService
+    public class PermisosService : IPermisosService
     {
 
-        public PemisosService()
+        public PermisosService()
         {
 
         }
@@ -23,8 +24,6 @@ namespace Services__ArqBase_.Bll
             IJoinRepository<T1, T2> repository = null;
             Assembly dalAssembly = typeof(FamiliaRepository).Assembly;
 
-            //Type[] typeRepo = dalAssembly.GetTypes();
-
             string NombreRepository = $"{typeof(T1).Name}{typeof(T2).Name}Repository";
 
             Type tipoRepositorio = dalAssembly.GetTypes()
@@ -32,13 +31,13 @@ namespace Services__ArqBase_.Bll
                 .FirstOrDefault();
             if (tipoRepositorio != null)
             {
-                Console.WriteLine(tipoRepositorio.Name);
+                //Console.WriteLine(tipoRepositorio.Name);
                 repository = Activator.CreateInstance(tipoRepositorio) as IJoinRepository<T1, T2>;
             }
 
             if (repository != null)
             {
-                Console.WriteLine($"Instancia del repositorio '{repository.GetType().Name}' creada exitosamente.");
+                //Console.WriteLine($"Instancia del repositorio '{repository.GetType().Name}' creada exitosamente.");
 
                 foreach (var obj in ObjSecu)
                 {
@@ -53,13 +52,20 @@ namespace Services__ArqBase_.Bll
         }
 
 
-        public void crearRol(Familia familia)
+        public void CrearRol(Familia familia)
         {
+            FamiliaRepository repository = new FamiliaRepository();
+            repository.Add(familia);
         }
 
-        public void QuitarPermisos<T1, T2>(T1 ObjMain, List<T2> ObjSecu)
+        public void CambiarHabilitado<T1, T2>(T1 ObjMain, List<T2> ObjSecu)
         {
-            throw new NotImplementedException();
+            UpdateGenericRepository repository = new UpdateGenericRepository();
+
+            foreach (var item in ObjSecu)
+            {
+                repository.UpdateHabilitadoJoin(ObjMain, item);
+            }
         }
 
 
