@@ -79,5 +79,17 @@ namespace WinUI.WinForms.Gestiones
 
             return dt;
         }
+
+        private void BtnAsignarFamilia_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void BtnCreateFamilia_Click(object sender, EventArgs e)
+        {
+            TbconUserList.TabPages.Remove(TabPageList);
+            TbconUserList.TabPages.Add(TabPageCrearFamilia);
+            TabPageCrearFamilia.Text = "Crear Rol";
+        }
     }
 }
