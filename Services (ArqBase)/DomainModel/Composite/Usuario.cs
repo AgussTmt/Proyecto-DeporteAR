@@ -124,8 +124,7 @@ namespace Services.DomainModel
             IdUsuario = idUsuario;
             Nombre = nombre;
             Email = email;
-            Habilitado = habilitado;
-            
+            Habilitado = habilitado;   
         }
     }
 }

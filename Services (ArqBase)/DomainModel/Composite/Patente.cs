@@ -21,12 +21,12 @@ namespace Services.DomainModel
 	/// </summary>
 	public class Patente : Component {
 
-        public string DataKey { get; set; }
+		public string DataKey { get; set; }
 
-        public TipoAcceso TipoAcceso { get; set; }
+		public TipoAcceso TipoAcceso { get; set; }
 
 		public Patente() { }
-        public Patente(Guid id)
+		public Patente(Guid id)
 		{
 			Id = id;
 		}
@@ -41,10 +41,10 @@ namespace Services.DomainModel
 		/// 
 		/// <param name="component"></param>
 		public override void Remove(Component component){
-            throw new Exception("No se pueden eliminar elementos en un hijo tipo hoja");
-        }
+			throw new Exception("No se pueden eliminar elementos en un hijo tipo hoja");
+		}
 
-    }//end Patente
+	}//end Patente
 
 	public enum TipoAcceso
 	{
@@ -53,6 +53,6 @@ namespace Services.DomainModel
 		Servicio,
 		SP,
 		Tabla
-    }
+	}
 
 }//end namespace Patrones

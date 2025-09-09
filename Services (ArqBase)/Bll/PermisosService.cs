@@ -68,6 +68,16 @@ namespace Services__ArqBase_.Bll
             }
         }
 
+        public List<Patente> GetPatentes()
+        {
+            PatenteRepository patenteRepository = new PatenteRepository();
+            return patenteRepository.GetAll();
+        }
 
+        public List<Familia> GetFamilias()
+        {
+            FamiliaRepository familiaRepository = new FamiliaRepository();
+            return familiaRepository.GetAll();
+        }
     }
 }

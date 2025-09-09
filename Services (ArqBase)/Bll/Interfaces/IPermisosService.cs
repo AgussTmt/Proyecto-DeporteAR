@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Services__ArqBase_.Bll.Interfaces
 {
-    internal interface IPermisosService
+    public interface IPermisosService
     {
         void CrearRol(Familia familia);
 
@@ -16,6 +16,11 @@ namespace Services__ArqBase_.Bll.Interfaces
 
         void CambiarHabilitado<T1, T2>(T1 ObjMain, List<T2> ObjSecu);
 
-        
+        public List<Patente> GetPatentes();
+
+        public List<Familia> GetFamilias();
+
+
+
     }
 }
