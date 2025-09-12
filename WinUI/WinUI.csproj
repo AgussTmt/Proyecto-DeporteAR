@@ -102,12 +102,6 @@
     <Compile Include="WinForms\Login&amp;Register\FrmLogin.Designer.cs">
       <DependentUpon>FrmLogin.cs</DependentUpon>
     </Compile>
-    <Compile Include="WinForms\FrmPrincipal.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WinForms\FrmPrincipal.Designer.cs">
-      <DependentUpon>FrmPrincipal.cs</DependentUpon>
-    </Compile>
     <Compile Include="WinForms\Login&amp;Register\FrmRegistrar.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -136,9 +130,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="WinForms\Login&amp;Register\FrmLogin.resx">
       <DependentUpon>FrmLogin.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WinForms\FrmPrincipal.resx">
-      <DependentUpon>FrmPrincipal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinForms\Login&amp;Register\FrmRegistrar.resx">
       <DependentUpon>FrmRegistrar.cs</DependentUpon>

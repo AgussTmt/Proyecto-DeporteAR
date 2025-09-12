@@ -57,6 +57,7 @@
             this.panel6 = new System.Windows.Forms.Panel();
             this.TxtUsuario = new System.Windows.Forms.TextBox();
             this.LblUsuario = new System.Windows.Forms.Label();
+            this.BtnSaveModificarPermiso = new System.Windows.Forms.Button();
             this.TbconUserList.SuspendLayout();
             this.TabPageList.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -255,7 +256,7 @@
             this.BtnSaveCrear.Name = "BtnSaveCrear";
             this.BtnSaveCrear.Size = new System.Drawing.Size(246, 48);
             this.BtnSaveCrear.TabIndex = 2;
-            this.BtnSaveCrear.Text = "Save";
+            this.BtnSaveCrear.Text = "Guardar";
             this.BtnSaveCrear.UseVisualStyleBackColor = true;
             // 
             // TxtNombreFamilia
@@ -297,9 +298,9 @@
             this.panel8.Controls.Add(this.CheckListPatentes);
             this.panel8.Controls.Add(this.LblPermisosLista);
             this.panel8.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel8.Location = new System.Drawing.Point(529, 3);
+            this.panel8.Location = new System.Drawing.Point(502, 3);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(255, 498);
+            this.panel8.Size = new System.Drawing.Size(285, 498);
             this.panel8.TabIndex = 4;
             // 
             // CheckListPatentes
@@ -308,7 +309,7 @@
             this.CheckListPatentes.FormattingEnabled = true;
             this.CheckListPatentes.Location = new System.Drawing.Point(0, 13);
             this.CheckListPatentes.Name = "CheckListPatentes";
-            this.CheckListPatentes.Size = new System.Drawing.Size(255, 484);
+            this.CheckListPatentes.Size = new System.Drawing.Size(285, 484);
             this.CheckListPatentes.TabIndex = 6;
             // 
             // LblPermisosLista
@@ -328,7 +329,7 @@
             this.panel7.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel7.Location = new System.Drawing.Point(217, 3);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(312, 498);
+            this.panel7.Size = new System.Drawing.Size(285, 498);
             this.panel7.TabIndex = 3;
             // 
             // CheckListFamilias
@@ -337,7 +338,7 @@
             this.CheckListFamilias.FormattingEnabled = true;
             this.CheckListFamilias.Location = new System.Drawing.Point(0, 13);
             this.CheckListFamilias.Name = "CheckListFamilias";
-            this.CheckListFamilias.Size = new System.Drawing.Size(312, 484);
+            this.CheckListFamilias.Size = new System.Drawing.Size(285, 484);
             this.CheckListFamilias.TabIndex = 5;
             // 
             // lblListaFamilias
@@ -352,6 +353,7 @@
             // 
             // panel6
             // 
+            this.panel6.Controls.Add(this.BtnSaveModificarPermiso);
             this.panel6.Controls.Add(this.TxtUsuario);
             this.panel6.Controls.Add(this.LblUsuario);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Left;
@@ -377,6 +379,16 @@
             this.LblUsuario.Size = new System.Drawing.Size(43, 13);
             this.LblUsuario.TabIndex = 0;
             this.LblUsuario.Text = "Usuario";
+            // 
+            // BtnSaveModificarPermiso
+            // 
+            this.BtnSaveModificarPermiso.Location = new System.Drawing.Point(22, 455);
+            this.BtnSaveModificarPermiso.Name = "BtnSaveModificarPermiso";
+            this.BtnSaveModificarPermiso.Size = new System.Drawing.Size(159, 38);
+            this.BtnSaveModificarPermiso.TabIndex = 5;
+            this.BtnSaveModificarPermiso.Text = "Guardar";
+            this.BtnSaveModificarPermiso.UseVisualStyleBackColor = true;
+            this.BtnSaveModificarPermiso.Click += new System.EventHandler(this.BtnSaveModificarPermiso_Click);
             // 
             // FrmSettings
             // 
@@ -443,5 +455,6 @@
         private System.Windows.Forms.Label lblListaFamilias;
         private System.Windows.Forms.CheckedListBox CheckListPatentes;
         private System.Windows.Forms.CheckedListBox CheckListFamilias;
+        private System.Windows.Forms.Button BtnSaveModificarPermiso;
     }
 }

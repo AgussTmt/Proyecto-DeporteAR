@@ -77,7 +77,7 @@ namespace Services__ArqBase_.Bll
         public List<Familia> GetFamilias()
         {
             FamiliaRepository familiaRepository = new FamiliaRepository();
-            return familiaRepository.GetAll();
+            return familiaRepository.GetAll(
         }
     }
 }

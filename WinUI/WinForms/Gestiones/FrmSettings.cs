@@ -138,6 +138,7 @@ namespace WinUI.WinForms.Gestiones
 
         private void CargarPatentes(Usuario usuario)
         {
+            CheckListPatentes.Items.Clear();
             var AllPatentes = permisosService.GetPatentes();
 
             foreach (var item in AllPatentes)
@@ -154,20 +155,33 @@ namespace WinUI.WinForms.Gestiones
 
         private void CargarFamilias(Usuario usuario)
         {
+            CheckListFamilias.Items.Clear();
             var AllFamilias = permisosService.GetFamilias();
 
 
             foreach (var item in AllFamilias)
             {
-                CheckListFamilias.Items.Add(item.Nombre);
 
-                if (usuario.Privilegios.Exists(p => p is Familia familia && p.Id == item.Id))
+                Familia familia = usuario.Privilegios.FirstOrDefault(p => p is Familia familia1 && p.Id == item.Id) as Familia;
+
+                string Nombre = item.Nombre;
+                bool habilitado = false;
+                if (familia != null)
                 {
-                    int index = CheckListFamilias.Items.Count - 1;
-                    CheckListFamilias.SetItemChecked(index, true);
+                    habilitado = familia.Habilitado;
+                    if (!familia.Habilitado)
+                    {
+                        Nombre = $"{item.Nombre} (Deshabilitado)";
+                    }
                 }
+                CheckListFamilias.Items.Add(Nombre, habilitado);
+
             }
         }
 
+        private void BtnSaveModificarPermiso_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

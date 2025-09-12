@@ -30,7 +30,7 @@ namespace Services.DomainModel
             get
             {
                 List<Patente> patentes = new List<Patente>();
-                RecorrerFamilias(patentes, Privilegios);
+                RecorrerFamilias(patentes, Privilegios, true);
                 return patentes;
             }
         }
@@ -69,24 +69,23 @@ namespace Services.DomainModel
         /// </summary>
         /// <param name="patentes">Lista de patentes</param>
         /// <param name="componentes">Lista de componentes que se recorren</param>
-        private void RecorrerFamilias(List<Patente> patentes, List<Component> componentes)
+        private void RecorrerFamilias(List<Patente> patentes, List<Component> componentes, bool habilitadoPadre)
         {
             foreach (var componente in componentes)
             {
-                if (componente.Habilitado)
-                {
+               
+                    bool esHabilitado = componente.Habilitado && habilitadoPadre;
                     if (componente is Patente patente)
                     {
+                        patente.Habilitado = esHabilitado;
                         if (!patentes.Exists(p => p.Id == patente.Id))
                             patentes.Add(patente);
                     }
                     else if (componente is Familia familia)
                     {
-                        RecorrerFamilias(patentes, familia.GetHijos());
+                        RecorrerFamilias(patentes, familia.GetHijos(), esHabilitado);
                     }
-                }
-                
-               
+
             }
         }
 

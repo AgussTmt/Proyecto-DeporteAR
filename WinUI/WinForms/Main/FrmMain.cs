@@ -139,7 +139,7 @@ namespace WinUI.WinForms
 
         private bool TienePermiso(Form childForm)
         {
-            return _user.Patentes.Any(p => p.DataKey == childForm.GetType().Name);
+            return _user.Patentes.Any(p => p.DataKey == childForm.GetType().Name && p.Habilitado);
         }
 
         private void panelDesktopPane_Paint(object sender, PaintEventArgs e)
