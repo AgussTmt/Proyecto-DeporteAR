@@ -19,7 +19,7 @@ namespace Services__ArqBase_.Bll
         {
 
         }
-        public void AsignarPermisos<T1, T2>(T1 ObjMain, List<T2> ObjSecu)
+        public void AsignarPermisos<T1, T2>(T1 ObjMain, T2 ObjSecu)
         {
             IJoinRepository<T1, T2> repository = null;
             Assembly dalAssembly = typeof(FamiliaRepository).Assembly;
@@ -39,10 +39,10 @@ namespace Services__ArqBase_.Bll
             {
                 //Console.WriteLine($"Instancia del repositorio '{repository.GetType().Name}' creada exitosamente.");
 
-                foreach (var obj in ObjSecu)
-                {
-                    repository.Add(ObjMain, obj);
-                }
+                
+                
+                    repository.Add(ObjMain, ObjSecu);
+                
             }
             else
             {
@@ -58,15 +58,12 @@ namespace Services__ArqBase_.Bll
             repository.Add(familia);
         }
 
-        public void CambiarHabilitado<T1, T2>(T1 ObjMain, List<T2> ObjSecu)
+        public void CambiarHabilitado<T1, T2>(T1 ObjMain, T2 ObjSecu)
         {
             UpdateGenericRepository repository = new UpdateGenericRepository();
-
-            foreach (var item in ObjSecu)
-            {
-                repository.UpdateHabilitadoJoin(ObjMain, item);
-            }
+            repository.UpdateHabilitadoJoin(ObjMain, ObjSecu);
         }
+        
 
         public List<Patente> GetPatentes()
         {
@@ -82,7 +79,40 @@ namespace Services__ArqBase_.Bll
 
         public void cambiarPermisos(Usuario usuario, List<Component> RolPatentes)
         {
+            List<Component> componentsCambiarHabilitado = new List<Component>();
+            List<Component> componentsAsignar = new List<Component>();
 
+
+            var patentesActuales = usuario.Privilegios.OfType<Patente>().ToList();
+            var roles = usuario.Privilegios.OfType<Familia>().ToList();
+
+
+
+
+
+            foreach (var item in RolPatentes)
+            {
+
+
+                if (item is Patente)
+                {
+                    Patente patente = patentesActuales.FirstOrDefault(p => p.Id == item.Id);
+                    if(patente.Habilitado != item.Habilitado)
+                    {
+                        CambiarHabilitado<Usuario, Patente>(usuario, item as Patente);
+                    }
+                }
+
+                else if (item is Familia)
+                {
+
+                }
+
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
         }
     }
 }

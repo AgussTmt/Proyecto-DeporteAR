@@ -11,6 +11,8 @@ using Services.Bll;
 using Services.DomainModel;
 using Services__ArqBase_.Bll;
 using Services__ArqBase_.Bll.Interfaces;
+using WinUI.WinForms.Gestiones.Settings;
+using Component = Services.DomainModel.Component;
 
 namespace WinUI.WinForms.Gestiones
 {
@@ -19,7 +21,8 @@ namespace WinUI.WinForms.Gestiones
         private BindingSource BsListaUsuarios;
         private List<Usuario> usuarios;
         private IPermisosService permisosService;
-        
+        private Usuario usuarioSeleccionado;
+
         public FrmSettings()
         {
             InitializeComponent();
@@ -117,7 +120,7 @@ namespace WinUI.WinForms.Gestiones
         else
             {
                 string userEmail = dataRowView["Email"].ToString();
-                Usuario usuarioSeleccionado = usuarios.FirstOrDefault(u => u.Email == userEmail);
+                usuarioSeleccionado = usuarios.FirstOrDefault(u => u.Email == userEmail);
 
                 if (usuarioSeleccionado == null)
                 {
@@ -129,6 +132,7 @@ namespace WinUI.WinForms.Gestiones
                     TbconUserList.SelectedTab = TabPageModificarPermisos;
                     CargarPatentes(usuarioSeleccionado);
                     CargarFamilias(usuarioSeleccionado);
+                    CargarPatentesDeFamilias(usuarioSeleccionado);
                 }
             }
             
@@ -140,11 +144,11 @@ namespace WinUI.WinForms.Gestiones
         {
             CheckListPatentes.Items.Clear();
             var AllPatentes = permisosService.GetPatentes();
-            var PatentesUsuario = usuario.Patentes;
+            var PatenteDirectasUsuario = usuario.Privilegios.OfType<Patente>().ToList();
 
             foreach (var item in AllPatentes)
             {
-                Patente patente = PatentesUsuario.FirstOrDefault(p => p.Id == item.Id);
+                Patente patente = PatenteDirectasUsuario.FirstOrDefault(p => p.Id == item.Id);
                 string Nombre = item.DataKey;
                 bool habilitado = false;
 
@@ -159,6 +163,9 @@ namespace WinUI.WinForms.Gestiones
                 CheckListPatentes.Items.Add(Nombre, habilitado);
             }
         }
+        //58A78003-3700-4388-BE91-FC8E6FED3E35
+        //0a7c5d0d-7d9d-4fcd-b8b3-7b80f8306181
+        //F8DCEE4C-DF4D-4630-90E0-72B7EBEC30D1
 
         private void CargarFamilias(Usuario usuario)
         {
@@ -182,13 +189,38 @@ namespace WinUI.WinForms.Gestiones
                     }
                 }
                 CheckListFamilias.Items.Add(Nombre, habilitado);
+                
 
+            }
+        }
+        
+
+        private void CargarPatentesDeFamilias(Usuario usuario)
+        {
+            LstPatenteDeFamilia.Items.Clear();
+
+            var items = usuario.GetPatentesAgrupadasPorRol();
+
+            foreach (var linea in items)
+            {
+                LstPatenteDeFamilia.Items.Add(linea);
             }
         }
 
         private void BtnSaveModificarPermiso_Click(object sender, EventArgs e)
         {
+            List<Component> permisos = new List<Component>();
+            foreach (Component permiso in CheckListFamilias.CheckedItems)
+            {
+                permisos.Add(permiso);
+            }
 
+            foreach (Component permiso in CheckListPatentes.CheckedItems)
+            {
+                permisos.Add(permiso);
+            }
+
+            permisosService.cambiarPermisos(usuarioSeleccionado, permisos);
         }
 
         

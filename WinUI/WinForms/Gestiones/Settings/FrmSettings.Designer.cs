@@ -48,16 +48,19 @@
             this.TxtNombreFamilia = new System.Windows.Forms.TextBox();
             this.LblNombreFamilia = new System.Windows.Forms.Label();
             this.TabPageModificarPermisos = new System.Windows.Forms.TabPage();
-            this.panel8 = new System.Windows.Forms.Panel();
-            this.CheckListPatentes = new System.Windows.Forms.CheckedListBox();
-            this.LblPermisosLista = new System.Windows.Forms.Label();
+            this.panel9 = new System.Windows.Forms.Panel();
+            this.LstPatenteDeFamilia = new System.Windows.Forms.ListBox();
+            this.LblPatenteDeFamilia = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
             this.CheckListFamilias = new System.Windows.Forms.CheckedListBox();
             this.lblListaFamilias = new System.Windows.Forms.Label();
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.CheckListPatentes = new System.Windows.Forms.CheckedListBox();
+            this.LblPermisosLista = new System.Windows.Forms.Label();
             this.panel6 = new System.Windows.Forms.Panel();
+            this.BtnSaveModificarPermiso = new System.Windows.Forms.Button();
             this.TxtUsuario = new System.Windows.Forms.TextBox();
             this.LblUsuario = new System.Windows.Forms.Label();
-            this.BtnSaveModificarPermiso = new System.Windows.Forms.Button();
             this.TbconUserList.SuspendLayout();
             this.TabPageList.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -69,8 +72,9 @@
             this.panel4.SuspendLayout();
             this.panel3.SuspendLayout();
             this.TabPageModificarPermisos.SuspendLayout();
-            this.panel8.SuspendLayout();
+            this.panel9.SuspendLayout();
             this.panel7.SuspendLayout();
+            this.panel8.SuspendLayout();
             this.panel6.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -83,7 +87,7 @@
             this.TbconUserList.Location = new System.Drawing.Point(0, 0);
             this.TbconUserList.Name = "TbconUserList";
             this.TbconUserList.SelectedIndex = 0;
-            this.TbconUserList.Size = new System.Drawing.Size(930, 530);
+            this.TbconUserList.Size = new System.Drawing.Size(1120, 683);
             this.TbconUserList.TabIndex = 0;
             // 
             // TabPageList
@@ -92,7 +96,7 @@
             this.TabPageList.Location = new System.Drawing.Point(4, 22);
             this.TabPageList.Name = "TabPageList";
             this.TabPageList.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPageList.Size = new System.Drawing.Size(922, 504);
+            this.TabPageList.Size = new System.Drawing.Size(1112, 657);
             this.TabPageList.TabIndex = 0;
             this.TabPageList.Text = "tabPage1";
             this.TabPageList.UseVisualStyleBackColor = true;
@@ -112,7 +116,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.41791F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 83.58209F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(916, 498);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1106, 651);
             this.tableLayoutPanel1.TabIndex = 7;
             // 
             // panel2
@@ -120,9 +124,9 @@
             this.panel2.Controls.Add(this.BtnUpdatePatente);
             this.panel2.Controls.Add(this.BtnCreateFamilia);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel2.Location = new System.Drawing.Point(759, 84);
+            this.panel2.Location = new System.Drawing.Point(915, 109);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(154, 411);
+            this.panel2.Size = new System.Drawing.Size(154, 539);
             this.panel2.TabIndex = 8;
             // 
             // BtnUpdatePatente
@@ -152,7 +156,7 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.panel1.Controls.Add(this.TxtSearch);
             this.panel1.Controls.Add(this.LblSearchUser);
-            this.panel1.Location = new System.Drawing.Point(3, 9);
+            this.panel1.Location = new System.Drawing.Point(3, 34);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(750, 69);
             this.panel1.TabIndex = 8;
@@ -183,10 +187,10 @@
             this.DgvListaUsuarios.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.DgvListaUsuarios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DgvListaUsuarios.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DgvListaUsuarios.Location = new System.Drawing.Point(3, 84);
+            this.DgvListaUsuarios.Location = new System.Drawing.Point(3, 109);
             this.DgvListaUsuarios.Name = "DgvListaUsuarios";
             this.DgvListaUsuarios.ReadOnly = true;
-            this.DgvListaUsuarios.Size = new System.Drawing.Size(750, 411);
+            this.DgvListaUsuarios.Size = new System.Drawing.Size(906, 539);
             this.DgvListaUsuarios.TabIndex = 3;
             // 
             // TabPageCrearFamilia
@@ -196,7 +200,7 @@
             this.TabPageCrearFamilia.Location = new System.Drawing.Point(4, 22);
             this.TabPageCrearFamilia.Name = "TabPageCrearFamilia";
             this.TabPageCrearFamilia.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPageCrearFamilia.Size = new System.Drawing.Size(922, 504);
+            this.TabPageCrearFamilia.Size = new System.Drawing.Size(1112, 657);
             this.TabPageCrearFamilia.TabIndex = 1;
             this.TabPageCrearFamilia.Text = "Crear Familia";
             this.TabPageCrearFamilia.UseVisualStyleBackColor = true;
@@ -208,7 +212,7 @@
             this.panel5.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel5.Location = new System.Drawing.Point(359, 3);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(287, 498);
+            this.panel5.Size = new System.Drawing.Size(287, 651);
             this.panel5.TabIndex = 7;
             // 
             // CheckListPatentesParaFamilias
@@ -236,7 +240,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel4.Location = new System.Drawing.Point(3, 3);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(356, 498);
+            this.panel4.Size = new System.Drawing.Size(356, 651);
             this.panel4.TabIndex = 6;
             // 
             // panel3
@@ -247,7 +251,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(356, 498);
+            this.panel3.Size = new System.Drawing.Size(356, 651);
             this.panel3.TabIndex = 5;
             // 
             // BtnSaveCrear
@@ -282,63 +286,64 @@
             // 
             // TabPageModificarPermisos
             // 
-            this.TabPageModificarPermisos.Controls.Add(this.panel8);
+            this.TabPageModificarPermisos.Controls.Add(this.panel9);
             this.TabPageModificarPermisos.Controls.Add(this.panel7);
+            this.TabPageModificarPermisos.Controls.Add(this.panel8);
             this.TabPageModificarPermisos.Controls.Add(this.panel6);
             this.TabPageModificarPermisos.Location = new System.Drawing.Point(4, 22);
             this.TabPageModificarPermisos.Name = "TabPageModificarPermisos";
             this.TabPageModificarPermisos.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPageModificarPermisos.Size = new System.Drawing.Size(922, 504);
+            this.TabPageModificarPermisos.Size = new System.Drawing.Size(1112, 657);
             this.TabPageModificarPermisos.TabIndex = 2;
             this.TabPageModificarPermisos.Text = "ModificarPermisos";
             this.TabPageModificarPermisos.UseVisualStyleBackColor = true;
             // 
-            // panel8
+            // panel9
             // 
-            this.panel8.Controls.Add(this.CheckListPatentes);
-            this.panel8.Controls.Add(this.LblPermisosLista);
-            this.panel8.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel8.Location = new System.Drawing.Point(502, 3);
-            this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(285, 498);
-            this.panel8.TabIndex = 4;
+            this.panel9.Controls.Add(this.LstPatenteDeFamilia);
+            this.panel9.Controls.Add(this.LblPatenteDeFamilia);
+            this.panel9.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel9.Location = new System.Drawing.Point(787, 3);
+            this.panel9.Name = "panel9";
+            this.panel9.Size = new System.Drawing.Size(235, 651);
+            this.panel9.TabIndex = 5;
             // 
-            // CheckListPatentes
+            // LstPatenteDeFamilia
             // 
-            this.CheckListPatentes.Dock = System.Windows.Forms.DockStyle.Top;
-            this.CheckListPatentes.FormattingEnabled = true;
-            this.CheckListPatentes.Location = new System.Drawing.Point(0, 13);
-            this.CheckListPatentes.Name = "CheckListPatentes";
-            this.CheckListPatentes.Size = new System.Drawing.Size(285, 484);
-            this.CheckListPatentes.TabIndex = 6;
+            this.LstPatenteDeFamilia.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LstPatenteDeFamilia.FormattingEnabled = true;
+            this.LstPatenteDeFamilia.Location = new System.Drawing.Point(0, 13);
+            this.LstPatenteDeFamilia.Name = "LstPatenteDeFamilia";
+            this.LstPatenteDeFamilia.Size = new System.Drawing.Size(235, 638);
+            this.LstPatenteDeFamilia.TabIndex = 1;
             // 
-            // LblPermisosLista
+            // LblPatenteDeFamilia
             // 
-            this.LblPermisosLista.AutoSize = true;
-            this.LblPermisosLista.Dock = System.Windows.Forms.DockStyle.Top;
-            this.LblPermisosLista.Location = new System.Drawing.Point(0, 0);
-            this.LblPermisosLista.Name = "LblPermisosLista";
-            this.LblPermisosLista.Size = new System.Drawing.Size(73, 13);
-            this.LblPermisosLista.TabIndex = 5;
-            this.LblPermisosLista.Text = "Lista permisos";
+            this.LblPatenteDeFamilia.AutoSize = true;
+            this.LblPatenteDeFamilia.Dock = System.Windows.Forms.DockStyle.Top;
+            this.LblPatenteDeFamilia.Location = new System.Drawing.Point(0, 0);
+            this.LblPatenteDeFamilia.Name = "LblPatenteDeFamilia";
+            this.LblPatenteDeFamilia.Size = new System.Drawing.Size(94, 13);
+            this.LblPatenteDeFamilia.TabIndex = 0;
+            this.LblPatenteDeFamilia.Text = "Patente de Familia";
             // 
             // panel7
             // 
             this.panel7.Controls.Add(this.CheckListFamilias);
             this.panel7.Controls.Add(this.lblListaFamilias);
             this.panel7.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel7.Location = new System.Drawing.Point(217, 3);
+            this.panel7.Location = new System.Drawing.Point(502, 3);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(285, 498);
+            this.panel7.Size = new System.Drawing.Size(285, 651);
             this.panel7.TabIndex = 3;
             // 
             // CheckListFamilias
             // 
-            this.CheckListFamilias.Dock = System.Windows.Forms.DockStyle.Top;
+            this.CheckListFamilias.Dock = System.Windows.Forms.DockStyle.Fill;
             this.CheckListFamilias.FormattingEnabled = true;
             this.CheckListFamilias.Location = new System.Drawing.Point(0, 13);
             this.CheckListFamilias.Name = "CheckListFamilias";
-            this.CheckListFamilias.Size = new System.Drawing.Size(285, 484);
+            this.CheckListFamilias.Size = new System.Drawing.Size(285, 638);
             this.CheckListFamilias.TabIndex = 5;
             // 
             // lblListaFamilias
@@ -351,6 +356,35 @@
             this.lblListaFamilias.TabIndex = 0;
             this.lblListaFamilias.Text = "Lista familias";
             // 
+            // panel8
+            // 
+            this.panel8.Controls.Add(this.CheckListPatentes);
+            this.panel8.Controls.Add(this.LblPermisosLista);
+            this.panel8.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel8.Location = new System.Drawing.Point(217, 3);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(285, 651);
+            this.panel8.TabIndex = 4;
+            // 
+            // CheckListPatentes
+            // 
+            this.CheckListPatentes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CheckListPatentes.FormattingEnabled = true;
+            this.CheckListPatentes.Location = new System.Drawing.Point(0, 13);
+            this.CheckListPatentes.Name = "CheckListPatentes";
+            this.CheckListPatentes.Size = new System.Drawing.Size(285, 638);
+            this.CheckListPatentes.TabIndex = 6;
+            // 
+            // LblPermisosLista
+            // 
+            this.LblPermisosLista.AutoSize = true;
+            this.LblPermisosLista.Dock = System.Windows.Forms.DockStyle.Top;
+            this.LblPermisosLista.Location = new System.Drawing.Point(0, 0);
+            this.LblPermisosLista.Name = "LblPermisosLista";
+            this.LblPermisosLista.Size = new System.Drawing.Size(73, 13);
+            this.LblPermisosLista.TabIndex = 5;
+            this.LblPermisosLista.Text = "Lista permisos";
+            // 
             // panel6
             // 
             this.panel6.Controls.Add(this.BtnSaveModificarPermiso);
@@ -359,8 +393,18 @@
             this.panel6.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel6.Location = new System.Drawing.Point(3, 3);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(214, 498);
+            this.panel6.Size = new System.Drawing.Size(214, 651);
             this.panel6.TabIndex = 2;
+            // 
+            // BtnSaveModificarPermiso
+            // 
+            this.BtnSaveModificarPermiso.Location = new System.Drawing.Point(22, 455);
+            this.BtnSaveModificarPermiso.Name = "BtnSaveModificarPermiso";
+            this.BtnSaveModificarPermiso.Size = new System.Drawing.Size(159, 38);
+            this.BtnSaveModificarPermiso.TabIndex = 5;
+            this.BtnSaveModificarPermiso.Text = "Guardar";
+            this.BtnSaveModificarPermiso.UseVisualStyleBackColor = true;
+            this.BtnSaveModificarPermiso.Click += new System.EventHandler(this.BtnSaveModificarPermiso_Click);
             // 
             // TxtUsuario
             // 
@@ -380,21 +424,11 @@
             this.LblUsuario.TabIndex = 0;
             this.LblUsuario.Text = "Usuario";
             // 
-            // BtnSaveModificarPermiso
-            // 
-            this.BtnSaveModificarPermiso.Location = new System.Drawing.Point(22, 455);
-            this.BtnSaveModificarPermiso.Name = "BtnSaveModificarPermiso";
-            this.BtnSaveModificarPermiso.Size = new System.Drawing.Size(159, 38);
-            this.BtnSaveModificarPermiso.TabIndex = 5;
-            this.BtnSaveModificarPermiso.Text = "Guardar";
-            this.BtnSaveModificarPermiso.UseVisualStyleBackColor = true;
-            this.BtnSaveModificarPermiso.Click += new System.EventHandler(this.BtnSaveModificarPermiso_Click);
-            // 
             // FrmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(930, 530);
+            this.ClientSize = new System.Drawing.Size(1120, 683);
             this.Controls.Add(this.TbconUserList);
             this.Name = "FrmSettings";
             this.Text = "FrmSettings";
@@ -414,10 +448,12 @@
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.TabPageModificarPermisos.ResumeLayout(false);
-            this.panel8.ResumeLayout(false);
-            this.panel8.PerformLayout();
+            this.panel9.ResumeLayout(false);
+            this.panel9.PerformLayout();
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
+            this.panel8.ResumeLayout(false);
+            this.panel8.PerformLayout();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
             this.ResumeLayout(false);
@@ -456,5 +492,8 @@
         private System.Windows.Forms.CheckedListBox CheckListPatentes;
         private System.Windows.Forms.CheckedListBox CheckListFamilias;
         private System.Windows.Forms.Button BtnSaveModificarPermiso;
+        private System.Windows.Forms.Panel panel9;
+        private System.Windows.Forms.Label LblPatenteDeFamilia;
+        private System.Windows.Forms.ListBox LstPatenteDeFamilia;
     }
 }
