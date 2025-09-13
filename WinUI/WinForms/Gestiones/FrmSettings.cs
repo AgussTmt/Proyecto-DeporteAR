@@ -140,16 +140,23 @@ namespace WinUI.WinForms.Gestiones
         {
             CheckListPatentes.Items.Clear();
             var AllPatentes = permisosService.GetPatentes();
+            var PatentesUsuario = usuario.Patentes;
 
             foreach (var item in AllPatentes)
             {
-                CheckListPatentes.Items.Add(item.DataKey);
+                Patente patente = PatentesUsuario.FirstOrDefault(p => p.Id == item.Id);
+                string Nombre = item.DataKey;
+                bool habilitado = false;
 
-                if (usuario.Patentes.Exists(p => p.Id == item.Id))
+                if (patente != null)
                 {
-                    int index = CheckListPatentes.Items.Count - 1;
-                    CheckListPatentes.SetItemChecked(index, true);
+                    habilitado = patente.Habilitado;
+                    if(!patente.Habilitado)
+                    {
+                        Nombre = $"{item.DataKey} (Deshabilitado)";
+                    }
                 }
+                CheckListPatentes.Items.Add(Nombre, habilitado);
             }
         }
 
@@ -183,5 +190,7 @@ namespace WinUI.WinForms.Gestiones
         {
 
         }
+
+        
     }
 }
