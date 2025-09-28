@@ -84,34 +84,45 @@ namespace Services__ArqBase_.Bll
 
 
             var patentesActuales = usuario.Privilegios.OfType<Patente>().ToList();
-            var roles = usuario.Privilegios.OfType<Familia>().ToList();
-
-
-
+            var familiasActuales = usuario.Privilegios.OfType<Familia>().ToList();
 
 
             foreach (var item in RolPatentes)
             {
-
-
                 if (item is Patente)
                 {
-                    Patente patente = patentesActuales.FirstOrDefault(p => p.Id == item.Id);
-                    if(patente.Habilitado != item.Habilitado)
+                    var patente = patentesActuales.FirstOrDefault( p => p.Id == item.Id);
+
+
+                    if (patente != null && patente.Habilitado != item.Habilitado)
                     {
-                        CambiarHabilitado<Usuario, Patente>(usuario, item as Patente);
+                        CambiarHabilitado<Usuario, Patente>(usuario, patente);
+                    }
+
+                    else if (patente == null && item.Habilitado )
+                    {
+                        AsignarPermisos<Usuario, Patente>(usuario, patente);
                     }
                 }
-
                 else if (item is Familia)
                 {
+                    var familia = familiasActuales.FirstOrDefault( f => f.Id == item.Id );
 
+                    if (familia != null && familia.Habilitado == item.Habilitado)
+                    {
+                        CambiarHabilitado<Usuario, Familia>(usuario, familia);
+                    }
+                    
+                    else if (familia == null && item.Habilitado )
+                    {
+                        AsignarPermisos<Usuario, Familia> (usuario, familia);
+                    }
                 }
-
                 else
                 {
-                    throw new NotImplementedException();
+                    throw new Exception("pincho");
                 }
+ 
             }
         }
     }
