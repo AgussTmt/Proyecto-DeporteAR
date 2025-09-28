@@ -63,5 +63,11 @@ namespace Services.Bll
             List<Usuario> usuarios = _usuarioRepository.GetAll();
             return usuarios;
         }
+
+        public static Usuario GetById(Guid id)
+        {
+            Usuario usuario = _usuarioRepository.GetById(id);
+            return usuario;
+        }
     }
 }

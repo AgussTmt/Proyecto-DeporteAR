@@ -73,5 +73,24 @@ namespace Services.Dal.Implementations
 
             return ListUsuarios;
         }
+
+        public Usuario GetById (Guid id)
+        {
+            string commandText = "SELECT * FROM Usuario WHERE IdUsuario = @Id";
+
+            using (SqlDataReader dataReader = SqlHelper.ExecuteReader(commandText, CommandType.Text,
+                new SqlParameter("@Id", id)))
+            {
+                if (dataReader.Read())
+                {
+                    object[] data = new object[dataReader.FieldCount];
+                    dataReader.GetValues(data);
+
+                    return UsuarioAdapter.Current.Get(data);
+                }
+                return null;
+            }
+
+        }
     }
 }

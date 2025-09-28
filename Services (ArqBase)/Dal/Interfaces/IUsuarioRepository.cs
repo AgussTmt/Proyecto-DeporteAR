@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Services.DomainModel;
 
 namespace Services.Bll
@@ -9,5 +10,7 @@ namespace Services.Bll
         Usuario GetByCredentials(string user, string password);
 
         public List<Usuario> GetAll();
+
+        public Usuario GetById(Guid id);
     }
 }

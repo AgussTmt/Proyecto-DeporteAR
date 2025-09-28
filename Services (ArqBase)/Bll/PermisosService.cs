@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,10 +40,10 @@ namespace Services__ArqBase_.Bll
             {
                 //Console.WriteLine($"Instancia del repositorio '{repository.GetType().Name}' creada exitosamente.");
 
-                
-                
-                    repository.Add(ObjMain, ObjSecu);
-                
+
+
+                repository.Add(ObjMain, ObjSecu);
+
             }
             else
             {
@@ -63,7 +64,7 @@ namespace Services__ArqBase_.Bll
             UpdateGenericRepository repository = new UpdateGenericRepository();
             repository.UpdateHabilitadoJoin(ObjMain, ObjSecu);
         }
-        
+
 
         public List<Patente> GetPatentes()
         {
@@ -77,12 +78,8 @@ namespace Services__ArqBase_.Bll
             return familiaRepository.GetAll();
         }
 
-        public void cambiarPermisos(Usuario usuario, List<Component> RolPatentes)
+        public void cambiarPermisosAUsuario(Usuario usuario, List<Component> RolPatentes)
         {
-            List<Component> componentsCambiarHabilitado = new List<Component>();
-            List<Component> componentsAsignar = new List<Component>();
-
-
             var patentesActuales = usuario.Privilegios.OfType<Patente>().ToList();
             var familiasActuales = usuario.Privilegios.OfType<Familia>().ToList();
 
@@ -91,39 +88,81 @@ namespace Services__ArqBase_.Bll
             {
                 if (item is Patente)
                 {
-                    var patente = patentesActuales.FirstOrDefault( p => p.Id == item.Id);
+                    var patente = patentesActuales.FirstOrDefault(p => p.Id == item.Id);
 
 
                     if (patente != null && patente.Habilitado != item.Habilitado)
                     {
-                        CambiarHabilitado<Usuario, Patente>(usuario, patente);
+                        CambiarHabilitado<Usuario, Patente>(usuario, item as Patente);
                     }
 
-                    else if (patente == null && item.Habilitado )
+                    else if (patente == null && item.Habilitado)
                     {
-                        AsignarPermisos<Usuario, Patente>(usuario, patente);
+                        AsignarPermisos<Usuario, Patente>(usuario, item as Patente);
                     }
                 }
                 else if (item is Familia)
                 {
-                    var familia = familiasActuales.FirstOrDefault( f => f.Id == item.Id );
+                    var familia = familiasActuales.FirstOrDefault(f => f.Id == item.Id);
 
-                    if (familia != null && familia.Habilitado == item.Habilitado)
+                    if (familia != null && familia.Habilitado != item.Habilitado)
                     {
-                        CambiarHabilitado<Usuario, Familia>(usuario, familia);
+                        CambiarHabilitado<Usuario, Familia>(usuario, item as Familia);
                     }
-                    
-                    else if (familia == null && item.Habilitado )
+
+                    else if (familia == null && item.Habilitado)
                     {
-                        AsignarPermisos<Usuario, Familia> (usuario, familia);
+                        AsignarPermisos<Usuario, Familia>(usuario, item as Familia);
                     }
                 }
                 else
                 {
                     throw new Exception("pincho");
                 }
- 
+
             }
+
+            foreach (var patenteActual in patentesActuales.Where(p => p.Habilitado))
+            {
+                if (!RolPatentes.OfType<Patente>().Any(p => p.Id == patenteActual.Id))
+                {
+                    CambiarHabilitado<Usuario, Patente>(usuario, patenteActual);
+                }
+            }
+
+            // Deshabilitar familias que ya no están en la lista
+            foreach (var familiaActual in familiasActuales.Where(f => f.Habilitado))
+            {
+                if (!RolPatentes.OfType<Familia>().Any(f => f.Id == familiaActual.Id))
+                {
+                    
+                    CambiarHabilitado<Usuario, Familia>(usuario, familiaActual);
+                }
+            }
+
+
+        }
+        public void CambiarPermisosFamilia(Familia familia, List<Patente> patentes)
+        {
+            FamiliaPatenteRepository repository = new FamiliaPatenteRepository();
+            var patentesActuales = repository.GetByObject(familia);
+
+            foreach (var item in patentes)
+            {
+                var patente = patentesActuales.FirstOrDefault(p => p.Id == item.Id);
+
+                if (patente != null && patente.Habilitado != item.Habilitado)
+                {
+                    CambiarHabilitado<Familia, Patente>(familia, patente);
+                }
+
+                else if (patente == null && item.Habilitado)
+                {
+                    AsignarPermisos<Familia, Patente>(familia, patente);
+                }
+
+            }
+
         }
     }
 }

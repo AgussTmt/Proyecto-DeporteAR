@@ -77,10 +77,25 @@ namespace Services.DomainModel
                     bool esHabilitado = componente.Habilitado && habilitadoPadre;
                     if (componente is Patente patente)
                     {
-                        patente.Habilitado = esHabilitado;
-                        if (!patentes.Exists(p => p.Id == patente.Id))
-                            patentes.Add(patente);
+
+                          var patenteExistente = patentes.FirstOrDefault(p => p.Id == patente.Id);
+
+                    if (patenteExistente == null)
+                    {
+                        
+                        var nuevaPatente = new Patente();
+                        nuevaPatente.DataKey = patente.DataKey;
+                        nuevaPatente.Id = patente.Id;
+                        nuevaPatente.TipoAcceso = patente.TipoAcceso;
+                        nuevaPatente.Habilitado = esHabilitado;
+                        patentes.Add(nuevaPatente);
                     }
+                    else
+                    {
+                        
+                        patenteExistente.Habilitado = patenteExistente.Habilitado || esHabilitado;
+                    }
+                }
                     else if (componente is Familia familia)
                     {
                         RecorrerFamilias(patentes, familia.GetHijos(), esHabilitado);

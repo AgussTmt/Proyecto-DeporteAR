@@ -22,6 +22,8 @@ namespace WinUI.WinForms.Gestiones
         private List<Usuario> usuarios;
         private IPermisosService permisosService;
         private Usuario usuarioSeleccionado;
+        private List<Familia> AllFamilias;
+        private List<Patente> AllPatentes;
 
         public FrmSettings()
         {
@@ -32,8 +34,10 @@ namespace WinUI.WinForms.Gestiones
         private void FrmSettings_Load(object sender, EventArgs e)
         {
             usuarios = UsuarioBll.TraerUsuarios();
+            AllFamilias = permisosService.GetFamilias();
+            AllPatentes = permisosService.GetPatentes();
 
-            if(usuarios is not null && usuarios.Count > 0)
+            if (usuarios is not null && usuarios.Count > 0)
             {
 
                 DataTable DtUsuarios = ConvertUserListToDT(usuarios);
@@ -71,6 +75,7 @@ namespace WinUI.WinForms.Gestiones
             }
         }
 
+        
         private DataTable ConvertUserListToDT(List<Usuario> usuarios)
         {
             var dt = new DataTable();
@@ -90,10 +95,7 @@ namespace WinUI.WinForms.Gestiones
             return dt;
         }
 
-        //private void BtnAsignarFamilia_Click(object sender, EventArgs e)
-        //{
-            
-        //}
+        
 
         private void BtnCreateFamilia_Click(object sender, EventArgs e)
         {
@@ -109,30 +111,30 @@ namespace WinUI.WinForms.Gestiones
                 MessageBox.Show("Por favor, seleccione un usuario de la lista.");
                 return; // Salir del método.
             }
-        var selectedRow = DgvListaUsuarios.SelectedRows[0];
-        var dataRowView = selectedRow.DataBoundItem as DataRowView;
+            var selectedRow = DgvListaUsuarios.SelectedRows[0];
+            var dataRowView = selectedRow.DataBoundItem as DataRowView;
 
-        if (dataRowView == null)
-        {
-          MessageBox.Show("Por favor, seleccione un usuario de la lista.");  
+            if (dataRowView == null)
+            {
+              MessageBox.Show("Por favor, seleccione un usuario de la lista.");  
                 
-        }
-        else
+            }
+            else
             {
                 string userEmail = dataRowView["Email"].ToString();
                 usuarioSeleccionado = usuarios.FirstOrDefault(u => u.Email == userEmail);
 
                 if (usuarioSeleccionado == null)
                 {
-                    MessageBox.Show("Problema identificando al usuario");
+                   MessageBox.Show("Problema identificando al usuario");
                 }
                 else
                 {
 
-                    TbconUserList.SelectedTab = TabPageModificarPermisos;
-                    CargarPatentes(usuarioSeleccionado);
-                    CargarFamilias(usuarioSeleccionado);
-                    CargarPatentesDeFamilias(usuarioSeleccionado);
+                   TbconUserList.SelectedTab = TabPageModificarPermisos;
+                   CargarPatentes(usuarioSeleccionado);
+                   CargarFamilias(usuarioSeleccionado);
+                   CargarPatentesDeFamilias(usuarioSeleccionado);
                 }
             }
             
@@ -143,7 +145,7 @@ namespace WinUI.WinForms.Gestiones
         private void CargarPatentes(Usuario usuario)
         {
             CheckListPatentes.Items.Clear();
-            var AllPatentes = permisosService.GetPatentes();
+            
             var PatenteDirectasUsuario = usuario.Privilegios.OfType<Patente>().ToList();
 
             foreach (var item in AllPatentes)
@@ -170,7 +172,7 @@ namespace WinUI.WinForms.Gestiones
         private void CargarFamilias(Usuario usuario)
         {
             CheckListFamilias.Items.Clear();
-            var AllFamilias = permisosService.GetFamilias();
+            
 
 
             foreach (var item in AllFamilias)
@@ -209,20 +211,60 @@ namespace WinUI.WinForms.Gestiones
 
         private void BtnSaveModificarPermiso_Click(object sender, EventArgs e)
         {
+            string itemText;
             List<Component> permisos = new List<Component>();
-            foreach (Component permiso in CheckListFamilias.CheckedItems)
+            for (int i = 0; i < CheckListFamilias.Items.Count; i++)
             {
+                itemText = CheckListFamilias.Items[i].ToString().Replace(" (Deshabilitado)", "");
+                Component permiso = AllFamilias.FirstOrDefault(p => p.Nombre == itemText);
+                permiso.Habilitado = CheckListFamilias.GetItemChecked(i);
                 permisos.Add(permiso);
             }
-
-            foreach (Component permiso in CheckListPatentes.CheckedItems)
+            
+            for (int i = 0; i < CheckListPatentes.Items.Count; i++)
             {
+                itemText = CheckListPatentes.Items[i].ToString().Replace(" (Deshabilitado)", "");
+                Component permiso = AllPatentes.FirstOrDefault(p => p.DataKey == itemText);
+                permiso.Habilitado = CheckListPatentes.GetItemChecked(i);
                 permisos.Add(permiso);
             }
+            
 
-            permisosService.cambiarPermisos(usuarioSeleccionado, permisos);
+            permisosService.cambiarPermisosAUsuario(usuarioSeleccionado, permisos);
+            usuarioSeleccionado = UsuarioBll.GetById(usuarioSeleccionado.IdUsuario);
+
+
+            usuarios = UsuarioBll.TraerUsuarios();
+
+            CargarPatentes(usuarioSeleccionado);
+            CargarFamilias(usuarioSeleccionado);
+            CargarPatentesDeFamilias(usuarioSeleccionado);
+
+            ActualizarDataTableUsuario(usuarioSeleccionado);
+
+            DgvListaUsuarios.ClearSelection();
+            usuarioSeleccionado = null;
+
+            TbconUserList.SelectedTab = TabPageList;
         }
 
-        
+        private void ActualizarDataTableUsuario(Usuario usuario)
+        {
+            if (BsListaUsuarios.DataSource is DataTable dt)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (row["Email"].ToString() == usuario.Email)
+                    {
+                        row["PatentesAsignadas"] = usuario.PatentesAsignadas;
+                        row["RolesAsignados"] = usuario.RolesAsignados;
+                        row["Habilitado"] = usuario.Habilitado;
+                        break;
+                    }
+                }
+            }
+        }
+
+
     }
 }
