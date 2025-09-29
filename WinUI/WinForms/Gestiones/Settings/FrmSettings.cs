@@ -22,6 +22,7 @@ namespace WinUI.WinForms.Gestiones
         private List<Usuario> usuarios;
         private IPermisosService permisosService;
         private Usuario usuarioSeleccionado;
+        private Familia familiaSeleccionada;
         private List<Familia> AllFamilias;
         private List<Patente> AllPatentes;
 
@@ -60,6 +61,8 @@ namespace WinUI.WinForms.Gestiones
 
         }
 
+
+        #region Datatable
         private void TxtSearch_TextChanged(object sender, EventArgs e)
         {
             string filtro = TxtSearch.Text;
@@ -95,14 +98,9 @@ namespace WinUI.WinForms.Gestiones
             return dt;
         }
 
-        
+        #endregion
 
-        private void BtnCreateFamilia_Click(object sender, EventArgs e)
-        {
-            TbconUserList.SelectedTab = TabPageCrearFamilia;
-            TabPageCrearFamilia.Text = "Crear Rol";
-        }
-
+        #region ModificarPermisos
         private void BtnUpdatePatente_Click(object sender, EventArgs e)
         {
 
@@ -264,7 +262,128 @@ namespace WinUI.WinForms.Gestiones
                 }
             }
         }
+        #endregion
 
+        private void BtnCreateFamilia_Click(object sender, EventArgs e)
+        {
+            TbconUserList.SelectedTab = TabPageCrearFamilia;
+            TabPageCrearFamilia.Text = "Crear Rol";
+            CargarComboBoxFamilias();
+            LimpiarFormularioFamilia();
+            CargarPatentesParaFamilia(null);
 
+        }
+
+        private void CargarComboBoxFamilias()
+        {
+            CombFamilias.Items.Clear();
+            CombFamilias.Items.Add("-- Crear Nuevo Rol --");
+
+            foreach (var familia in AllFamilias)
+            {
+                CombFamilias.Items.Add(familia);
+            }
+
+            CombFamilias.DisplayMember = "Nombre";
+            CombFamilias.SelectedIndex = 0;
+        }
+
+        private void LimpiarFormularioFamilia()
+        {
+            TxtNombreFamilia.Text = string.Empty;
+            TxtNombreFamilia.Enabled = true;
+            familiaSeleccionada = null;
+        }
+
+        private void CargarPatentesParaFamilia(Familia familia)
+        {
+            CheckListPatentesParaFamilias.Items.Clear();
+
+            List<Patente> patentesAsignadas = new List<Patente>();
+            if (familia != null)
+            {
+                patentesAsignadas = permisosService.GetPatentesDeFamilia(familia);
+            }
+
+            foreach (var patente in AllPatentes)
+            {
+                var patenteAsignada = patentesAsignadas.FirstOrDefault(p => p.Id == patente.Id);
+
+                string nombre = patente.DataKey;
+                bool habilitada = false;
+
+                if (patenteAsignada != null)
+                {
+                    habilitada = patenteAsignada.Habilitado;
+                    if (!patenteAsignada.Habilitado)
+                        nombre = $"{patente.DataKey} (Deshabilitado)";
+                }
+
+                CheckListPatentesParaFamilias.Items.Add(nombre, habilitada);
+            }
+        }
+
+        private void CombFamilias_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (CombFamilias.SelectedIndex == 0) 
+            {
+                LimpiarFormularioFamilia();
+                CargarPatentesParaFamilia(null);
+            }
+            else
+            {
+                familiaSeleccionada = CombFamilias.SelectedItem as Familia;
+                if (familiaSeleccionada != null)
+                {
+                    TxtNombreFamilia.Text = familiaSeleccionada.Nombre;
+                    TxtNombreFamilia.Enabled = false;
+                    CargarPatentesParaFamilia(familiaSeleccionada);
+                }
+            }
+        }
+
+        private void BtnSaveCrear_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(TxtNombreFamilia.Text))
+            {
+                MessageBox.Show("Debe ingresar un nombre para el rol");
+                return;
+            }
+
+            List<Patente> patentes = new List<Patente>();
+            for (int i = 0; i < CheckListPatentesParaFamilias.Items.Count; i++)
+            {
+                string itemText = CheckListPatentesParaFamilias.Items[i].ToString().Replace(" (Deshabilitado)", "");
+                Patente patente = AllPatentes.FirstOrDefault(p => p.DataKey == itemText);
+                if (patente != null)
+                {
+                    patente.Habilitado = CheckListPatentesParaFamilias.GetItemChecked(i);
+                    patentes.Add(patente);
+                }
+            }
+
+            if (CombFamilias.SelectedIndex == 0) // Crear nuevo
+            {
+                Familia nuevaFamilia = new Familia { Nombre = TxtNombreFamilia.Text };
+                permisosService.CrearRol(nuevaFamilia);
+
+                foreach (var patente in patentes.Where(p => p.Habilitado))
+                {
+                    permisosService.AsignarPermisos<Familia, Patente>(nuevaFamilia, patente);
+                }
+
+                MessageBox.Show("Rol creado exitosamente");
+            }
+            else // Modificar existente
+            {
+                permisosService.CambiarPermisosFamilia(familiaSeleccionada, patentes);
+                MessageBox.Show("Rol modificado exitosamente");
+            }
+            AllFamilias = permisosService.GetFamilias();
+            usuarios = UsuarioBll.TraerUsuarios();
+
+            AllFamilias = permisosService.GetFamilias();
+            TbconUserList.SelectedTab = TabPageList;
+        }
     }
 }

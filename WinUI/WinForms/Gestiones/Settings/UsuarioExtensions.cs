@@ -27,18 +27,35 @@ namespace WinUI.WinForms.Gestiones.Settings
         {
             foreach (var hijo in familia.GetHijos())
             {
-                bool habilitado = hijo.Habilitado && habilitadoPadre;
-
                 if (hijo is Patente patente)
                 {
-                    salida.Add($"{indent}- {patente.DataKey} {(habilitado ? "[Habilitada]" : "[Deshabilitada]")}");
+                    string estado;
+
+                    if (!habilitadoPadre)
+                    {
+                        // El rol está deshabilitado
+                        estado = patente.Habilitado
+                            ? "[Deshabilitada por Rol]"
+                            : "[Deshabilitada en Rol y por Rol]";
+                    }
+                    else
+                    {
+                        // El rol está habilitado
+                        estado = patente.Habilitado
+                            ? "[Habilitada]"
+                            : "[Deshabilitada en Rol]";
+                    }
+
+                    salida.Add($"{indent}- {patente.DataKey} {estado}");
                 }
                 else if (hijo is Familia subFamilia)
                 {
-                    salida.Add($"{indent}SubRol: {subFamilia.Nombre} {(habilitado ? "[Habilitado]" : "[Deshabilitado]")}");
-                    RecorrerFamilia(subFamilia, habilitado, salida, indent + "   ");
+                    bool habilitadoSubFamilia = subFamilia.Habilitado && habilitadoPadre;
+                    salida.Add($"{indent}SubRol: {subFamilia.Nombre} {(habilitadoSubFamilia ? "[Habilitado]" : "[Deshabilitado]")}");
+                    RecorrerFamilia(subFamilia, habilitadoSubFamilia, salida, indent + "   ");
                 }
             }
         }
     }
 }
+    

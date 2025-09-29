@@ -52,7 +52,11 @@ namespace Services__ArqBase_.Bll
 
         }
 
-
+        public List<Patente> GetPatentesDeFamilia(Familia familia)
+        {
+            FamiliaPatenteRepository repo = new FamiliaPatenteRepository();
+            return repo.GetByObject(familia);
+        }
         public void CrearRol(Familia familia)
         {
             FamiliaRepository repository = new FamiliaRepository();
@@ -153,12 +157,12 @@ namespace Services__ArqBase_.Bll
 
                 if (patente != null && patente.Habilitado != item.Habilitado)
                 {
-                    CambiarHabilitado<Familia, Patente>(familia, patente);
+                    CambiarHabilitado<Familia, Patente>(familia, item);
                 }
 
                 else if (patente == null && item.Habilitado)
                 {
-                    AsignarPermisos<Familia, Patente>(familia, patente);
+                    AsignarPermisos<Familia, Patente>(familia, item);
                 }
 
             }

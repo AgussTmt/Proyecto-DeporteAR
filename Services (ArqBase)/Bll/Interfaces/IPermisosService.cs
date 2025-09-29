@@ -23,6 +23,7 @@ namespace Services__ArqBase_.Bll.Interfaces
         public void cambiarPermisosAUsuario(Usuario usuario, List<Component> RolPatentes);
 
         public void CambiarPermisosFamilia(Familia familia, List<Patente> patentes);
+        public List<Patente> GetPatentesDeFamilia(Familia familia);
 
     }
 }
