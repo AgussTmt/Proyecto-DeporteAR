@@ -76,7 +76,7 @@ namespace WinUI.WinForms
         }
 
 
-        private void OpenChildForm(Form childForm, object btnSender)
+        public void OpenChildForm(Form childForm, object btnSender)
         {
             if (!TienePermiso(childForm))
             {

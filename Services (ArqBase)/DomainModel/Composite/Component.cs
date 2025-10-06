@@ -38,6 +38,20 @@ namespace Services.DomainModel {
 		/// <param name="component"></param>
 		public abstract void Remove(Component component);
 
+        /// <summary>
+        /// serializacion para los logs
+        /// </summary>
+        /// <returns></returns>
+        public virtual object ToSerializable()
+        {
+            return new
+            {
+                Id,
+                Habilitado,
+                Tipo = GetType().Name
+            };
+
+        }
 	}//end Component
 
 }//end namespace Patrones

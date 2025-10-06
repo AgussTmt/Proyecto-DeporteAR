@@ -385,5 +385,19 @@ namespace WinUI.WinForms.Gestiones
             AllFamilias = permisosService.GetFamilias();
             TbconUserList.SelectedTab = TabPageList;
         }
+
+        private void BtnLogs_Click(object sender, EventArgs e)
+        {
+            var frmMain = this.ParentForm as FrmMain;
+            if (frmMain != null)
+            {
+                // Simula la apertura normal de un form hijo
+                frmMain.OpenChildForm(new FrmLogs(), sender);
+            }
+            else
+            {
+                MessageBox.Show("No se pudo encontrar el formulario principal.");
+            }
+        }
     }
 }

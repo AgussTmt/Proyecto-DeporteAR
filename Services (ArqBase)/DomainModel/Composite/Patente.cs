@@ -44,7 +44,18 @@ namespace Services.DomainModel
 			throw new Exception("No se pueden eliminar elementos en un hijo tipo hoja");
 		}
 
-	}//end Patente
+        public override object ToSerializable()
+        {
+            return new
+            {
+                Id,
+                DataKey,
+                Habilitado,
+                Tipo = "Patente"
+            };
+        }
+
+    }//end Patente
 
 	public enum TipoAcceso
 	{
@@ -54,5 +65,7 @@ namespace Services.DomainModel
 		SP,
 		Tabla
 	}
+
+
 
 }//end namespace Patrones

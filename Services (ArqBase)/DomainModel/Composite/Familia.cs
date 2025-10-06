@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Linq;
 
 
 
@@ -56,6 +57,18 @@ namespace Services.DomainModel
 		public List<Component> GetHijos()
 		{
 			return hijos;
+        }
+
+        public override object ToSerializable()
+        {
+            return new
+            {
+                Id,
+                Nombre,
+                Habilitado,
+                Tipo = "Familia",
+                Hijos = hijos.Select(h => h.ToSerializable()).ToList()
+            };
         }
 
     }//end Familia

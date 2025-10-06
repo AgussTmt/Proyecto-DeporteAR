@@ -44,7 +44,10 @@
             this.LblListaPatentes = new System.Windows.Forms.Label();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.CombFamilias = new System.Windows.Forms.ComboBox();
+            this.LblCurrentFamilias = new System.Windows.Forms.Label();
             this.BtnSaveCrear = new System.Windows.Forms.Button();
+            this.TxtNombreFamilia = new System.Windows.Forms.TextBox();
             this.LblNombreFamilia = new System.Windows.Forms.Label();
             this.TabPageModificarPermisos = new System.Windows.Forms.TabPage();
             this.panel9 = new System.Windows.Forms.Panel();
@@ -60,9 +63,7 @@
             this.BtnSaveModificarPermiso = new System.Windows.Forms.Button();
             this.TxtUsuario = new System.Windows.Forms.TextBox();
             this.LblUsuario = new System.Windows.Forms.Label();
-            this.TxtNombreFamilia = new System.Windows.Forms.TextBox();
-            this.LblCurrentFamilias = new System.Windows.Forms.Label();
-            this.CombFamilias = new System.Windows.Forms.ComboBox();
+            this.BtnLogs = new System.Windows.Forms.Button();
             this.TbconUserList.SuspendLayout();
             this.TabPageList.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -126,6 +127,7 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.BtnLogs);
             this.panel2.Controls.Add(this.BtnUpdatePatente);
             this.panel2.Controls.Add(this.BtnCreateFamilia);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
@@ -261,6 +263,25 @@
             this.panel3.Size = new System.Drawing.Size(356, 613);
             this.panel3.TabIndex = 5;
             // 
+            // CombFamilias
+            // 
+            this.CombFamilias.FormattingEnabled = true;
+            this.CombFamilias.Location = new System.Drawing.Point(0, 54);
+            this.CombFamilias.Name = "CombFamilias";
+            this.CombFamilias.Size = new System.Drawing.Size(356, 21);
+            this.CombFamilias.TabIndex = 4;
+            this.CombFamilias.SelectedIndexChanged += new System.EventHandler(this.CombFamilias_SelectedIndexChanged);
+            // 
+            // LblCurrentFamilias
+            // 
+            this.LblCurrentFamilias.AutoSize = true;
+            this.LblCurrentFamilias.Dock = System.Windows.Forms.DockStyle.Top;
+            this.LblCurrentFamilias.Location = new System.Drawing.Point(0, 38);
+            this.LblCurrentFamilias.Name = "LblCurrentFamilias";
+            this.LblCurrentFamilias.Size = new System.Drawing.Size(87, 13);
+            this.LblCurrentFamilias.TabIndex = 3;
+            this.LblCurrentFamilias.Text = "Familias actuales";
+            // 
             // BtnSaveCrear
             // 
             this.BtnSaveCrear.Location = new System.Drawing.Point(43, 278);
@@ -270,6 +291,15 @@
             this.BtnSaveCrear.Text = "Guardar";
             this.BtnSaveCrear.UseVisualStyleBackColor = true;
             this.BtnSaveCrear.Click += new System.EventHandler(this.BtnSaveCrear_Click);
+            // 
+            // TxtNombreFamilia
+            // 
+            this.TxtNombreFamilia.Dock = System.Windows.Forms.DockStyle.Top;
+            this.TxtNombreFamilia.Location = new System.Drawing.Point(0, 18);
+            this.TxtNombreFamilia.Margin = new System.Windows.Forms.Padding(10);
+            this.TxtNombreFamilia.Name = "TxtNombreFamilia";
+            this.TxtNombreFamilia.Size = new System.Drawing.Size(356, 20);
+            this.TxtNombreFamilia.TabIndex = 0;
             // 
             // LblNombreFamilia
             // 
@@ -289,10 +319,10 @@
             this.TabPageModificarPermisos.Controls.Add(this.panel7);
             this.TabPageModificarPermisos.Controls.Add(this.panel8);
             this.TabPageModificarPermisos.Controls.Add(this.panel6);
-            this.TabPageModificarPermisos.Location = new System.Drawing.Point(4, 5);
+            this.TabPageModificarPermisos.Location = new System.Drawing.Point(4, 60);
             this.TabPageModificarPermisos.Name = "TabPageModificarPermisos";
             this.TabPageModificarPermisos.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPageModificarPermisos.Size = new System.Drawing.Size(1112, 674);
+            this.TabPageModificarPermisos.Size = new System.Drawing.Size(1112, 619);
             this.TabPageModificarPermisos.TabIndex = 2;
             this.TabPageModificarPermisos.Text = "ModificarPermisos";
             this.TabPageModificarPermisos.UseVisualStyleBackColor = true;
@@ -304,7 +334,7 @@
             this.panel9.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel9.Location = new System.Drawing.Point(787, 3);
             this.panel9.Name = "panel9";
-            this.panel9.Size = new System.Drawing.Size(235, 668);
+            this.panel9.Size = new System.Drawing.Size(235, 613);
             this.panel9.TabIndex = 5;
             // 
             // LstPatenteDeFamilia
@@ -313,7 +343,7 @@
             this.LstPatenteDeFamilia.FormattingEnabled = true;
             this.LstPatenteDeFamilia.Location = new System.Drawing.Point(0, 13);
             this.LstPatenteDeFamilia.Name = "LstPatenteDeFamilia";
-            this.LstPatenteDeFamilia.Size = new System.Drawing.Size(235, 655);
+            this.LstPatenteDeFamilia.Size = new System.Drawing.Size(235, 600);
             this.LstPatenteDeFamilia.TabIndex = 1;
             // 
             // LblPatenteDeFamilia
@@ -333,7 +363,7 @@
             this.panel7.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel7.Location = new System.Drawing.Point(502, 3);
             this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(285, 668);
+            this.panel7.Size = new System.Drawing.Size(285, 613);
             this.panel7.TabIndex = 3;
             // 
             // CheckListFamilias
@@ -342,7 +372,7 @@
             this.CheckListFamilias.FormattingEnabled = true;
             this.CheckListFamilias.Location = new System.Drawing.Point(0, 13);
             this.CheckListFamilias.Name = "CheckListFamilias";
-            this.CheckListFamilias.Size = new System.Drawing.Size(285, 655);
+            this.CheckListFamilias.Size = new System.Drawing.Size(285, 600);
             this.CheckListFamilias.TabIndex = 5;
             // 
             // lblListaFamilias
@@ -362,7 +392,7 @@
             this.panel8.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel8.Location = new System.Drawing.Point(217, 3);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(285, 668);
+            this.panel8.Size = new System.Drawing.Size(285, 613);
             this.panel8.TabIndex = 4;
             // 
             // CheckListPatentes
@@ -371,7 +401,7 @@
             this.CheckListPatentes.FormattingEnabled = true;
             this.CheckListPatentes.Location = new System.Drawing.Point(0, 13);
             this.CheckListPatentes.Name = "CheckListPatentes";
-            this.CheckListPatentes.Size = new System.Drawing.Size(285, 655);
+            this.CheckListPatentes.Size = new System.Drawing.Size(285, 600);
             this.CheckListPatentes.TabIndex = 6;
             // 
             // LblPermisosLista
@@ -392,7 +422,7 @@
             this.panel6.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel6.Location = new System.Drawing.Point(3, 3);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(214, 668);
+            this.panel6.Size = new System.Drawing.Size(214, 613);
             this.panel6.TabIndex = 2;
             // 
             // BtnSaveModificarPermiso
@@ -423,33 +453,16 @@
             this.LblUsuario.TabIndex = 0;
             this.LblUsuario.Text = "Usuario";
             // 
-            // TxtNombreFamilia
+            // BtnLogs
             // 
-            this.TxtNombreFamilia.Dock = System.Windows.Forms.DockStyle.Top;
-            this.TxtNombreFamilia.Location = new System.Drawing.Point(0, 18);
-            this.TxtNombreFamilia.Margin = new System.Windows.Forms.Padding(10);
-            this.TxtNombreFamilia.Name = "TxtNombreFamilia";
-            this.TxtNombreFamilia.Size = new System.Drawing.Size(356, 20);
-            this.TxtNombreFamilia.TabIndex = 0;
-            // 
-            // LblCurrentFamilias
-            // 
-            this.LblCurrentFamilias.AutoSize = true;
-            this.LblCurrentFamilias.Dock = System.Windows.Forms.DockStyle.Top;
-            this.LblCurrentFamilias.Location = new System.Drawing.Point(0, 38);
-            this.LblCurrentFamilias.Name = "LblCurrentFamilias";
-            this.LblCurrentFamilias.Size = new System.Drawing.Size(87, 13);
-            this.LblCurrentFamilias.TabIndex = 3;
-            this.LblCurrentFamilias.Text = "Familias actuales";
-            // 
-            // CombFamilias
-            // 
-            this.CombFamilias.FormattingEnabled = true;
-            this.CombFamilias.Location = new System.Drawing.Point(0, 54);
-            this.CombFamilias.Name = "CombFamilias";
-            this.CombFamilias.Size = new System.Drawing.Size(356, 21);
-            this.CombFamilias.TabIndex = 4;
-            this.CombFamilias.SelectedIndexChanged += new System.EventHandler(this.CombFamilias_SelectedIndexChanged);
+            this.BtnLogs.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnLogs.Location = new System.Drawing.Point(0, 84);
+            this.BtnLogs.Name = "BtnLogs";
+            this.BtnLogs.Size = new System.Drawing.Size(154, 42);
+            this.BtnLogs.TabIndex = 6;
+            this.BtnLogs.Text = "Ver logs";
+            this.BtnLogs.UseVisualStyleBackColor = true;
+            this.BtnLogs.Click += new System.EventHandler(this.BtnLogs_Click);
             // 
             // FrmSettings
             // 
@@ -524,5 +537,6 @@
         private System.Windows.Forms.ComboBox CombFamilias;
         private System.Windows.Forms.Label LblCurrentFamilias;
         private System.Windows.Forms.TextBox TxtNombreFamilia;
+        private System.Windows.Forms.Button BtnLogs;
     }
 }
