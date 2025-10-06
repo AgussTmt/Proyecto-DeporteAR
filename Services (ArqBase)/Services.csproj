@@ -118,6 +118,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Dal\DataBase\SecurityDB.bak" />
+    <None Include="Dal\Tools\SecurityDB.bak" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
