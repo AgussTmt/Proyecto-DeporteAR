@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Dal.Tools
 {
-    public static class SqlHelper
+    public  class SqlHelper
     {
         private static string conString;
 

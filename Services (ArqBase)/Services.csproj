@@ -74,11 +74,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bll\BackUpService.cs" />
     <Compile Include="Bll\IdiomaService.cs" />
     <Compile Include="Bll\Interfaces\IPermisosService.cs" />
     <Compile Include="Bll\LoggerConfiguration.cs" />
     <Compile Include="Bll\PermisosService.cs" />
     <Compile Include="Bll\UsuarioBll.cs" />
+    <Compile Include="Dal\BackUpRepository.cs" />
     <Compile Include="Dal\IdiomaRepository.cs" />
     <Compile Include="Dal\Implementations\Adapters\FamiliaAdapter.cs" />
     <Compile Include="Dal\Implementations\Adapters\PatenteAdapter.cs" />
@@ -107,6 +109,7 @@
     <Compile Include="DomainModel\Logging\LogEntry.cs" />
     <Compile Include="DomainModel\Logging\LogLevel.cs" />
     <Compile Include="Facade\CryptographyService.cs" />
+    <Compile Include="Facade\DatabaseService.cs" />
     <Compile Include="Facade\Extensions\IdiomaExtension.cs" />
     <Compile Include="Facade\LoggerService.cs" />
     <Compile Include="Facade\LoginService.cs" />
