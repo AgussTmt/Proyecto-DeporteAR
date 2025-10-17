@@ -247,6 +247,7 @@
             this.BtnUserManagment.Text = "           Control de usuarios";
             this.BtnUserManagment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.BtnUserManagment.UseVisualStyleBackColor = true;
+            this.BtnUserManagment.Click += new System.EventHandler(this.BtnUserManagment_Click);
             // 
             // FrmMain
             // 

@@ -90,20 +90,26 @@
     <Compile Include="WinForms\Gestiones\FrmReportes.Designer.cs">
       <DependentUpon>FrmReportes.cs</DependentUpon>
     </Compile>
-    <Compile Include="WinForms\Gestiones\Settings\FrmLogs.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WinForms\Gestiones\Settings\FrmLogs.Designer.cs">
-      <DependentUpon>FrmLogs.cs</DependentUpon>
-    </Compile>
-    <Compile Include="WinForms\Gestiones\Settings\PatenteDeFamilia.cs" />
     <Compile Include="WinForms\Gestiones\Settings\FrmSettings.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="WinForms\Gestiones\Settings\FrmSettings.Designer.cs">
       <DependentUpon>FrmSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="WinForms\Gestiones\Settings\UsuarioExtensions.cs" />
+    <Compile Include="WinForms\Gestiones\UserManagment\FrmLogs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\UserManagment\FrmLogs.Designer.cs">
+      <DependentUpon>FrmLogs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\UserManagment\PatenteDeFamilia.cs" />
+    <Compile Include="WinForms\Gestiones\UserManagment\FrmUserManagment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\UserManagment\FrmUserManagment.Designer.cs">
+      <DependentUpon>FrmUserManagment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\UserManagment\UsuarioExtensions.cs" />
     <Compile Include="WinForms\Login&amp;Register\FrmLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -133,11 +139,14 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="WinForms\Gestiones\Settings\FrmLogs.resx">
-      <DependentUpon>FrmLogs.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="WinForms\Gestiones\Settings\FrmSettings.resx">
       <DependentUpon>FrmSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Gestiones\UserManagment\FrmLogs.resx">
+      <DependentUpon>FrmLogs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Gestiones\UserManagment\FrmUserManagment.resx">
+      <DependentUpon>FrmUserManagment.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinForms\Login&amp;Register\FrmLogin.resx">
       <DependentUpon>FrmLogin.cs</DependentUpon>

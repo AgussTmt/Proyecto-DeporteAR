@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Services.DomainModel;
 using WinUI.WinForms.Main;
 using WinUI.WinForms.Gestiones;
+using WinUI.WinForms.Gestiones.Settings;
 
 namespace WinUI.WinForms
 {
@@ -145,6 +146,11 @@ namespace WinUI.WinForms
         private void panelDesktopPane_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void BtnUserManagment_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new FrmUserManagment(), sender);
         }
     }
 }
