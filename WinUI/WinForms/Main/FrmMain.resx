@@ -152,6 +152,18 @@
         klU+NuIAAAAASUVORK5CYII=
 </value>
   </data>
+  <data name="BtnUserManagment.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAAV5JREFUWEfV
+        lFFuwzAMQ3u03WwfAZJj7WgtFFgFQ5OKjG0Y9gCjEEVTdtr08fiP7Pv+VIt9v4YaprQfQQV/R1siAzDo
+        OI5PFRxa9LDGz2V4Y+e7dh6ub1ne0GAps2tWt3V0fW/cBnzM8Z3nb6I6jNNv4Y3VkED1uW7DG0f4F2qK
+        8Ki9WFuqx8l1BXsxE1/VC9u2faQhV/Y4MFEHTVDHzNBj1tUNJtYDNQRv5fqsBXaOamSI0yst9yid86ZG
+        3iofGYdwrTSXYQ8QpEmFVbXSXM36RJ4YtbwJa7iw182wqM1Yd+A9XJfw7XAz67wq33tAF3xk+T9xdcyw
+        p/3YAz4xL/Y7eB8v9p+UTXGzisor50gRwHfXvccdTzLNw0IdpBPe8dg5tjHohHc8do5tDDrhHY+dYxuD
+        TnjHY+fYxiDCUnfhqIdXeco5KUyNweoBuB/czTgbamU41srj/Lx47p/yAoyuwUoqn4AEAAAAAElFTkSu
+        QmCC
+</value>
+  </data>
   <data name="BtnReportes.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1

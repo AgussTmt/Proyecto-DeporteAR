@@ -148,10 +148,13 @@ namespace Services__ArqBase_.Bll
                 }
 
 
-                var serializableList = RolPatentes.Select(rp => rp.ToSerializable()).ToList();
-                string json = JsonSerializer.Serialize(serializableList, new JsonSerializerOptions { WriteIndented = true });
+                string detalle = $"Patentes antiguas: {String.Join(",", patentesActuales.Where(p => p.Habilitado).Select(p => p.DataKey))} " +
+                    $"Roles antiguos: {String.Join(",", familiasActuales.Where(p => p.Habilitado).Select(p => p.Nombre))}" +
+                    $"\n" +
+                    $"Patentes nuevas: {String.Join(",", RolPatentes.OfType<Patente>().Where(p => p.Habilitado).Select(p => p.DataKey))} " +
+                    $"Roles nuevos: {String.Join(",", RolPatentes.OfType<Familia>().Where(p => p.Habilitado).Select(p => p.Nombre))}";
                 _logger.Information($"Usuario '{usuario.Nombre}' (ID: {usuario.IdUsuario}) - Permisos actualizados");
-                _logger.Information($"Detalle de cambios:\n{json}");
+                _logger.Information($"Detalle de cambios:\n{detalle}");
             }
             catch (Exception ex)
             {

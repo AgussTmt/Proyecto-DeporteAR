@@ -41,6 +41,7 @@
             this.panelTitleBar = new System.Windows.Forms.Panel();
             this.LblTitle = new System.Windows.Forms.Label();
             this.panelDesktopPane = new System.Windows.Forms.Panel();
+            this.BtnUserManagment = new System.Windows.Forms.Button();
             this.panelMenu.SuspendLayout();
             this.panelLogo.SuspendLayout();
             this.panelTitleBar.SuspendLayout();
@@ -51,6 +52,7 @@
             this.panelMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(24)))), ((int)(((byte)(29)))));
             this.panelMenu.Controls.Add(this.BtnLogout);
             this.panelMenu.Controls.Add(this.BtnSettings);
+            this.panelMenu.Controls.Add(this.BtnUserManagment);
             this.panelMenu.Controls.Add(this.BtnReportes);
             this.panelMenu.Controls.Add(this.BtnCompeticion);
             this.panelMenu.Controls.Add(this.BtnCancha);
@@ -71,7 +73,7 @@
             this.BtnLogout.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.BtnLogout.Image = ((System.Drawing.Image)(resources.GetObject("BtnLogout.Image")));
             this.BtnLogout.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnLogout.Location = new System.Drawing.Point(0, 341);
+            this.BtnLogout.Location = new System.Drawing.Point(0, 395);
             this.BtnLogout.Name = "BtnLogout";
             this.BtnLogout.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
             this.BtnLogout.Size = new System.Drawing.Size(220, 54);
@@ -90,7 +92,7 @@
             this.BtnSettings.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.BtnSettings.Image = ((System.Drawing.Image)(resources.GetObject("BtnSettings.Image")));
             this.BtnSettings.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSettings.Location = new System.Drawing.Point(0, 287);
+            this.BtnSettings.Location = new System.Drawing.Point(0, 341);
             this.BtnSettings.Name = "BtnSettings";
             this.BtnSettings.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
             this.BtnSettings.Size = new System.Drawing.Size(220, 54);
@@ -228,6 +230,24 @@
             this.panelDesktopPane.TabIndex = 2;
             this.panelDesktopPane.Paint += new System.Windows.Forms.PaintEventHandler(this.panelDesktopPane_Paint);
             // 
+            // BtnUserManagment
+            // 
+            this.BtnUserManagment.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnUserManagment.FlatAppearance.BorderSize = 0;
+            this.BtnUserManagment.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnUserManagment.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnUserManagment.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.BtnUserManagment.Image = ((System.Drawing.Image)(resources.GetObject("BtnUserManagment.Image")));
+            this.BtnUserManagment.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnUserManagment.Location = new System.Drawing.Point(0, 287);
+            this.BtnUserManagment.Name = "BtnUserManagment";
+            this.BtnUserManagment.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.BtnUserManagment.Size = new System.Drawing.Size(220, 54);
+            this.BtnUserManagment.TabIndex = 7;
+            this.BtnUserManagment.Text = "           Control de usuarios";
+            this.BtnUserManagment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnUserManagment.UseVisualStyleBackColor = true;
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -262,5 +282,6 @@
         private System.Windows.Forms.Label LblTitle;
         private System.Windows.Forms.Label l;
         private System.Windows.Forms.Panel panelDesktopPane;
+        private System.Windows.Forms.Button BtnUserManagment;
     }
 }

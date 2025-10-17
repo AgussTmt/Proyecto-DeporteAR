@@ -53,8 +53,7 @@ namespace WinUI.WinForms.Gestiones.Settings
 
                     foreach (var entrada in entradas.AsEnumerable().Reverse())
                     {
-                        AgregarEntradaConColor(entrada);
-                        richTextBoxLogs.AppendText(Environment.NewLine + Environment.NewLine);
+                        richTextBoxLogs.AppendText(entrada + Environment.NewLine + Environment.NewLine);
                     }
                 }
                 else
@@ -117,36 +116,36 @@ namespace WinUI.WinForms.Gestiones.Settings
             return entradas;
         }
 
-        private void AgregarEntradaConColor(string entrada)
-        {
-            var lineas = entrada.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+        //private void AgregarEntradaConColor(string entrada)
+        //{
+        //    var lineas = entrada.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 
-            foreach (var linea in lineas)
-            {
-                // Colorear según el nivel de log
-                if (linea.Contains("[Error]") || linea.Contains("[Fatal]"))
-                {
-                    richTextBoxLogs.SelectionColor = Color.Red;
-                }
-                else if (linea.Contains("[Warning]"))
-                {
-                    richTextBoxLogs.SelectionColor = Color.Orange;
-                }
-                else if (linea.Contains("[Information]"))
-                {
-                    richTextBoxLogs.SelectionColor = Color.Blue;
-                }
-                else if (linea.Contains("[Debug]") || linea.Contains("[Trace]"))
-                {
-                    richTextBoxLogs.SelectionColor = Color.Gray;
-                }
-                else
-                {
-                    richTextBoxLogs.SelectionColor = Color.Black;
-                }
+        //    foreach (var linea in lineas)
+        //    {
+        //        // Colorear según el nivel de log
+        //        if (linea.Contains("[Error]") || linea.Contains("[Fatal]"))
+        //        {
+        //            richTextBoxLogs.SelectionColor = Color.Red;
+        //        }
+        //        else if (linea.Contains("[Warning]"))
+        //        {
+        //            richTextBoxLogs.SelectionColor = Color.Orange;
+        //        }
+        //        else if (linea.Contains("[Information]"))
+        //        {
+        //            richTextBoxLogs.SelectionColor = Color.Blue;
+        //        }
+        //        else if (linea.Contains("[Debug]") || linea.Contains("[Trace]"))
+        //        {
+        //            richTextBoxLogs.SelectionColor = Color.Gray;
+        //        }
+        //        else
+        //        {
+        //            richTextBoxLogs.SelectionColor = Color.Black;
+        //        }
 
-                richTextBoxLogs.AppendText(linea + Environment.NewLine);
-            }
-        }
+        //        richTextBoxLogs.AppendText(linea + Environment.NewLine);
+        //    }
+        //}
     }
 }
