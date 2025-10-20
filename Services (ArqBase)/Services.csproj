@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bll\BackUpService.cs" />
+    <Compile Include="Bll\GmailService.cs" />
     <Compile Include="Bll\IdiomaService.cs" />
     <Compile Include="Bll\Interfaces\IPermisosService.cs" />
     <Compile Include="Bll\LoggerConfiguration.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Facade\IdiomaHelper.cs" />
     <Compile Include="Facade\LoggerService.cs" />
     <Compile Include="Facade\LoginService.cs" />
+    <Compile Include="Bll\MailService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
