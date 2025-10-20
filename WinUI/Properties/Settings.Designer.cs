@@ -22,5 +22,17 @@ namespace WinUI.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("es-AR")]
+        public string LastLanguage {
+            get {
+                return ((string)(this["LastLanguage"]));
+            }
+            set {
+                this["LastLanguage"] = value;
+            }
+        }
     }
 }

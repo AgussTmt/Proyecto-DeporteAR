@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Services.DomainModel;
 using Services.Facade;
+using Services__ArqBase_.Facade;
 
 namespace WinUI.WinForms
 {
@@ -21,7 +22,12 @@ namespace WinUI.WinForms
 
         private void Registro_Load(object sender, EventArgs e)
         {
+            IdiomaHelper.IdiomaCambio += TraducirFormulario;
+        }
 
+        private void TraducirFormulario()
+        {
+            IdiomaHelper.TraducirControles(this);
         }
 
         private void BtnRegistrar_Click(object sender, EventArgs e)
@@ -47,6 +53,11 @@ namespace WinUI.WinForms
             this.Close();
             FrmLogin frmLogin = new FrmLogin();
             frmLogin.Show();
+        }
+
+        private void FrmRegistrar_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            IdiomaHelper.IdiomaCambio -= TraducirFormulario;
         }
     }
 }

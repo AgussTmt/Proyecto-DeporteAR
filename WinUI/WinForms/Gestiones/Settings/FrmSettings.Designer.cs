@@ -29,22 +29,24 @@
         private void InitializeComponent()
         {
             this.PanelVerLogs = new System.Windows.Forms.Panel();
-            this.BtnVerLogs = new System.Windows.Forms.Button();
-            this.LbLogs = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.BtnVerLogs = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.LbLogs = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.BtnBackUp = new System.Windows.Forms.Button();
-            this.LbDataBase = new System.Windows.Forms.Label();
-            this.panel6 = new System.Windows.Forms.Panel();
             this.BtnRestore = new System.Windows.Forms.Button();
+            this.BtnBackUp = new System.Windows.Forms.Button();
+            this.ComboBoxBaseDeDatos = new System.Windows.Forms.ComboBox();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.LbDataBase = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.panel7 = new System.Windows.Forms.Panel();
             this.panel8 = new System.Windows.Forms.Panel();
-            this.LbIdiomas = new System.Windows.Forms.Label();
-            this.ComboBoxIdioma = new System.Windows.Forms.ComboBox();
             this.BtnCambiarIdioma = new System.Windows.Forms.Button();
+            this.ComboBoxIdioma = new System.Windows.Forms.ComboBox();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.LbIdiomas = new System.Windows.Forms.Label();
+            this.lblStatus = new System.Windows.Forms.Label();
             this.PanelVerLogs.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -52,8 +54,8 @@
             this.panel4.SuspendLayout();
             this.panel6.SuspendLayout();
             this.panel5.SuspendLayout();
-            this.panel7.SuspendLayout();
             this.panel8.SuspendLayout();
+            this.panel7.SuspendLayout();
             this.SuspendLayout();
             // 
             // PanelVerLogs
@@ -66,6 +68,15 @@
             this.PanelVerLogs.Size = new System.Drawing.Size(928, 105);
             this.PanelVerLogs.TabIndex = 0;
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.BtnVerLogs);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 48);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(928, 47);
+            this.panel1.TabIndex = 2;
+            // 
             // BtnVerLogs
             // 
             this.BtnVerLogs.Dock = System.Windows.Forms.DockStyle.Left;
@@ -77,24 +88,6 @@
             this.BtnVerLogs.UseVisualStyleBackColor = true;
             this.BtnVerLogs.Click += new System.EventHandler(this.BtnVerLogs_Click);
             // 
-            // LbLogs
-            // 
-            this.LbLogs.AutoSize = true;
-            this.LbLogs.Location = new System.Drawing.Point(3, 9);
-            this.LbLogs.Name = "LbLogs";
-            this.LbLogs.Size = new System.Drawing.Size(30, 13);
-            this.LbLogs.TabIndex = 1;
-            this.LbLogs.Text = "Logs";
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.BtnVerLogs);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 48);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(928, 47);
-            this.panel1.TabIndex = 2;
-            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.LbLogs);
@@ -103,6 +96,15 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(928, 48);
             this.panel2.TabIndex = 3;
+            // 
+            // LbLogs
+            // 
+            this.LbLogs.AutoSize = true;
+            this.LbLogs.Location = new System.Drawing.Point(3, 9);
+            this.LbLogs.Name = "LbLogs";
+            this.LbLogs.Size = new System.Drawing.Size(30, 13);
+            this.LbLogs.TabIndex = 1;
+            this.LbLogs.Text = "Logs";
             // 
             // panel3
             // 
@@ -118,21 +120,52 @@
             // 
             this.panel4.Controls.Add(this.BtnRestore);
             this.panel4.Controls.Add(this.BtnBackUp);
+            this.panel4.Controls.Add(this.ComboBoxBaseDeDatos);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel4.Location = new System.Drawing.Point(0, 32);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(928, 50);
             this.panel4.TabIndex = 2;
             // 
+            // BtnRestore
+            // 
+            this.BtnRestore.Dock = System.Windows.Forms.DockStyle.Left;
+            this.BtnRestore.Location = new System.Drawing.Point(448, 0);
+            this.BtnRestore.Name = "BtnRestore";
+            this.BtnRestore.Size = new System.Drawing.Size(120, 50);
+            this.BtnRestore.TabIndex = 1;
+            this.BtnRestore.Text = "Restore";
+            this.BtnRestore.UseVisualStyleBackColor = true;
+            this.BtnRestore.Click += new System.EventHandler(this.BtnRestore_Click);
+            // 
             // BtnBackUp
             // 
             this.BtnBackUp.Dock = System.Windows.Forms.DockStyle.Left;
-            this.BtnBackUp.Location = new System.Drawing.Point(0, 0);
+            this.BtnBackUp.Location = new System.Drawing.Point(328, 0);
             this.BtnBackUp.Name = "BtnBackUp";
             this.BtnBackUp.Size = new System.Drawing.Size(120, 50);
             this.BtnBackUp.TabIndex = 0;
             this.BtnBackUp.Text = "BackUp";
             this.BtnBackUp.UseVisualStyleBackColor = true;
+            this.BtnBackUp.Click += new System.EventHandler(this.BtnBackUp_Click);
+            // 
+            // ComboBoxBaseDeDatos
+            // 
+            this.ComboBoxBaseDeDatos.Dock = System.Windows.Forms.DockStyle.Left;
+            this.ComboBoxBaseDeDatos.FormattingEnabled = true;
+            this.ComboBoxBaseDeDatos.Location = new System.Drawing.Point(0, 0);
+            this.ComboBoxBaseDeDatos.Name = "ComboBoxBaseDeDatos";
+            this.ComboBoxBaseDeDatos.Size = new System.Drawing.Size(328, 21);
+            this.ComboBoxBaseDeDatos.TabIndex = 2;
+            // 
+            // panel6
+            // 
+            this.panel6.Controls.Add(this.LbDataBase);
+            this.panel6.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel6.Location = new System.Drawing.Point(0, 0);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(928, 32);
+            this.panel6.TabIndex = 1;
             // 
             // LbDataBase
             // 
@@ -144,25 +177,6 @@
             this.LbDataBase.TabIndex = 1;
             this.LbDataBase.Text = "Operaciones de Base de datos";
             // 
-            // panel6
-            // 
-            this.panel6.Controls.Add(this.LbDataBase);
-            this.panel6.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel6.Location = new System.Drawing.Point(0, 0);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(928, 32);
-            this.panel6.TabIndex = 1;
-            // 
-            // BtnRestore
-            // 
-            this.BtnRestore.Dock = System.Windows.Forms.DockStyle.Left;
-            this.BtnRestore.Location = new System.Drawing.Point(120, 0);
-            this.BtnRestore.Name = "BtnRestore";
-            this.BtnRestore.Size = new System.Drawing.Size(120, 50);
-            this.BtnRestore.TabIndex = 1;
-            this.BtnRestore.Text = "Restore";
-            this.BtnRestore.UseVisualStyleBackColor = true;
-            // 
             // panel5
             // 
             this.panel5.Controls.Add(this.panel8);
@@ -173,15 +187,6 @@
             this.panel5.Size = new System.Drawing.Size(928, 95);
             this.panel5.TabIndex = 5;
             // 
-            // panel7
-            // 
-            this.panel7.Controls.Add(this.LbIdiomas);
-            this.panel7.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel7.Location = new System.Drawing.Point(0, 0);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(928, 25);
-            this.panel7.TabIndex = 6;
-            // 
             // panel8
             // 
             this.panel8.Controls.Add(this.BtnCambiarIdioma);
@@ -191,26 +196,6 @@
             this.panel8.Name = "panel8";
             this.panel8.Size = new System.Drawing.Size(928, 44);
             this.panel8.TabIndex = 7;
-            // 
-            // LbIdiomas
-            // 
-            this.LbIdiomas.AutoSize = true;
-            this.LbIdiomas.Dock = System.Windows.Forms.DockStyle.Top;
-            this.LbIdiomas.Location = new System.Drawing.Point(0, 0);
-            this.LbIdiomas.Name = "LbIdiomas";
-            this.LbIdiomas.Size = new System.Drawing.Size(60, 13);
-            this.LbIdiomas.TabIndex = 0;
-            this.LbIdiomas.Text = "MultiIdioma";
-            // 
-            // ComboBoxIdioma
-            // 
-            this.ComboBoxIdioma.Dock = System.Windows.Forms.DockStyle.Left;
-            this.ComboBoxIdioma.FormattingEnabled = true;
-            this.ComboBoxIdioma.Location = new System.Drawing.Point(0, 0);
-            this.ComboBoxIdioma.Margin = new System.Windows.Forms.Padding(10);
-            this.ComboBoxIdioma.Name = "ComboBoxIdioma";
-            this.ComboBoxIdioma.Size = new System.Drawing.Size(328, 21);
-            this.ComboBoxIdioma.TabIndex = 0;
             // 
             // BtnCambiarIdioma
             // 
@@ -223,16 +208,57 @@
             this.BtnCambiarIdioma.Text = "cambiar idioma";
             this.BtnCambiarIdioma.UseVisualStyleBackColor = true;
             // 
+            // ComboBoxIdioma
+            // 
+            this.ComboBoxIdioma.Dock = System.Windows.Forms.DockStyle.Left;
+            this.ComboBoxIdioma.FormattingEnabled = true;
+            this.ComboBoxIdioma.Location = new System.Drawing.Point(0, 0);
+            this.ComboBoxIdioma.Margin = new System.Windows.Forms.Padding(10);
+            this.ComboBoxIdioma.Name = "ComboBoxIdioma";
+            this.ComboBoxIdioma.Size = new System.Drawing.Size(328, 21);
+            this.ComboBoxIdioma.TabIndex = 0;
+            // 
+            // panel7
+            // 
+            this.panel7.Controls.Add(this.LbIdiomas);
+            this.panel7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel7.Location = new System.Drawing.Point(0, 0);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(928, 25);
+            this.panel7.TabIndex = 6;
+            // 
+            // LbIdiomas
+            // 
+            this.LbIdiomas.AutoSize = true;
+            this.LbIdiomas.Dock = System.Windows.Forms.DockStyle.Top;
+            this.LbIdiomas.Location = new System.Drawing.Point(0, 0);
+            this.LbIdiomas.Name = "LbIdiomas";
+            this.LbIdiomas.Size = new System.Drawing.Size(60, 13);
+            this.LbIdiomas.TabIndex = 0;
+            this.LbIdiomas.Text = "MultiIdioma";
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStatus.Location = new System.Drawing.Point(298, 394);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(0, 33);
+            this.lblStatus.TabIndex = 6;
+            // 
             // FrmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(928, 555);
+            this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.PanelVerLogs);
             this.Name = "FrmSettings";
             this.Text = "FrmSettings";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmSettings_FormClosing);
+            this.Load += new System.EventHandler(this.FrmSettings_Load);
             this.PanelVerLogs.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
@@ -242,10 +268,11 @@
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
             this.panel5.ResumeLayout(false);
+            this.panel8.ResumeLayout(false);
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
-            this.panel8.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -268,5 +295,7 @@
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.Button BtnCambiarIdioma;
         private System.Windows.Forms.ComboBox ComboBoxIdioma;
+        private System.Windows.Forms.ComboBox ComboBoxBaseDeDatos;
+        private System.Windows.Forms.Label lblStatus;
     }
 }

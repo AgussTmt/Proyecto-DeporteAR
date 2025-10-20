@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Services__ArqBase_.Facade;
 
 namespace WinUI.WinForms.Gestiones
 {
@@ -14,7 +15,11 @@ namespace WinUI.WinForms.Gestiones
     {
         public FrmCanchas()
         {
-            InitializeComponent();
+            IdiomaHelper.TraducirControles(this);
+        }
+
+        private void FrmCanchas_FormClosing(object sender, FormClosingEventArgs e)
+        {
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Services__ArqBase_.Facade;
 
 namespace WinUI.WinForms.Gestiones.Settings
 {
@@ -116,36 +117,19 @@ namespace WinUI.WinForms.Gestiones.Settings
             return entradas;
         }
 
-        //private void AgregarEntradaConColor(string entrada)
-        //{
-        //    var lineas = entrada.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+        private void richTextBoxLogs_TextChanged(object sender, EventArgs e)
+        {
 
-        //    foreach (var linea in lineas)
-        //    {
-        //        // Colorear según el nivel de log
-        //        if (linea.Contains("[Error]") || linea.Contains("[Fatal]"))
-        //        {
-        //            richTextBoxLogs.SelectionColor = Color.Red;
-        //        }
-        //        else if (linea.Contains("[Warning]"))
-        //        {
-        //            richTextBoxLogs.SelectionColor = Color.Orange;
-        //        }
-        //        else if (linea.Contains("[Information]"))
-        //        {
-        //            richTextBoxLogs.SelectionColor = Color.Blue;
-        //        }
-        //        else if (linea.Contains("[Debug]") || linea.Contains("[Trace]"))
-        //        {
-        //            richTextBoxLogs.SelectionColor = Color.Gray;
-        //        }
-        //        else
-        //        {
-        //            richTextBoxLogs.SelectionColor = Color.Black;
-        //        }
+        }
 
-        //        richTextBoxLogs.AppendText(linea + Environment.NewLine);
-        //    }
-        //}
+        private void FrmLogs_Load(object sender, EventArgs e)
+        {
+            IdiomaHelper.TraducirControles(this);
+        }
+        private void FrmLogs_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            
+        }
+
     }
 }

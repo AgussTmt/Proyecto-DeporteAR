@@ -35,6 +35,8 @@ namespace Services.Dal
         private static string fileName = ConfigurationManager.AppSettings["IdiomaFileName"];
 
         private static string path = default;
+
+        private static readonly object _fileLock = new object();
         static IdiomaRepository()
         {
             path = Path.Combine(folderPath, fileName);
@@ -53,14 +55,16 @@ namespace Services.Dal
                     while (!sr.EndOfStream)
                     {
                         string line = sr.ReadLine();
-
-                        string[] strings = line.Split('=');
-                        string key = strings[0];
-                        string value = strings[1];
-
-                        if (key.ToLower() == word.ToLower())
+                        if (!string.IsNullOrWhiteSpace(line) && line.Contains("="))
                         {
-                            return value;
+                            string[] strings = line.Split('=');
+                            string key = strings[0];
+                            string value = strings[1];
+
+                            if (key.ToLower() == word.ToLower())
+                            {
+                                return value;
+                            }
                         }
                     }
                 }
@@ -76,7 +80,31 @@ namespace Services.Dal
 
         public void AgregarDataKey(string key)
         {
+            try
+            {
+                string cultura = Thread.CurrentThread.CurrentCulture.Name;
+                string localPath = $"{path}.{cultura}";
 
+                
+                lock (_fileLock)
+                {
+                    if (File.Exists(localPath))
+                    {
+                        var lines = File.ReadAllLines(localPath);
+
+                        if (lines.Any(line => line.Trim().StartsWith(key + "=", StringComparison.OrdinalIgnoreCase)))
+                        {
+                            return;
+                        }
+                    }
+                    string newLine = $"{Environment.NewLine}{key}={key}";
+                    File.AppendAllText(localPath, newLine);
+                }
+            }
+            catch (Exception ex)
+            { 
+                Console.WriteLine($"Error al agregar la clave '{key}': {ex.Message}");
+            }
         }
 
     }

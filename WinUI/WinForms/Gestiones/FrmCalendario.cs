@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Services__ArqBase_.Facade;
 
 namespace WinUI.WinForms.Gestiones
 {
@@ -15,6 +16,21 @@ namespace WinUI.WinForms.Gestiones
         public FrmCalendario()
         {
             InitializeComponent();
+        }
+
+        private void FrmCalendario_Load(object sender, EventArgs e)
+        {
+            IdiomaHelper.IdiomaCambio += TraducirFormulario;
+        }
+
+        private void TraducirFormulario()
+        {
+            IdiomaHelper.TraducirControles(this);
+        }
+
+        private void FrmCalendario_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            IdiomaHelper.IdiomaCambio -= TraducirFormulario;
         }
     }
 }

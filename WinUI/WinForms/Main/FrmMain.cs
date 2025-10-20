@@ -11,6 +11,9 @@ using Services.DomainModel;
 using WinUI.WinForms.Main;
 using WinUI.WinForms.Gestiones;
 using WinUI.WinForms.Gestiones.Settings;
+using System.Globalization;
+using System.Threading;
+using Services__ArqBase_.Facade;
 
 namespace WinUI.WinForms
 {
@@ -30,6 +33,7 @@ namespace WinUI.WinForms
             _user = user;
         }
 
+        #region Interactividad abrir formularios
         private Color SelectThemeColor()
         {
             int index = random.Next(ThemeColor.ColorList.Count);
@@ -102,11 +106,21 @@ namespace WinUI.WinForms
 
            
         }
+        #endregion
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
-
+            IdiomaHelper.TraducirControles(this);
         }
+
+      
+        private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            
+        }
+
+
+        #region Btn"form"_click
 
         private void BtnCalendario_Click(object sender, EventArgs e)
         {
@@ -133,6 +147,8 @@ namespace WinUI.WinForms
             OpenChildForm(new FrmSettings(), sender);
         }
 
+        #endregion
+
         private void BtnLogout_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -152,5 +168,30 @@ namespace WinUI.WinForms
         {
             OpenChildForm(new FrmUserManagment(), sender);
         }
+
+        #region Idiomas
+
+        private void BtnIdiomaEspañol_Click(object sender, EventArgs e)
+        {
+            CambiarIdioma("es-AR");
+        }
+        private void BtnIdiomaIngles_Click(object sender, EventArgs e)
+        {
+            CambiarIdioma("en-US");
+        }
+
+        private void CambiarIdioma(string cultura)
+        {
+            // 1. Cambiamos la cultura del hilo
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(cultura);
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(cultura);
+
+            Properties.Settings.Default.LastLanguage = cultura;
+            Properties.Settings.Default.Save();
+            // 2. Usamos tu helper para traducir el formulario actual
+            IdiomaHelper.TraducirControles(this);
+        }
+
+        #endregion
     }
 }

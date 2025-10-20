@@ -11,6 +11,7 @@ using Services.Bll;
 using Services.DomainModel;
 using Services__ArqBase_.Bll;
 using Services__ArqBase_.Bll.Interfaces;
+using Services__ArqBase_.Facade;
 using WinUI.WinForms.Gestiones.Settings;
 using Component = Services.DomainModel.Component;
 
@@ -53,8 +54,8 @@ namespace WinUI.WinForms.Gestiones
             {
                 MessageBox.Show("no se encontraro usuarios");
             }
-        }    
-        
+            IdiomaHelper.TraducirControles(this);
+        }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {

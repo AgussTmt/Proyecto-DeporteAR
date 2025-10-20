@@ -139,6 +139,18 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="WinForms\Gestiones\FrmCalendario.resx">
+      <DependentUpon>FrmCalendario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Gestiones\FrmCanchas.resx">
+      <DependentUpon>FrmCanchas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Gestiones\FrmCompeticion.resx">
+      <DependentUpon>FrmCompeticion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Gestiones\FrmReportes.resx">
+      <DependentUpon>FrmReportes.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WinForms\Gestiones\Settings\FrmSettings.resx">
       <DependentUpon>FrmSettings.cs</DependentUpon>
     </EmbeddedResource>
@@ -157,6 +169,12 @@
     <EmbeddedResource Include="WinForms\Main\FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Languages\Idioma.en-US">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Languages\Idioma.es-AR">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -35,7 +35,7 @@ namespace Services.Bll
             }
             catch (WordNotFoundException ex) 
 			{
-				//Podría aplicar una nueva política
+
 				IdiomaRepository.Current.AgregarDataKey(word);
                 //Esto seguramente vaya a una bitácora
                 Console.WriteLine(ex.Message);

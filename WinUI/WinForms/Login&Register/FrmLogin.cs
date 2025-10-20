@@ -1,5 +1,6 @@
 ﻿using Services.DomainModel;
 using Services.Facade;
+using Services__ArqBase_.Facade;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -43,8 +44,8 @@ namespace WinUI
 
             //6f5e615b-70c2-4b05-aaf7-c12f88d3645a
             //3075A247-1996-47F6-9ADC-B52ADB6E501E
-            
-          
+
+
 
         }
 
@@ -53,16 +54,28 @@ namespace WinUI
             //Primero vamos a crear un usuario admin con una pass hasheada
             //LoginService.RegistrarUsuario(new Usuario( "gaston", 
             //    "gastonweingand@gmail.com", "1234" ));
-
+            IdiomaHelper.TraducirControles(this);
             //Console.WriteLine($"Contraseña: {CryptographyService.HashMd5("admin")}");
+            
 
         }
+
+       
 
         private void LinkRegistro_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             FrmRegistrar frmRegistrar = new FrmRegistrar();
-            this.Hide();
+            this.Close();
             frmRegistrar.Show();
+        }
+
+        private void FrmLogin_FormClosing(object sender, FormClosingEventArgs e)
+        {
+        }
+
+        private void FrmLogin_VisibleChanged(object sender, EventArgs e)
+        {
+            IdiomaHelper.TraducirControles(this);
         }
     }
 }

@@ -122,6 +122,7 @@
             this.Controls.Add(this.LblNombre);
             this.Name = "FrmRegistrar";
             this.Text = "Registro";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmRegistrar_FormClosing);
             this.Load += new System.EventHandler(this.Registro_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
