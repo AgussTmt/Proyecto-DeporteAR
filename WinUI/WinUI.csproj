@@ -116,10 +116,22 @@
     <Compile Include="WinForms\Login&amp;Register\FrmLogin.Designer.cs">
       <DependentUpon>FrmLogin.cs</DependentUpon>
     </Compile>
-    <Compile Include="WinForms\Login&amp;Register\FrmRegistrar.cs">
+    <Compile Include="WinForms\Login&amp;Register\FrmNuevaContraseña.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="WinForms\Login&amp;Register\FrmRegistrar.Designer.cs">
+    <Compile Include="WinForms\Login&amp;Register\FrmNuevaContraseña.Designer.cs">
+      <DependentUpon>FrmNuevaContraseña.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\Login&amp;Register\FrmPassRecovery.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\Login&amp;Register\FrmPassRecovery.Designer.cs">
+      <DependentUpon>FrmPassRecovery.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\UserManagment\FrmRegistrar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\UserManagment\FrmRegistrar.Designer.cs">
       <DependentUpon>FrmRegistrar.cs</DependentUpon>
     </Compile>
     <Compile Include="WinForms\Main\FrmMain.cs">
@@ -163,7 +175,13 @@
     <EmbeddedResource Include="WinForms\Login&amp;Register\FrmLogin.resx">
       <DependentUpon>FrmLogin.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="WinForms\Login&amp;Register\FrmRegistrar.resx">
+    <EmbeddedResource Include="WinForms\Login&amp;Register\FrmNuevaContraseña.resx">
+      <DependentUpon>FrmNuevaContraseña.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Login&amp;Register\FrmPassRecovery.resx">
+      <DependentUpon>FrmPassRecovery.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Gestiones\UserManagment\FrmRegistrar.resx">
       <DependentUpon>FrmRegistrar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinForms\Main\FrmMain.resx">

@@ -16,6 +16,10 @@ namespace Services.DomainModel
 
         private string password;
 
+        public string CodigoRecuperacion { get; set; }
+
+        public DateTime? CodigoExpiracion { get; set; }
+
         /// <summary>
         /// Para gestionar el patrón composite debemos utilizar una lista de Component
         /// </summary>
@@ -139,6 +143,16 @@ namespace Services.DomainModel
             Nombre = nombre;
             Email = email;
             Habilitado = habilitado;   
+        }
+
+        public Usuario(Guid idUsuario, string nombre, string email, string codigoRecuperacion, DateTime codigoExpiracion, bool habilitado = true)
+        {
+            IdUsuario = idUsuario;
+            Nombre = nombre;
+            Email = email;
+            Habilitado = habilitado;
+            CodigoRecuperacion = codigoRecuperacion;
+            CodigoExpiracion = codigoExpiracion;
         }
 
 

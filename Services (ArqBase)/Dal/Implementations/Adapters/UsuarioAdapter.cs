@@ -39,6 +39,12 @@ namespace Services.Dal.Implementations.Adapters
                 Convert.ToBoolean(values[4].ToString())
             );
 
+            usuario.CodigoRecuperacion = values[5] == DBNull.Value ? null : values[5].ToString();
+
+            // Para el DateTime CodigoExpiracion (values[6])
+            // Asumo que tu propiedad es de tipo "DateTime?" (nullable)
+            usuario.CodigoExpiracion = values[6] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(values[6]);
+
             usuario.Privilegios = new List<Component>();
             usuario.Privilegios.AddRange(new UsuarioFamiliaRepository().GetByObject(usuario));
            

@@ -10,7 +10,6 @@ namespace Services__ArqBase_.Facade
 {
     public static class IdiomaHelper
     {
-        public static event Action IdiomaCambio;
         public static void TraducirControles(Control control)
         {
             

@@ -21,9 +21,9 @@ namespace Services__ArqBase_.Bll
         }
 
 
-        public string recoverPassword(string userRequesting)
-        {
+        //public string recoverPassword(string userRequesting)
+        //{
 
-        }
+        //}
     }
 }

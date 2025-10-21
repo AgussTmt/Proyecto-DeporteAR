@@ -61,7 +61,8 @@
             this.LblPermisosLista = new System.Windows.Forms.Label();
             this.panel6 = new System.Windows.Forms.Panel();
             this.BtnSaveModificarPermiso = new System.Windows.Forms.Button();
-            this.TxtUsuario = new System.Windows.Forms.TextBox();
+            this.LblModificandoUsuario = new System.Windows.Forms.Label();
+            this.BtnCrearUsuario = new System.Windows.Forms.Button();
             this.LblUsuario = new System.Windows.Forms.Label();
             this.TbconUserList.SuspendLayout();
             this.TabPageList.SuspendLayout();
@@ -126,6 +127,7 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.BtnCrearUsuario);
             this.panel2.Controls.Add(this.BtnUpdatePatente);
             this.panel2.Controls.Add(this.BtnCreateFamilia);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
@@ -414,9 +416,9 @@
             // 
             // panel6
             // 
-            this.panel6.Controls.Add(this.BtnSaveModificarPermiso);
-            this.panel6.Controls.Add(this.TxtUsuario);
             this.panel6.Controls.Add(this.LblUsuario);
+            this.panel6.Controls.Add(this.BtnSaveModificarPermiso);
+            this.panel6.Controls.Add(this.LblModificandoUsuario);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel6.Location = new System.Drawing.Point(3, 3);
             this.panel6.Name = "panel6";
@@ -433,23 +435,36 @@
             this.BtnSaveModificarPermiso.UseVisualStyleBackColor = true;
             this.BtnSaveModificarPermiso.Click += new System.EventHandler(this.BtnSaveModificarPermiso_Click);
             // 
-            // TxtUsuario
+            // LblModificandoUsuario
             // 
-            this.TxtUsuario.Dock = System.Windows.Forms.DockStyle.Top;
-            this.TxtUsuario.Location = new System.Drawing.Point(0, 13);
-            this.TxtUsuario.Name = "TxtUsuario";
-            this.TxtUsuario.Size = new System.Drawing.Size(214, 20);
-            this.TxtUsuario.TabIndex = 1;
+            this.LblModificandoUsuario.AutoSize = true;
+            this.LblModificandoUsuario.Dock = System.Windows.Forms.DockStyle.Top;
+            this.LblModificandoUsuario.Location = new System.Drawing.Point(0, 0);
+            this.LblModificandoUsuario.Name = "LblModificandoUsuario";
+            this.LblModificandoUsuario.Size = new System.Drawing.Size(105, 13);
+            this.LblModificandoUsuario.TabIndex = 0;
+            this.LblModificandoUsuario.Text = "Modificando usuario:";
+            // 
+            // BtnCrearUsuario
+            // 
+            this.BtnCrearUsuario.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnCrearUsuario.Location = new System.Drawing.Point(0, 84);
+            this.BtnCrearUsuario.Name = "BtnCrearUsuario";
+            this.BtnCrearUsuario.Size = new System.Drawing.Size(154, 42);
+            this.BtnCrearUsuario.TabIndex = 6;
+            this.BtnCrearUsuario.Text = "Crear usuario";
+            this.BtnCrearUsuario.UseVisualStyleBackColor = true;
+            this.BtnCrearUsuario.Click += new System.EventHandler(this.BtnCrearUsuario_Click);
             // 
             // LblUsuario
             // 
             this.LblUsuario.AutoSize = true;
-            this.LblUsuario.Dock = System.Windows.Forms.DockStyle.Top;
-            this.LblUsuario.Location = new System.Drawing.Point(0, 0);
+            this.LblUsuario.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblUsuario.Location = new System.Drawing.Point(3, 24);
             this.LblUsuario.Name = "LblUsuario";
-            this.LblUsuario.Size = new System.Drawing.Size(43, 13);
-            this.LblUsuario.TabIndex = 0;
-            this.LblUsuario.Text = "Usuario";
+            this.LblUsuario.Size = new System.Drawing.Size(128, 24);
+            this.LblUsuario.TabIndex = 6;
+            this.LblUsuario.Text = "Usuario actual";
             // 
             // FrmUserManagment
             // 
@@ -509,8 +524,7 @@
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Button BtnSaveCrear;
         private System.Windows.Forms.Panel panel6;
-        private System.Windows.Forms.TextBox TxtUsuario;
-        private System.Windows.Forms.Label LblUsuario;
+        private System.Windows.Forms.Label LblModificandoUsuario;
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.Label LblPermisosLista;
         private System.Windows.Forms.Panel panel7;
@@ -524,5 +538,7 @@
         private System.Windows.Forms.ComboBox CombFamilias;
         private System.Windows.Forms.Label LblCurrentFamilias;
         private System.Windows.Forms.TextBox TxtNombreFamilia;
+        private System.Windows.Forms.Button BtnCrearUsuario;
+        private System.Windows.Forms.Label LblUsuario;
     }
 }

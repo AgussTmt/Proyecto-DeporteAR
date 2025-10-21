@@ -117,6 +117,7 @@
     <Compile Include="Facade\LoggerService.cs" />
     <Compile Include="Facade\LoginService.cs" />
     <Compile Include="Bll\MailService.cs" />
+    <Compile Include="Facade\PassRecoveryService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -20,17 +20,14 @@ namespace WinUI.WinForms.Gestiones
 
         private void FrmCalendario_Load(object sender, EventArgs e)
         {
-            IdiomaHelper.IdiomaCambio += TraducirFormulario;
-        }
-
-        private void TraducirFormulario()
-        {
             IdiomaHelper.TraducirControles(this);
         }
 
+        
+
         private void FrmCalendario_FormClosing(object sender, FormClosingEventArgs e)
         {
-            IdiomaHelper.IdiomaCambio -= TraducirFormulario;
+            
         }
     }
 }

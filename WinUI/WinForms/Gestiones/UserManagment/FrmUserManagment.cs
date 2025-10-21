@@ -33,6 +33,16 @@ namespace WinUI.WinForms.Gestiones
             permisosService = new PermisosService();
 
         }
+
+        public FrmUserManagment(Usuario usuario)
+        {
+            InitializeComponent();
+            permisosService = new PermisosService();
+            ModificarPermisos(usuario);
+
+        }
+
+
         private void FrmSettings_Load(object sender, EventArgs e)
         {
             usuarios = UsuarioBll.TraerUsuarios();
@@ -129,16 +139,23 @@ namespace WinUI.WinForms.Gestiones
                 }
                 else
                 {
+                    ModificarPermisos(usuarioSeleccionado);
 
-                   TbconUserList.SelectedTab = TabPageModificarPermisos;
-                   CargarPatentes(usuarioSeleccionado);
-                   CargarFamilias(usuarioSeleccionado);
-                   CargarPatentesDeFamilias(usuarioSeleccionado);
+
                 }
             }
             
 
 
+        }
+
+        private void ModificarPermisos(Usuario user)
+        {
+            TbconUserList.SelectedTab = TabPageModificarPermisos;
+            LblUsuario.Text = user.Nombre;
+            CargarPatentes(user);
+            CargarFamilias(user);
+            CargarPatentesDeFamilias(user);
         }
 
         private void CargarPatentes(Usuario usuario)
@@ -390,6 +407,20 @@ namespace WinUI.WinForms.Gestiones
         private void BtnLogs_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private void BtnCrearUsuario_Click(object sender, EventArgs e)
+        {
+            var frmMain = this.ParentForm as FrmMain;
+            if (frmMain != null)
+            {
+                
+                frmMain.OpenChildForm(new FrmRegistrar(), sender);
+            }
+            else
+            {
+                MessageBox.Show("No se pudo encontrar el formulario principal.");
+            }
         }
     }
 }

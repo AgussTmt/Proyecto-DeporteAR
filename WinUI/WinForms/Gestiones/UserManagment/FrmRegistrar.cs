@@ -11,7 +11,7 @@ using Services.DomainModel;
 using Services.Facade;
 using Services__ArqBase_.Facade;
 
-namespace WinUI.WinForms
+namespace WinUI.WinForms.Gestiones
 {
     public partial class FrmRegistrar : Form
     {
@@ -22,11 +22,6 @@ namespace WinUI.WinForms
 
         private void Registro_Load(object sender, EventArgs e)
         {
-            IdiomaHelper.IdiomaCambio += TraducirFormulario;
-        }
-
-        private void TraducirFormulario()
-        {
             IdiomaHelper.TraducirControles(this);
         }
 
@@ -36,10 +31,17 @@ namespace WinUI.WinForms
             {
                 Usuario usuario = new Usuario(TxtNombre.Text, TxtEmail.Text, TxtContraseña.Text);
                 LoginService.RegistrarUsuario(usuario);
-                this.Close();
-                FrmLogin frmLogin = new FrmLogin();
-                frmLogin.Show();
+                var frmMain = this.ParentForm as FrmMain;
+                if (frmMain != null)
+                {
 
+                    frmMain.OpenChildForm(new FrmUserManagment(usuario), sender);
+                }
+                else
+                {
+                    MessageBox.Show("No se pudo encontrar el formulario principal.");
+                }
+                //44dff3c8-6c67-4fd7-b48f-d2aa0bbaec60
             }
             catch (Exception ex)
             {
@@ -57,7 +59,7 @@ namespace WinUI.WinForms
 
         private void FrmRegistrar_FormClosing(object sender, FormClosingEventArgs e)
         {
-            IdiomaHelper.IdiomaCambio -= TraducirFormulario;
+            
         }
     }
 }

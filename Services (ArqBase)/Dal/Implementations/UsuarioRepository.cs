@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
@@ -91,6 +92,54 @@ namespace Services.Dal.Implementations
                 return null;
             }
 
+        }
+
+        public Usuario GetByEmail(string email)
+        {
+            string commandText = "SELECT * FROM Usuario WHERE Email = @Email";
+
+            using (SqlDataReader dataReader = SqlHelper.ExecuteReader(commandText, CommandType.Text,
+                new SqlParameter("@Email", email)))
+            {
+                if (dataReader.Read())
+                {
+                    object[] data = new object[dataReader.FieldCount];
+                    dataReader.GetValues(data);
+
+                    return UsuarioAdapter.Current.Get(data);
+                }
+                return null;
+            }
+        }
+
+        public void UpdatePassword(Usuario usuario, string passwordHasheada)
+        {
+            string commandText = "UPDATE Usuario SET Password = @Password WHERE IdUsuario = @IdUsuario";
+
+            SqlHelper.ExecuteNonQuery(commandText, CommandType.Text,
+                new SqlParameter("@Password", passwordHasheada),
+                new SqlParameter("@IdUsuario", usuario.IdUsuario)
+            );
+        }
+
+        public void CleanRecoveryCode(Usuario usuario)
+        {
+            string commandText = "UPDATE Usuario SET CodigoRecuperacion = NULL, CodigoExpiracion = NULL WHERE IdUsuario = @IdUsuario";
+
+            SqlHelper.ExecuteNonQuery(commandText, CommandType.Text,
+                new SqlParameter("@IdUsuario", usuario.IdUsuario)
+            );
+        }
+
+        public void SaveRecoveryCode(Usuario usuario, string codigo, DateTime expiracion)
+        {
+            string commandText = "UPDATE Usuario SET CodigoRecuperacion = @Codigo, CodigoExpiracion = @Expiracion WHERE IdUsuario = @IdUsuario";
+
+            SqlHelper.ExecuteNonQuery(commandText, CommandType.Text,
+                new SqlParameter("@Codigo", codigo),
+                new SqlParameter("@Expiracion", expiracion),
+                new SqlParameter("@IdUsuario", usuario.IdUsuario)
+            );
         }
     }
 }

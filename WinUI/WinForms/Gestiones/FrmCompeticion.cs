@@ -20,17 +20,14 @@ namespace WinUI.WinForms.Gestiones
 
         private void FrmCompeticion_Load(object sender, EventArgs e)
         {
-            IdiomaHelper.IdiomaCambio += TraducirFormulario;
-        }
-
-        private void TraducirFormulario()
-        {
             IdiomaHelper.TraducirControles(this);
         }
 
+       
+
         private void FrmCompeticion_FormClosing(object sender, FormClosingEventArgs e)
         {
-            IdiomaHelper.IdiomaCambio -= TraducirFormulario;
+            
         }
     }
 }

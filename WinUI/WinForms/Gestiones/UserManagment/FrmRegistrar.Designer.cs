@@ -1,4 +1,4 @@
-﻿namespace WinUI.WinForms
+﻿namespace WinUI.WinForms.Gestiones
 {
     partial class FrmRegistrar
     {
@@ -35,7 +35,6 @@
             this.TxtContraseña = new System.Windows.Forms.TextBox();
             this.TxtEmail = new System.Windows.Forms.TextBox();
             this.BtnRegistrar = new System.Windows.Forms.Button();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // LblNombre
@@ -96,23 +95,11 @@
             this.BtnRegistrar.UseVisualStyleBackColor = true;
             this.BtnRegistrar.Click += new System.EventHandler(this.BtnRegistrar_Click);
             // 
-            // linkLabel1
-            // 
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(178, 271);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(152, 13);
-            this.linkLabel1.TabIndex = 7;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Ya tenes cuenta? Inicia sesión";
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
-            // 
             // FrmRegistrar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(476, 413);
-            this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.BtnRegistrar);
             this.Controls.Add(this.TxtEmail);
             this.Controls.Add(this.TxtContraseña);
@@ -138,6 +125,5 @@
         private System.Windows.Forms.TextBox TxtContraseña;
         private System.Windows.Forms.TextBox TxtEmail;
         private System.Windows.Forms.Button BtnRegistrar;
-        private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }

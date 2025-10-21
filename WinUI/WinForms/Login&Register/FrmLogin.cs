@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WinUI.WinForms;
+using WinUI.WinForms.Login_Register;
 
 namespace WinUI
 {
@@ -61,13 +62,6 @@ namespace WinUI
         }
 
        
-
-        private void LinkRegistro_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            FrmRegistrar frmRegistrar = new FrmRegistrar();
-            this.Close();
-            frmRegistrar.Show();
-        }
 
         private void FrmLogin_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -131,6 +125,14 @@ namespace WinUI
                 txtContraseña.ForeColor = Color.DarkGray;
                 txtContraseña.UseSystemPasswordChar = false;
             }
+        }
+
+        private void lnkRecuperacion_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            this.Hide();
+            new FrmPassRecovery().ShowDialog();
+            this.Close();
+            
         }
     }
 }
