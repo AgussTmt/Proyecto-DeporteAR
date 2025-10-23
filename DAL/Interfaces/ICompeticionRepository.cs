@@ -12,13 +12,13 @@ namespace DAL.Interfaces
     {
         List<Competicion> GetByTimeAndCancha(Competicion competicion);
 
-        void AddEquipo(Equipo equipo);
+        void AddEquipo(Guid idCompeticion, Guid idEquipo);
 
         List<Competicion> GetWithVacancies();
 
         List<Competicion> GetByClient(Cliente cliente);
 
-        void RemoveEquipo(Equipo equipo);
+        void RemoveEquipo(Guid idCompeticion, Guid idEquipo);
 
 
     }

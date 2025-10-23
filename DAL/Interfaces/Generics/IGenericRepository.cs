@@ -17,7 +17,7 @@ namespace Dal.Interfaces
 
         void Update(T entity);
 
-        void Delete(Guid id);
+        void CambiarHabilitado(Guid id);
 
         IEnumerable<T> GetAll();
 

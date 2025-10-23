@@ -19,6 +19,7 @@ namespace DAL.Implementations.SqlServer
     {
         public CatalogRepository(SqlConnection context, SqlTransaction _transaction) : base(context, _transaction)
         {
+
         }
 
         public IEnumerable<CatalogItem> GetDeportes()

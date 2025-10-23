@@ -46,9 +46,16 @@ namespace DAL.Implementations.SqlServer
             );
         }
 
-        public void CambiarEstado(Guid id)
+        public void CambiarHabilitado(Guid id)
         {
-            throw new NotImplementedException();
+            string sql = @"UPDATE DbCancha 
+                   SET EstadoCancha = ~EstadoCancha 
+                   WHERE IdCancha = @IdCancha";
+
+            // Llamamos al método de la clase base (SqlTransactRepository)
+            base.ExecuteNonQuery(sql, CommandType.Text,
+                new SqlParameter("@IdCancha", id)
+            );
         }
 
         public IEnumerable<Cancha> GetAll()
@@ -132,11 +139,6 @@ namespace DAL.Implementations.SqlServer
                 throw new InvalidOperationException($"El deporte '{descripcion}' no existe en la tabla DbDeporte.");
             }
             return (Guid)result;
-        }
-
-        public void Delete(Guid id)
-        {
-            throw new NotImplementedException();
         }
     }
 }
