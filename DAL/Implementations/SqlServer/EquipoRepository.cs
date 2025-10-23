@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DAL.Implementations.SqlServer.Adapters;
 using DAL.Implementations.SqlServer.Helper;
 using DAL.Interfaces;
 using DomainModel;
@@ -19,30 +20,83 @@ namespace DAL.Implementations.SqlServer
 
 
         private const string _sqlSelect = @"SELECT 
-                e.IdEquipo, e.CantAusencias, e.FechaDeCreacion, e.Nombre,
-                e.IdCliente, 
-                ea.Descripcion AS EstadoAsistenciaDesc
-            FROM DbEquipo e
-            LEFT JOIN DbEstadoAsistencia ea ON e.IdEstadoAsistencia = ea.IdEstadoAsistencia";
+            e.IdEquipo, e.CantAusencias, e.FechaDeCreacion, e.Nombre,
+            e.IdCliente, 
+            ea.Descripcion AS EstadoAsistenciaDesc
+        FROM DbEquipo e
+        LEFT JOIN DbEstadoAsistencia ea ON e.IdEstadoAsistencia = ea.IdEstadoAsistencia";
 
         public void Add(Equipo equipo)
         {
-            throw new NotImplementedException();
+            Guid estadoId = GetEstadoAsistenciaId(equipo.EstadoProxPartido);
+
+            string sql = @"INSERT INTO DbEquipo 
+                       (IdEquipo, CantAusencias, IdCliente, IdEstadoAsistencia, FechaDeCreacion, Nombre)
+                       VALUES
+                       (@IdEquipo, @CantAusencias, @IdCliente, @IdEstadoAsistencia, @FechaDeCreacion, @Nombre)";
+
+            base.ExecuteNonQuery(sql, CommandType.Text,
+                new SqlParameter("@IdEquipo", equipo.IdEquipo),
+                new SqlParameter("@CantAusencias", equipo.CantAusencias),
+                new SqlParameter("@IdCliente", (object)equipo.Capitan?.IdCliente ?? DBNull.Value),
+                new SqlParameter("@IdEstadoAsistencia", estadoId),
+                new SqlParameter("@FechaDeCreacion", equipo.FechaCreacion),
+                new SqlParameter("@Nombre", (object)equipo.Nombre ?? DBNull.Value)
+            );
         }
 
-        public void AddPlayers(List<Jugador> jugadores)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Equipo GetByCompeticion(Competicion competicion)
+        public List<Equipo> GetByCompeticion(Competicion competicion)
         {
-            throw new NotImplementedException();
+            // 1. Definimos la consulta (¡sin TOP 1!)
+            string sql = $@"SELECT e.*
+                    FROM ({_sqlSelect}) e
+                    JOIN DbEquipoCompeticion ec ON e.IdEquipo = ec.IdEquipo
+                    WHERE ec.IdCompeticion = @IdCompeticion";
+
+            // 2. Creamos la lista que vamos a devolver
+            var listaEquipos = new List<Equipo>();
+
+            using (var reader = base.ExecuteReader(sql, CommandType.Text,
+                new SqlParameter("@IdCompeticion", competicion.IdCompeticion)))
+            {
+                // 3. Iteramos con un 'while' en lugar de un 'if'
+                while (reader.Read())
+                {
+                    object[] values = new object[reader.FieldCount];
+                    reader.GetValues(values);
+                    var equipo = EquipoAdapter.Current.Get(values);
+
+                    // 4. Rellenamos los jugadores de CADA equipo
+                    PopulateJugadores(equipo);
+
+                    // 5. Agregamos el equipo a la lista
+                    listaEquipos.Add(equipo);
+                }
+            }
+
+            // 6. Devolvemos la lista completa
+            return listaEquipos;
         }
 
         public void Update(Equipo equipo)
         {
-            throw new NotImplementedException();
+            Guid estadoId = GetEstadoAsistenciaId(equipo.EstadoProxPartido);
+
+            string sql = @"UPDATE DbEquipo SET
+                        CantAusencias = @CantAusencias,
+                        IdCliente = @IdCliente,
+                        IdEstadoAsistencia = @IdEstadoAsistencia,
+                        Nombre = @Nombre
+                       WHERE IdEquipo = @IdEquipo";
+
+            base.ExecuteNonQuery(sql, CommandType.Text,
+                new SqlParameter("@CantAusencias", equipo.CantAusencias),
+                new SqlParameter("@IdCliente", (object)equipo.Capitan?.IdCliente ?? DBNull.Value),
+                new SqlParameter("@IdEstadoAsistencia", estadoId),
+                new SqlParameter("@Nombre", (object)equipo.Nombre ?? DBNull.Value),
+                new SqlParameter("@IdEquipo", equipo.IdEquipo)
+            );
         }
 
 

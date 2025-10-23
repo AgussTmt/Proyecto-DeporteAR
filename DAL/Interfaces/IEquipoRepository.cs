@@ -13,8 +13,6 @@ namespace DAL.Interfaces
 
         void Add(Equipo equipo);
 
-        Equipo GetByCompeticion(Competicion competicion);
-
-        void AddPlayers(List<Jugador> jugadores);
+        List<Equipo> GetByCompeticion(Competicion competicion);
     }
 }
