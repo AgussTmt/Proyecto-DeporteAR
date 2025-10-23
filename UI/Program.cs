@@ -4,7 +4,7 @@ using System.Configuration;
 
 string securityConString = ConfigurationManager.ConnectionStrings["SecurityString"].ConnectionString;
 Dal.Tools.SqlHelper.Initialize(securityConString);
-PermisosService p = new PermisosService();
+PermisosBll p = new PermisosBll();
 //1E7116B3-B6AC-439A-8A33-110F68F75E93 perm
 //0A7C5D0D-7D9D-4FCD-B8B3-7B80F8306181 perm
 //3075A247-1996-47F6-9ADC-B52ADB6E501E perm

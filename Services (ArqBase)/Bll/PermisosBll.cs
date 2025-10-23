@@ -15,11 +15,11 @@ using System.Threading.Tasks;
 
 namespace Services__ArqBase_.Bll
 {
-    public class PermisosService : IPermisosService
+    public class PermisosBll : IPermisosBll
     {
 
         private readonly ILogger _logger;
-        public PermisosService()
+        public PermisosBll()
         {
             _logger = LoggerService.GetLogger();
         }
@@ -60,10 +60,22 @@ namespace Services__ArqBase_.Bll
             FamiliaPatenteRepository repo = new FamiliaPatenteRepository();
             return repo.GetByObject(familia);
         }
-        public void CrearRol(Familia familia)
+        public Familia CrearRol(Familia familia)
         {
-            FamiliaRepository repository = new FamiliaRepository();
-            repository.Add(familia);
+            try
+            {
+                familia.Id = Guid.NewGuid();
+                familia.Habilitado = true;
+                familia.VerificadorHash = CalcularHash(familia);
+                FamiliaRepository repository = new FamiliaRepository();
+                _logger.Information($"Rol {familia.Nombre} creado exitosamente.");
+                return repository.Add(familia);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error al crear el rol {familia.Nombre}", ex);
+                throw;
+            }
         }
 
         public void CambiarHabilitado<T1, T2>(T1 ObjMain, T2 ObjSecu)
@@ -199,6 +211,14 @@ namespace Services__ArqBase_.Bll
             }
             
 
+        }
+
+
+        private string CalcularHash(Familia familia)
+        {
+            string datosConcatenados = $"{familia.Id}-{familia.Nombre}-{familia.Habilitado}";
+
+            return CryptographyService.HashMd5(datosConcatenados);
         }
     }
 }

@@ -33,7 +33,9 @@ namespace Services.Dal.Implementations.Adapters
             patente.Id = Guid.Parse(values[0].ToString());
             patente.DataKey = values[1].ToString();
             patente.TipoAcceso = (TipoAcceso)Enum.Parse(typeof(TipoAcceso), values[2].ToString());
+            patente.Habilitado = Convert.ToBoolean(values[3]);
             return patente;
         }
+
     }
 }

@@ -16,19 +16,38 @@ namespace Services.Dal.Implementations
         #region Statements
         private string SelectAllStatement
         {
-            get => "SELECT IdFamilia, Nombre FROM [dbo].[Familia]";
+            get => "SELECT IdFamilia, Nombre, Habilitado, VerificadorHash FROM [dbo].[Familia]";
         }
 
         private string SelectByIdStatement
         {
-            get => "SELECT IdFamilia, Nombre FROM [dbo].[Familia] WHERE IdFamilia = @IdFamilia";
+            get => "SELECT IdFamilia, Nombre, Habilitado, VerificadorHash FROM [dbo].[Familia] WHERE IdFamilia = @IdFamilia";
         }
 
-        public void Add(Familia familia)
+        private string AddStatement
         {
-            throw new NotImplementedException();
+            get => "INSERT INTO Familia (IdFamilia, Nombre, Habilitado, VerificadorHash) VALUES (@IdFamilia, @Nombre, @Habilitado, @VerificadorHash)";
         }
+
+
+
+
         #endregion
+
+
+        public Familia Add(Familia familia)
+        {
+            SqlHelper.ExecuteNonQuery(AddStatement, CommandType.Text, new SqlParameter("@IdFamilia", familia.Id),
+                new SqlParameter("@Nombre", familia.Nombre),
+                new SqlParameter("@Habilitado", familia.Habilitado),
+                new SqlParameter("@VerificadorHash", familia.VerificadorHash)
+                );
+
+            return familia;
+
+        }
+
+
         public List<Familia> GetAll()
         {
             List<Familia> ListFamilias = new List<Familia>();

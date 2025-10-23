@@ -78,9 +78,9 @@
     <Compile Include="Bll\BackUpService.cs" />
     <Compile Include="Bll\GmailService.cs" />
     <Compile Include="Bll\IdiomaService.cs" />
-    <Compile Include="Bll\Interfaces\IPermisosService.cs" />
+    <Compile Include="Bll\Interfaces\IPermisosBll.cs" />
     <Compile Include="Bll\LoggerConfiguration.cs" />
-    <Compile Include="Bll\PermisosService.cs" />
+    <Compile Include="Bll\PermisosBll.cs" />
     <Compile Include="Bll\UsuarioBll.cs" />
     <Compile Include="Dal\BackUpRepository.cs" />
     <Compile Include="Dal\IdiomaRepository.cs" />
@@ -118,6 +118,7 @@
     <Compile Include="Facade\LoginService.cs" />
     <Compile Include="Bll\MailService.cs" />
     <Compile Include="Facade\PassRecoveryService.cs" />
+    <Compile Include="Facade\UserManagmentService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

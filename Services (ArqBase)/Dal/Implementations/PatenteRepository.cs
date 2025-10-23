@@ -19,12 +19,12 @@ namespace Services.Dal.Implementations
         #region Statements
         private string SelectAllStatement
         {
-            get => "SELECT IdPatente, DataKey, TipoAcceso FROM [dbo].[Patente]";
+            get => "SELECT IdPatente, DataKey, TipoAcceso, Habilitado FROM [dbo].[Patente]";
         }
 
         private string SelectByIdStatement
         {
-            get => "SELECT IdPatente, DataKey, TipoAcceso FROM [dbo].[Patente] WHERE IdPatente = @IdPatente";
+            get => "SELECT IdPatente, DataKey, TipoAcceso, Habilitado FROM [dbo].[Patente] WHERE IdPatente = @IdPatente";
         }
         #endregion
 

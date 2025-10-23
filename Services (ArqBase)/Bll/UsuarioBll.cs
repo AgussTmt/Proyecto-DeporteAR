@@ -144,5 +144,10 @@ namespace Services.Bll
         }
 
 
+        public static Usuario GetByEmail(string email)
+        {
+            return _usuarioRepository.GetByEmail(email);
+        }
+
     }
 }

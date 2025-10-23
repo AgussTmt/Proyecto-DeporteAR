@@ -10,6 +10,6 @@ namespace Services.Dal.Implementations
 
         public List<Familia> GetAll();
 
-        void Add(Familia familia);
+        Familia Add(Familia familia);
     }
 }

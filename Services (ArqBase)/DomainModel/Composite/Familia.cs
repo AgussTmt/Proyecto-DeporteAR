@@ -29,8 +29,9 @@ namespace Services.DomainModel
 		private List<Component> hijos = new List<Component>();
 
         public string Nombre { get; set; }
+        public string VerificadorHash { get; internal set; }
 
-		public Familia() { }
+        public Familia() { }
         public Familia(Guid id){
 			Id = id;
 		}

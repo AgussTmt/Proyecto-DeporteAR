@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Services__ArqBase_.Bll.Interfaces
 {
-    public interface IPermisosService
+    public interface IPermisosBll
     {
-        void CrearRol(Familia familia);
+        Familia CrearRol(Familia familia);
 
         void AsignarPermisos<T1, T2>(T1 ObjMain, T2 ObjSecu);
 

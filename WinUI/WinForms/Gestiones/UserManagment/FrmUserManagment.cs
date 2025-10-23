@@ -12,42 +12,22 @@ using Services.DomainModel;
 using Services__ArqBase_.Bll;
 using Services__ArqBase_.Bll.Interfaces;
 using Services__ArqBase_.Facade;
-using WinUI.WinForms.Gestiones.Settings;
-using Component = Services.DomainModel.Component;
 
-namespace WinUI.WinForms.Gestiones
+namespace WinUI.WinForms.Gestiones.UserManagment
 {
     public partial class FrmUserManagment : Form
     {
         private BindingSource BsListaUsuarios;
         private List<Usuario> usuarios;
-        private IPermisosService permisosService;
-        private Usuario usuarioSeleccionado;
-        private Familia familiaSeleccionada;
-        private List<Familia> AllFamilias;
-        private List<Patente> AllPatentes;
-
         public FrmUserManagment()
         {
             InitializeComponent();
-            permisosService = new PermisosService();
-
+            
         }
 
-        public FrmUserManagment(Usuario usuario)
+        private void FrmUserManagment_Load(object sender, EventArgs e)
         {
-            InitializeComponent();
-            permisosService = new PermisosService();
-            ModificarPermisos(usuario);
-
-        }
-
-
-        private void FrmSettings_Load(object sender, EventArgs e)
-        {
-            usuarios = UsuarioBll.TraerUsuarios();
-            AllFamilias = permisosService.GetFamilias();
-            AllPatentes = permisosService.GetPatentes();
+            usuarios = UserManagmentService.TraerUsuarios();
 
             if (usuarios is not null && usuarios.Count > 0)
             {
@@ -59,37 +39,8 @@ namespace WinUI.WinForms.Gestiones
 
                 DgvListaUsuarios.DataSource = BsListaUsuarios;
             }
-
-            else
-            {
-                MessageBox.Show("no se encontraro usuarios");
-            }
-            IdiomaHelper.TraducirControles(this);
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-
-        #region Datatable
-        private void TxtSearch_TextChanged(object sender, EventArgs e)
-        {
-            string filtro = TxtSearch.Text;
-
-            if (string.IsNullOrEmpty(filtro))
-            {
-                BsListaUsuarios.RemoveFilter();
-            }
-
-            else
-            {
-                BsListaUsuarios.Filter = $"Nombre LIKE '%{filtro}%'";
-            }
-        }
-
-        
         private DataTable ConvertUserListToDT(List<Usuario> usuarios)
         {
             var dt = new DataTable();
@@ -109,304 +60,54 @@ namespace WinUI.WinForms.Gestiones
             return dt;
         }
 
-        #endregion
+        private void BtnCreateFamilia_Click(object sender, EventArgs e)
+        {
+            var frmMain = this.ParentForm as FrmMain;
+            if (frmMain != null)
+            {
 
-        #region ModificarPermisos
+                frmMain.OpenChildForm(new FrmCrearFamilia(), sender);
+            }
+            else
+            {
+                MessageBox.Show("No se pudo encontrar el formulario principal.");
+            }
+        }
+
         private void BtnUpdatePatente_Click(object sender, EventArgs e)
         {
-
+            
             if (DgvListaUsuarios.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Por favor, seleccione un usuario de la lista.");
-                return; // Salir del método.
+                return; 
             }
             var selectedRow = DgvListaUsuarios.SelectedRows[0];
             var dataRowView = selectedRow.DataBoundItem as DataRowView;
 
             if (dataRowView == null)
             {
-              MessageBox.Show("Por favor, seleccione un usuario de la lista.");  
-                
-            }
-            else
-            {
-                string userEmail = dataRowView["Email"].ToString();
-                usuarioSeleccionado = usuarios.FirstOrDefault(u => u.Email == userEmail);
-
-                if (usuarioSeleccionado == null)
-                {
-                   MessageBox.Show("Problema identificando al usuario");
-                }
-                else
-                {
-                    ModificarPermisos(usuarioSeleccionado);
-
-
-                }
-            }
-            
-
-
-        }
-
-        private void ModificarPermisos(Usuario user)
-        {
-            TbconUserList.SelectedTab = TabPageModificarPermisos;
-            LblUsuario.Text = user.Nombre;
-            CargarPatentes(user);
-            CargarFamilias(user);
-            CargarPatentesDeFamilias(user);
-        }
-
-        private void CargarPatentes(Usuario usuario)
-        {
-            CheckListPatentes.Items.Clear();
-            
-            var PatenteDirectasUsuario = usuario.Privilegios.OfType<Patente>().ToList();
-
-            foreach (var item in AllPatentes)
-            {
-                Patente patente = PatenteDirectasUsuario.FirstOrDefault(p => p.Id == item.Id);
-                string Nombre = item.DataKey;
-                bool habilitado = false;
-
-                if (patente != null)
-                {
-                    habilitado = patente.Habilitado;
-                    if(!patente.Habilitado)
-                    {
-                        Nombre = $"{item.DataKey} (Deshabilitado)";
-                    }
-                }
-                CheckListPatentes.Items.Add(Nombre, habilitado);
-            }
-        }
-        //58A78003-3700-4388-BE91-FC8E6FED3E35
-        //0a7c5d0d-7d9d-4fcd-b8b3-7b80f8306181
-        //F8DCEE4C-DF4D-4630-90E0-72B7EBEC30D1
-
-        private void CargarFamilias(Usuario usuario)
-        {
-            CheckListFamilias.Items.Clear();
-            
-
-
-            foreach (var item in AllFamilias)
-            {
-
-                Familia familia = usuario.Privilegios.FirstOrDefault(p => p is Familia familia1 && p.Id == item.Id) as Familia;
-
-                string Nombre = item.Nombre;
-                bool habilitado = false;
-                if (familia != null)
-                {
-                    habilitado = familia.Habilitado;
-                    if (!familia.Habilitado)
-                    {
-                        Nombre = $"{item.Nombre} (Deshabilitado)";
-                    }
-                }
-                CheckListFamilias.Items.Add(Nombre, habilitado);
-                
-
-            }
-        }
-        
-
-        private void CargarPatentesDeFamilias(Usuario usuario)
-        {
-            LstPatenteDeFamilia.Items.Clear();
-
-            var items = usuario.GetPatentesAgrupadasPorRol();
-
-            foreach (var linea in items)
-            {
-                LstPatenteDeFamilia.Items.Add(linea);
-            }
-        }
-
-        private void BtnSaveModificarPermiso_Click(object sender, EventArgs e)
-        {
-            string itemText;
-            List<Component> permisos = new List<Component>();
-            for (int i = 0; i < CheckListFamilias.Items.Count; i++)
-            {
-                itemText = CheckListFamilias.Items[i].ToString().Replace(" (Deshabilitado)", "");
-                Component permiso = AllFamilias.FirstOrDefault(p => p.Nombre == itemText);
-                permiso.Habilitado = CheckListFamilias.GetItemChecked(i);
-                permisos.Add(permiso);
-            }
-            
-            for (int i = 0; i < CheckListPatentes.Items.Count; i++)
-            {
-                itemText = CheckListPatentes.Items[i].ToString().Replace(" (Deshabilitado)", "");
-                Component permiso = AllPatentes.FirstOrDefault(p => p.DataKey == itemText);
-                permiso.Habilitado = CheckListPatentes.GetItemChecked(i);
-                permisos.Add(permiso);
-            }
-            
-
-            permisosService.cambiarPermisosAUsuario(usuarioSeleccionado, permisos);
-            usuarioSeleccionado = UsuarioBll.GetById(usuarioSeleccionado.IdUsuario);
-
-
-            usuarios = UsuarioBll.TraerUsuarios();
-
-            CargarPatentes(usuarioSeleccionado);
-            CargarFamilias(usuarioSeleccionado);
-            CargarPatentesDeFamilias(usuarioSeleccionado);
-
-            ActualizarDataTableUsuario(usuarioSeleccionado);
-
-            DgvListaUsuarios.ClearSelection();
-            usuarioSeleccionado = null;
-
-            TbconUserList.SelectedTab = TabPageList;
-        }
-
-        private void ActualizarDataTableUsuario(Usuario usuario)
-        {
-            if (BsListaUsuarios.DataSource is DataTable dt)
-            {
-                foreach (DataRow row in dt.Rows)
-                {
-                    if (row["Email"].ToString() == usuario.Email)
-                    {
-                        row["PatentesAsignadas"] = usuario.PatentesAsignadas;
-                        row["RolesAsignados"] = usuario.RolesAsignados;
-                        row["Habilitado"] = usuario.Habilitado;
-                        break;
-                    }
-                }
-            }
-        }
-        #endregion
-
-        private void BtnCreateFamilia_Click(object sender, EventArgs e)
-        {
-            TbconUserList.SelectedTab = TabPageCrearFamilia;
-            TabPageCrearFamilia.Text = "Crear Rol";
-            CargarComboBoxFamilias();
-            LimpiarFormularioFamilia();
-            CargarPatentesParaFamilia(null);
-
-        }
-
-        private void CargarComboBoxFamilias()
-        {
-            CombFamilias.Items.Clear();
-            CombFamilias.Items.Add("-- Crear Nuevo Rol --");
-
-            foreach (var familia in AllFamilias)
-            {
-                CombFamilias.Items.Add(familia);
-            }
-
-            CombFamilias.DisplayMember = "Nombre";
-            CombFamilias.SelectedIndex = 0;
-        }
-
-        private void LimpiarFormularioFamilia()
-        {
-            TxtNombreFamilia.Text = string.Empty;
-            TxtNombreFamilia.Enabled = true;
-            familiaSeleccionada = null;
-        }
-
-        private void CargarPatentesParaFamilia(Familia familia)
-        {
-            CheckListPatentesParaFamilias.Items.Clear();
-
-            List<Patente> patentesAsignadas = new List<Patente>();
-            if (familia != null)
-            {
-                patentesAsignadas = permisosService.GetPatentesDeFamilia(familia);
-            }
-
-            foreach (var patente in AllPatentes)
-            {
-                var patenteAsignada = patentesAsignadas.FirstOrDefault(p => p.Id == patente.Id);
-
-                string nombre = patente.DataKey;
-                bool habilitada = false;
-
-                if (patenteAsignada != null)
-                {
-                    habilitada = patenteAsignada.Habilitado;
-                    if (!patenteAsignada.Habilitado)
-                        nombre = $"{patente.DataKey} (Deshabilitado)";
-                }
-
-                CheckListPatentesParaFamilias.Items.Add(nombre, habilitada);
-            }
-        }
-
-        private void CombFamilias_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (CombFamilias.SelectedIndex == 0) 
-            {
-                LimpiarFormularioFamilia();
-                CargarPatentesParaFamilia(null);
-            }
-            else
-            {
-                familiaSeleccionada = CombFamilias.SelectedItem as Familia;
-                if (familiaSeleccionada != null)
-                {
-                    TxtNombreFamilia.Text = familiaSeleccionada.Nombre;
-                    TxtNombreFamilia.Enabled = false;
-                    CargarPatentesParaFamilia(familiaSeleccionada);
-                }
-            }
-        }
-
-        private void BtnSaveCrear_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(TxtNombreFamilia.Text))
-            {
-                MessageBox.Show("Debe ingresar un nombre para el rol");
+                MessageBox.Show("No se pudieron cargar los datos del usuario seleccionado.");
                 return;
             }
 
-            List<Patente> patentes = new List<Patente>();
-            for (int i = 0; i < CheckListPatentesParaFamilias.Items.Count; i++)
+            string userEmail = dataRowView["Email"].ToString();
+            Usuario usuarioSeleccionado = usuarios.FirstOrDefault(u => u.Email == userEmail);
+
+            if (usuarioSeleccionado is null)
             {
-                string itemText = CheckListPatentesParaFamilias.Items[i].ToString().Replace(" (Deshabilitado)", "");
-                Patente patente = AllPatentes.FirstOrDefault(p => p.DataKey == itemText);
-                if (patente != null)
-                {
-                    patente.Habilitado = CheckListPatentesParaFamilias.GetItemChecked(i);
-                    patentes.Add(patente);
-                }
+                MessageBox.Show("Error seleccionando al usuario");
+                return;
             }
-
-            if (CombFamilias.SelectedIndex == 0) // Crear nuevo
+            var frmMain = this.ParentForm as FrmMain;
+            if (frmMain != null)
             {
-                Familia nuevaFamilia = new Familia { Nombre = TxtNombreFamilia.Text };
-                permisosService.CrearRol(nuevaFamilia);
-
-                foreach (var patente in patentes.Where(p => p.Habilitado))
-                {
-                    permisosService.AsignarPermisos<Familia, Patente>(nuevaFamilia, patente);
-                }
-
-                MessageBox.Show("Rol creado exitosamente");
+                frmMain.OpenChildForm(new FrmModificarPermisos(usuarioSeleccionado), sender);
             }
-            else // Modificar existente
+            else
             {
-                permisosService.CambiarPermisosFamilia(familiaSeleccionada, patentes);
-                MessageBox.Show("Rol modificado exitosamente");
+                MessageBox.Show("No se pudo encontrar el formulario principal.");
             }
-            AllFamilias = permisosService.GetFamilias();
-            usuarios = UsuarioBll.TraerUsuarios();
-
-            AllFamilias = permisosService.GetFamilias();
-            TbconUserList.SelectedTab = TabPageList;
-        }
-
-        private void BtnLogs_Click(object sender, EventArgs e)
-        {
-            
         }
 
         private void BtnCrearUsuario_Click(object sender, EventArgs e)
@@ -414,12 +115,27 @@ namespace WinUI.WinForms.Gestiones
             var frmMain = this.ParentForm as FrmMain;
             if (frmMain != null)
             {
-                
+
                 frmMain.OpenChildForm(new FrmRegistrar(), sender);
             }
             else
             {
                 MessageBox.Show("No se pudo encontrar el formulario principal.");
+            }
+        }
+
+        private void TxtSearch_TextChanged(object sender, EventArgs e)
+        {
+            string filtro = TxtSearch.Text;
+
+            if (string.IsNullOrEmpty(filtro))
+            {
+                BsListaUsuarios.RemoveFilter();
+            }
+
+            else
+            {
+                BsListaUsuarios.Filter = $"Nombre LIKE '%{filtro}%'";
             }
         }
     }

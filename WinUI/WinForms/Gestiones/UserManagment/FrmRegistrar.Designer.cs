@@ -35,6 +35,7 @@
             this.TxtContraseña = new System.Windows.Forms.TextBox();
             this.TxtEmail = new System.Windows.Forms.TextBox();
             this.BtnRegistrar = new System.Windows.Forms.Button();
+            this.BtnRegistrarYRoles = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // LblNombre
@@ -87,7 +88,7 @@
             // 
             // BtnRegistrar
             // 
-            this.BtnRegistrar.Location = new System.Drawing.Point(208, 217);
+            this.BtnRegistrar.Location = new System.Drawing.Point(113, 224);
             this.BtnRegistrar.Name = "BtnRegistrar";
             this.BtnRegistrar.Size = new System.Drawing.Size(90, 34);
             this.BtnRegistrar.TabIndex = 6;
@@ -95,11 +96,22 @@
             this.BtnRegistrar.UseVisualStyleBackColor = true;
             this.BtnRegistrar.Click += new System.EventHandler(this.BtnRegistrar_Click);
             // 
+            // BtnRegistrarYRoles
+            // 
+            this.BtnRegistrarYRoles.Location = new System.Drawing.Point(240, 224);
+            this.BtnRegistrarYRoles.Name = "BtnRegistrarYRoles";
+            this.BtnRegistrarYRoles.Size = new System.Drawing.Size(90, 34);
+            this.BtnRegistrarYRoles.TabIndex = 8;
+            this.BtnRegistrarYRoles.Text = "Registrar y añadir permisos";
+            this.BtnRegistrarYRoles.UseVisualStyleBackColor = true;
+            this.BtnRegistrarYRoles.Click += new System.EventHandler(this.BtnRegistrarYRoles_Click);
+            // 
             // FrmRegistrar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(476, 413);
+            this.Controls.Add(this.BtnRegistrarYRoles);
             this.Controls.Add(this.BtnRegistrar);
             this.Controls.Add(this.TxtEmail);
             this.Controls.Add(this.TxtContraseña);
@@ -125,5 +137,6 @@
         private System.Windows.Forms.TextBox TxtContraseña;
         private System.Windows.Forms.TextBox TxtEmail;
         private System.Windows.Forms.Button BtnRegistrar;
+        private System.Windows.Forms.Button BtnRegistrarYRoles;
     }
 }

@@ -102,13 +102,25 @@
     <Compile Include="WinForms\Gestiones\Settings\FrmLogs.Designer.cs">
       <DependentUpon>FrmLogs.cs</DependentUpon>
     </Compile>
-    <Compile Include="WinForms\Gestiones\UserManagment\PatenteDeFamilia.cs" />
     <Compile Include="WinForms\Gestiones\UserManagment\FrmUserManagment.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="WinForms\Gestiones\UserManagment\FrmUserManagment.Designer.cs">
       <DependentUpon>FrmUserManagment.cs</DependentUpon>
     </Compile>
+    <Compile Include="WinForms\Gestiones\UserManagment\FrmCrearFamilia.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\UserManagment\FrmCrearFamilia.Designer.cs">
+      <DependentUpon>FrmCrearFamilia.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\UserManagment\FrmModificarPermisos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\UserManagment\FrmModificarPermisos.Designer.cs">
+      <DependentUpon>FrmModificarPermisos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\UserManagment\PatenteDeFamilia.cs" />
     <Compile Include="WinForms\Gestiones\UserManagment\UsuarioExtensions.cs" />
     <Compile Include="WinForms\Login&amp;Register\FrmLogin.cs">
       <SubType>Form</SubType>
@@ -171,6 +183,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="WinForms\Gestiones\UserManagment\FrmUserManagment.resx">
       <DependentUpon>FrmUserManagment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Gestiones\UserManagment\FrmCrearFamilia.resx">
+      <DependentUpon>FrmCrearFamilia.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Gestiones\UserManagment\FrmModificarPermisos.resx">
+      <DependentUpon>FrmModificarPermisos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinForms\Login&amp;Register\FrmLogin.resx">
       <DependentUpon>FrmLogin.cs</DependentUpon>
