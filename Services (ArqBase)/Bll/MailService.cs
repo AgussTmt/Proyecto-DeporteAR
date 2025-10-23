@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using Services.Dal.Interfaces;
+using Services.Facade;
 
 namespace Services__ArqBase_.Facade
 {
@@ -17,6 +19,8 @@ namespace Services__ArqBase_.Facade
         protected int port { get; set; }
         protected bool ssl { get; set; }
 
+        private ILogger logger;
+
         protected void initializeSmtpClient()
         {
             SmtpClient = new SmtpClient();
@@ -24,6 +28,7 @@ namespace Services__ArqBase_.Facade
             SmtpClient.Host = host;
             SmtpClient.Port = port;
             SmtpClient.EnableSsl = ssl;
+            logger = LoggerService.GetLogger();
         }
 
 
@@ -45,7 +50,10 @@ namespace Services__ArqBase_.Facade
                     
                 
             }
-            catch (Exception ex) { }
+            catch (Exception ex) 
+            {
+                logger.Error($"error enviando email a {String.Join(",", recipientMail)}, error: {ex.Message}");
+            }
             finally
             {
                 mailMessage.Dispose();

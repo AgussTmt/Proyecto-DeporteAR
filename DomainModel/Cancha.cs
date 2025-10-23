@@ -12,7 +12,7 @@ namespace DomainModel
 
         public int Capacidad { get; set; }
 
-        public string Deporte{ get; set; }
+        public string Deporte { get; set; }
 
         public int DuracionXPartidoMin{ get; set; }
 
