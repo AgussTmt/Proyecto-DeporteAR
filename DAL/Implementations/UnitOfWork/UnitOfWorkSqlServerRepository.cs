@@ -23,13 +23,18 @@ namespace Patrones_3parcial.UnitOfWork.Implementaciones.UnitOfWork
 
         public ICanchaHorarioRepository CanchaHorarioRepository { get; }
 
+        public IFixtureRepository FixtureRepository { get; }
+
+        public IClasificacionRepository ClasificacionRepository { get; }
+
         private string CanchaDao = ConfigurationManager.AppSettings["CanchaRepository"];
         private string ClienteDao = ConfigurationManager.AppSettings["ClienteRepository"];
         private string CompeticionDao = ConfigurationManager.AppSettings["CompeticionRepository"];
         private string EquipoDao = ConfigurationManager.AppSettings["EquipoRepository"];
         private string JugadorDao = ConfigurationManager.AppSettings["JugadorRepository"];
         private string CanchaHorarioDao = ConfigurationManager.AppSettings["CanchaHorarioRepository"];
-
+        private string FixtureDao = ConfigurationManager.AppSettings["FixtureRepository"];
+        private string ClasificacionDao = ConfigurationManager.AppSettings["ClasificacionRepository"];
         public UnitOfWorkSqlServerRepository(SqlConnection context, SqlTransaction transaction)
         {
             Type canchaType = Type.GetType(CanchaDao);
@@ -60,6 +65,16 @@ namespace Patrones_3parcial.UnitOfWork.Implementaciones.UnitOfWork
             Type canchaHorarioType = Type.GetType(CanchaHorarioDao);
             var canchaHorarioInstance = Activator.CreateInstance(canchaHorarioType, new object[] { context, transaction });
             CanchaHorarioRepository = (ICanchaHorarioRepository)canchaHorarioInstance;
+
+
+            Type fixtureType = Type.GetType(FixtureDao);
+            FixtureRepository = (IFixtureRepository)Activator.CreateInstance(fixtureType, new object[] { context, transaction });
+
+
+            Type clasificacionType = Type.GetType(ClasificacionDao);
+            ClasificacionRepository = (IClasificacionRepository)Activator.CreateInstance(clasificacionType, new object[] { context, transaction });
+
+
         }
 
 

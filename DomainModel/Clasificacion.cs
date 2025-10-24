@@ -23,5 +23,7 @@ namespace DomainModel
         public int Victorias { get; set; }
 
         public int Puntos { get; set; }
+
+        public Guid IdCompeticion { get; set; }
     }
 }

@@ -12,11 +12,12 @@ namespace Patrones_3parcial.UnitOfWork
         // Repositorios de Raíces de Agregado
         ICanchaRepository CanchaRepository { get; }
         IClienteRepository ClienteRepository { get; }
-        ICompeticionRepository CompeticionRepository { get; } // Maneja Clasificacion y Fixture
+        ICompeticionRepository CompeticionRepository { get; }
+        IFixtureRepository FixtureRepository { get; }
+        IClasificacionRepository ClasificacionRepository { get; }
         IEquipoRepository EquipoRepository { get; }
-        IJugadorRepository JugadorRepository { get; }         // Maneja Puntuacion y Sanciones
-        ICanchaHorarioRepository CanchaHorarioRepository { get; } // Reservas
-        //IMensajeRepository MensajeRepository { get; }
-        //IPagoRepository PagoRepository { get; }
+        IJugadorRepository JugadorRepository { get; }         
+        ICanchaHorarioRepository CanchaHorarioRepository { get; } 
+       
     }
 }

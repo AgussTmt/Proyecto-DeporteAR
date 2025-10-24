@@ -45,16 +45,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BLL\PagoService.cs" />
+    <Compile Include="BLL\WhatsappFacade.cs" />
+    <Compile Include="DAL\Interfaces\IMensajeRepository.cs" />
+    <Compile Include="DAL\Interfaces\IPagoRepository.cs" />
     <Compile Include="DomainModel\Mensaje.cs" />
     <Compile Include="DomainModel\Pago.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BLL\Interfaces\" />
-    <Folder Include="DAL\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DomainModel\DomainModel.csproj">
+      <Project>{46E9D10D-0793-43DD-9914-6BA92DE4D639}</Project>
+      <Name>DomainModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -54,22 +54,24 @@
     <Compile Include="Factory\FactoryDao.cs" />
     <Compile Include="Implementations\SqlServer\Adapters\CanchaAdapter.cs" />
     <Compile Include="Implementations\SqlServer\Adapters\CanchaHorarioAdapter.cs" />
+    <Compile Include="Implementations\SqlServer\Adapters\ClasificacionAdapter.cs" />
     <Compile Include="Implementations\SqlServer\Adapters\ClienteAdapter.cs" />
     <Compile Include="Implementations\SqlServer\Adapters\CompeticionAdapter.cs" />
     <Compile Include="Implementations\SqlServer\Adapters\DbEstadoFixtureAdapter.cs" />
     <Compile Include="Implementations\SqlServer\Adapters\DbDeporteAdapter.cs" />
     <Compile Include="Implementations\SqlServer\Adapters\DbFormatoAdapter.cs" />
     <Compile Include="Implementations\SqlServer\Adapters\EquipoAdapter.cs" />
+    <Compile Include="Implementations\SqlServer\Adapters\FixtureAdapter.cs" />
     <Compile Include="Implementations\SqlServer\Adapters\JugadorAdapter.cs" />
     <Compile Include="Implementations\SqlServer\CanchaHorarioRepository.cs" />
     <Compile Include="Implementations\SqlServer\CanchaRepository.cs" />
     <Compile Include="Implementations\SqlServer\CatalogRepository.cs" />
     <Compile Include="Implementations\SqlServer\Helper\SqlTransactRepository.cs" />
-    <Compile Include="Implementations\SqlServer\Quitar\ClasificacionRepository.cs" />
+    <Compile Include="Implementations\SqlServer\ClasificacionRepository.cs" />
     <Compile Include="Implementations\SqlServer\ClienteRepository.cs" />
     <Compile Include="Implementations\SqlServer\CompeticionRepository.cs" />
     <Compile Include="Implementations\SqlServer\EquipoRepository.cs" />
-    <Compile Include="Implementations\SqlServer\Quitar\FixtureRepository.cs" />
+    <Compile Include="Implementations\SqlServer\FixtureRepository.cs" />
     <Compile Include="Implementations\SqlServer\JugadorRepository.cs" />
     <Compile Include="Implementations\UnitOfWork\UnitOfWorkSqlServer.cs" />
     <Compile Include="Implementations\UnitOfWork\UnitOfWorkSqlServerAdapter.cs" />
@@ -92,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Implementations\Memory\" />
+    <Folder Include="Implementations\SqlServer\Quitar\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DomainModel\DomainModel.csproj">

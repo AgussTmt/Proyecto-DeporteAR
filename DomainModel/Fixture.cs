@@ -15,6 +15,15 @@ namespace DomainModel
         public string  Resultado { get; set; }
 
         public EstadoFixture Estado { get; set; }
+
+        public Guid IdCompeticion { get; set; }
+
+        public List<Equipo> Equipos { get; set; }
+
+        public Fixture()
+        {
+            Equipos = new List<Equipo>();
+        }
     }
 
     public enum EstadoFixture

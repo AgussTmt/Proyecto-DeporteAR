@@ -12,5 +12,9 @@ namespace DAL.Interfaces
         void Update(Clasificacion clasificacion);
 
         Clasificacion GetByCompeticionEquipo(Competicion competicion, Equipo equipo);
+
+        List<Clasificacion> GetByCompeticion(Guid idCompeticion);
+
+        void Add(Clasificacion clasificacion);
     }
 }
