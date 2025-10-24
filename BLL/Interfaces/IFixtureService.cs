@@ -8,7 +8,7 @@ using DomainModel;
 
 namespace BLL.Interfaces
 {
-    internal interface IFixtureService : IGenericService <Fixture>
+    public interface IFixtureService : IGenericService <Fixture>
     {
         void postergar(Fixture fixture);
 

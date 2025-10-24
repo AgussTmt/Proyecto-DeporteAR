@@ -8,7 +8,7 @@ using DomainModel;
 
 namespace BLL.Interfaces
 {
-    internal interface ICompeticionService : IGenericService <Competicion>
+    public interface ICompeticionService : IGenericService <Competicion>
     {
         void CrearFixture(Competicion competicion);
 

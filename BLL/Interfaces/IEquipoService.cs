@@ -8,7 +8,7 @@ using DomainModel;
 
 namespace BLL.Interfaces
 {
-    internal interface IEquipoService
+    public interface IEquipoService
     {
         void AñadirAusencia(Equipo equipo);
 

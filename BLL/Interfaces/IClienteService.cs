@@ -8,7 +8,7 @@ using DomainModel;
 
 namespace BLL.Interfaces
 {
-    internal interface IClienteService : IGenericService <Cliente>
+    public interface IClienteService : IGenericService <Cliente>
     {
 
     }

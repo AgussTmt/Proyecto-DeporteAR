@@ -8,7 +8,7 @@ using DomainModel;
 
 namespace BLL.Interfaces
 {
-    internal interface IClasificacionService
+    public interface IClasificacionService
     {
         void Crear(Clasificacion clasificacion);
 

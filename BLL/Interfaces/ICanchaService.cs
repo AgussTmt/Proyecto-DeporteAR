@@ -9,7 +9,7 @@ using DomainModel;
 namespace BLL.Interfaces
 {
     //con el IGeneric cubro todo
-    internal interface ICanchaService : IGenericService <Cancha>
+    public interface ICanchaService : IGenericService <Cancha>
     {
 
     }

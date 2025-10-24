@@ -8,7 +8,7 @@ using DomainModel;
 
 namespace BLL.Interfaces
 {
-    internal interface IJugadorService : IGenericService <Jugador>
+    public interface IJugadorService : IGenericService <Jugador>
     {
         void AddPuntuacion(Guid idJugador, string tipo, int cantidad);
     }

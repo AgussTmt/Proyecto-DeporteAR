@@ -8,7 +8,7 @@ using DomainModel;
 
 namespace BLL.Interfaces
 {
-    internal interface ICanchaHorarioService
+    public interface ICanchaHorarioService
     {
         void Crear(CanchaHorario canchaHorario);
         

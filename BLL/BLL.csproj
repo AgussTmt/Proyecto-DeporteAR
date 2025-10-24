@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Facade\BLLFacade.cs" />
+    <Compile Include="Facade\Interfaces\IBLLFacade.cs" />
     <Compile Include="Interfaces\ICanchaHorarioService.cs" />
     <Compile Include="Interfaces\ICanchaService.cs" />
     <Compile Include="Interfaces\IClasificacionService.cs" />
@@ -85,8 +87,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Facade\Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
