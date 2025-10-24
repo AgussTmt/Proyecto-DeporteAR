@@ -19,7 +19,7 @@ namespace DAL.Implementations.SqlServer
         }
 
         private const string _sqlSelect = @"SELECT 
-                c.IdCompeticion, c.Cupos, c.Estado, c.FechaCreacion, c.FechaInicio, 
+                c.IdCompeticion, c.Cupos, c.Estado, c.Cupos_min, c.FechaCreacion, c.FechaInicio, 
                 c.FranjaHoraria, c.Frecuencia, c.Nombre, c.PrecioInscripcion,
                 f.Descripcion AS FormatoDescripcion,
                 k.IdCancha,

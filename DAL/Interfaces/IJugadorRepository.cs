@@ -8,7 +8,9 @@ using DomainModel;
 
 namespace DAL.Interfaces
 {
-    public interface IJugadorRepository : IGenericRepository <Jugador>
+    public interface IJugadorRepository : IGenericRepository<Jugador>
     {
+        void Delete(Guid id);
+        IEnumerable<Jugador> GetByEquipo(Guid idEquipo);
     }
 }

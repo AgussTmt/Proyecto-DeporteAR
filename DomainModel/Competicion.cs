@@ -14,6 +14,8 @@ namespace DomainModel
 
         public int Cupos { get; set; }
 
+        public int CuposMinimos { get; set; }
+
         public string Deporte { get; set; }
 
         public List<Equipo> ListaEquipos{ get; set; }

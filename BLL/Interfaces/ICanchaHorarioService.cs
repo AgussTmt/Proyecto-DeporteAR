@@ -11,11 +11,11 @@ namespace BLL.Interfaces
     internal interface ICanchaHorarioService
     {
         void Crear(CanchaHorario canchaHorario);
-        bool VerificarTiempoRestante(CanchaHorario canchaHorario);
+        
 
         List<CanchaHorario> ListarPorRangoTiempo(DateTime date);
 
-        bool VerificarDisponible(CanchaHorario canchaHorario);
+       
 
         void AsignarCliente(Cliente cliente, CanchaHorario canchaHorario);
 
@@ -26,6 +26,9 @@ namespace BLL.Interfaces
         List<CanchaHorario> ListarPorDemanda();
 
         List<CanchaHorario> ListarPorEstadoReserva(EstadoReserva estado);
+
+        //bool VerificarDisponible(CanchaHorario canchaHorario);
+        //bool VerificarTiempoRestante(CanchaHorario canchaHorario);
 
     }
 }

@@ -15,5 +15,7 @@ namespace BLL.Interfaces
         void Actualizar(Clasificacion clasificacion);
 
         Clasificacion ObtenerClasificacion(Competicion competicion, Equipo equipo);
+
+        List<Clasificacion> ListarPorCompeticion(Guid idCompeticion);
     }
 }

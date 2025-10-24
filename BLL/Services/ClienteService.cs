@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BLL.Interfaces;
+using DAL.Factory;
 using DomainModel;
 
 namespace BLL.Services
@@ -12,7 +13,27 @@ namespace BLL.Services
     {
         public void Add(Cliente entity)
         {
-            throw new NotImplementedException();
+            using (var context = FactoryDao.UnitOfWork.Create())
+            {
+                try
+                {
+                    
+                    var existente = context.Repositories.ClienteRepository.GetByNumero(entity.Telefono);
+                    if (existente != null)
+                    {
+                        throw new InvalidOperationException($"Ya existe un cliente registrado con el teléfono '{entity.Telefono}'.");
+                    }
+
+                    
+                    context.Repositories.ClienteRepository.Add(entity);
+                    context.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    
+                    throw;
+                }
+            }
         }
 
         public void Delete(Guid id)
@@ -22,17 +43,43 @@ namespace BLL.Services
 
         public IEnumerable<Cliente> GetAll()
         {
-            throw new NotImplementedException();
+            using (var context = FactoryDao.UnitOfWork.Create())
+            {
+                
+                return context.Repositories.ClienteRepository.GetAll();
+            }
         }
 
         public Cliente GetById(Guid id)
         {
-            throw new NotImplementedException();
+            using (var context = FactoryDao.UnitOfWork.Create())
+            {
+                return context.Repositories.ClienteRepository.GetById(id);
+            }
         }
 
         public void Update(Cliente entity)
         {
-            throw new NotImplementedException();
+            using (var context = FactoryDao.UnitOfWork.Create())
+            {
+                try
+                {
+                    // --- LÓGICA DE NEGOCIO (BLL) ---
+                    // Validamos que el teléfono no pertenezca a OTRO cliente
+                    var existente = context.Repositories.ClienteRepository.GetByNumero(entity.Telefono);
+                    if (existente != null && existente.IdCliente != entity.IdCliente)
+                    {
+                        throw new InvalidOperationException($"El teléfono '{entity.Telefono}' ya está asignado a otro cliente.");
+                    }
+
+                    context.Repositories.ClienteRepository.Update(entity);
+                    context.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
         }
     }
 }

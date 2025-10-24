@@ -52,5 +52,56 @@ namespace DAL.Implementations.SqlServer
             }
             return cliente;
         }
+
+        public IEnumerable<Cliente> GetAll()
+        {
+            var clientes = new List<Cliente>();
+
+            // Usamos el _sqlSelect y el ExecuteReader de la clase base
+            using (var reader = base.ExecuteReader(_sqlSelect, CommandType.Text))
+            {
+                while (reader.Read())
+                {
+                    // Usamos el patrón de GetValues() que establecimos
+                    object[] values = new object[reader.FieldCount];
+                    reader.GetValues(values);
+
+                    // Mapeamos con el adapter
+                    clientes.Add(ClienteAdapter.Current.Get(values));
+                }
+            }
+            return clientes;
+        }
+
+        public Cliente GetById(Guid id)
+        {
+            Cliente cliente = null;
+            string sql = $"{_sqlSelect} WHERE IdCliente = @IdCliente";
+
+            using (var reader = base.ExecuteReader(sql, CommandType.Text, new SqlParameter("@IdCliente", id)))
+            {
+                if (reader.Read()) // Usamos 'if' porque esperamos un solo resultado
+                {
+                    object[] values = new object[reader.FieldCount];
+                    reader.GetValues(values);
+                    cliente = ClienteAdapter.Current.Get(values);
+                }
+            }
+            return cliente; // Devuelve null si no se encontró
+        }
+
+        public void Update(Cliente entity)
+        {
+            string sql = @"UPDATE DbCliente SET
+                            Nombre = @Nombre,
+                            Telefono = @Telefono
+                           WHERE IdCliente = @IdCliente";
+
+            base.ExecuteNonQuery(sql, CommandType.Text,
+                new SqlParameter("@Nombre", (object)entity.Nombre ?? DBNull.Value),
+                new SqlParameter("@Telefono", (object)entity.Telefono ?? DBNull.Value),
+                new SqlParameter("@IdCliente", entity.IdCliente)
+            );
+        }
     }
 }

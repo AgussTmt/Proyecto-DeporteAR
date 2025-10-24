@@ -8,7 +8,7 @@ namespace Patrones_3parcial.UnitOfWork
 {
     public interface IUnitOfWorkAdapter : IDisposable
     {
-        IUnitOfWorkRepository Repository { get; }
+        IUnitOfWorkRepository Repositories { get; }
 
         void SaveChanges();
     }

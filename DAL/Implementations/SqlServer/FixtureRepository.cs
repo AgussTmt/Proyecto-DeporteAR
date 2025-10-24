@@ -203,5 +203,10 @@ namespace DAL.Implementations.SqlServer
                 );
             }
         }
+
+        public void Delete(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

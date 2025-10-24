@@ -14,5 +14,6 @@ namespace DAL.Interfaces
         void Add(Equipo equipo);
 
         List<Equipo> GetByCompeticion(Competicion competicion);
+        Equipo GetById(Guid idEquipo);
     }
 }

@@ -15,5 +15,6 @@ namespace DAL.Interfaces
         void UpdateFecha(Fixture fixture);
 
         List<Fixture> GetByTimeRange(DateTime dateTime);
+        void Delete(Guid id);
     }
 }

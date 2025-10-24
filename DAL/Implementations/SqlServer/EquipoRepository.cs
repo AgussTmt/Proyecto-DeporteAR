@@ -132,5 +132,30 @@ namespace DAL.Implementations.SqlServer
                 }
             }
         }
+
+        public Equipo GetById(Guid idEquipo)
+        {
+            Equipo equipo = null;
+            string sql = $"{_sqlSelect} WHERE e.IdEquipo = @IdEquipo";
+
+            using (var reader = base.ExecuteReader(sql, CommandType.Text, new SqlParameter("@IdEquipo", idEquipo)))
+            {
+                // Usamos 'if' porque solo esperamos un resultado
+                if (reader.Read())
+                {
+                    // 1. Creamos el array de objectos
+                    object[] values = new object[reader.FieldCount];
+                    // 2. Llenamos el array
+                    reader.GetValues(values);
+
+                    // 3. Mapeamos el equipo
+                    equipo = EquipoAdapter.Current.Get(values);
+
+                    // 4. Rellenamos la lista de jugadores
+                    PopulateJugadores(equipo);
+                }
+            }
+            return equipo; // Devuelve null si no se encontró
+        }
     }
 }

@@ -16,5 +16,6 @@ namespace DAL.Interfaces
         List<Clasificacion> GetByCompeticion(Guid idCompeticion);
 
         void Add(Clasificacion clasificacion);
+        void Delete(Guid idClasificacion);
     }
 }

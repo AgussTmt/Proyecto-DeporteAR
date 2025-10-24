@@ -195,5 +195,33 @@ namespace DAL.Implementations.SqlServer
                 new SqlParameter("@IdJugador", id)
             );
         }
+
+        public IEnumerable<Jugador> GetByEquipo(Guid idEquipo)
+        {
+            var lista = new List<Jugador>();
+            string sql = $"{_sqlSelect} WHERE IdEquipo = @IdEquipo";
+
+            using (var reader = base.ExecuteReader(sql, CommandType.Text, new SqlParameter("@IdEquipo", idEquipo)))
+            {
+                
+                while (reader.Read())
+                {
+                    
+                    object[] values = new object[reader.FieldCount];
+                    
+                    reader.GetValues(values);
+
+                    
+                    var jugador = JugadorAdapter.Current.Get(values);
+
+                    
+                    PopulatePuntuacion(jugador);
+                    PopulateSanciones(jugador);
+
+                    lista.Add(jugador);
+                }
+            }
+            return lista;
+        }
     }
 }
