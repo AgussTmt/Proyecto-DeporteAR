@@ -27,6 +27,8 @@ namespace Patrones_3parcial.UnitOfWork.Implementaciones.UnitOfWork
 
         public IClasificacionRepository ClasificacionRepository { get; }
 
+        public ICatalogRepository CatalogRepository { get; }
+
         private string CanchaDao = ConfigurationManager.AppSettings["CanchaRepository"];
         private string ClienteDao = ConfigurationManager.AppSettings["ClienteRepository"];
         private string CompeticionDao = ConfigurationManager.AppSettings["CompeticionRepository"];
@@ -35,6 +37,8 @@ namespace Patrones_3parcial.UnitOfWork.Implementaciones.UnitOfWork
         private string CanchaHorarioDao = ConfigurationManager.AppSettings["CanchaHorarioRepository"];
         private string FixtureDao = ConfigurationManager.AppSettings["FixtureRepository"];
         private string ClasificacionDao = ConfigurationManager.AppSettings["ClasificacionRepository"];
+
+        private string CatalogDao = ConfigurationManager.AppSettings["CatalogRepository"];
         public UnitOfWorkSqlServerRepository(SqlConnection context, SqlTransaction transaction)
         {
             Type canchaType = Type.GetType(CanchaDao);
@@ -74,6 +78,8 @@ namespace Patrones_3parcial.UnitOfWork.Implementaciones.UnitOfWork
             Type clasificacionType = Type.GetType(ClasificacionDao);
             ClasificacionRepository = (IClasificacionRepository)Activator.CreateInstance(clasificacionType, new object[] { context, transaction });
 
+            Type catalogType = Type.GetType(CatalogDao);
+            CatalogRepository = (ICatalogRepository)Activator.CreateInstance(catalogType, new object[] { context, transaction });
 
         }
 

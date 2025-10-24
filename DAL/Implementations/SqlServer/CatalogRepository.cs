@@ -25,22 +25,21 @@ namespace DAL.Implementations.SqlServer
         public IEnumerable<CatalogItem> GetDeportes()
         {
             var items = new List<CatalogItem>();
-            string SelectAllStatement = $"SELECT IdDeporte, Descripcion FROM DbDeporte";
+            string sql = "SELECT IdDeporte, Descripcion FROM dbo.DbDeporte ORDER BY Descripcion";
 
-            using (SqlDataReader reader = SqlHelper.ExecuteReader(SelectAllStatement,
-                                                                    CommandType.Text,
-                                                                    new SqlParameter[] { }))
+            
+            using (SqlDataReader reader = base.ExecuteReader(sql, CommandType.Text)) 
             {
                 while (reader.Read())
                 {
                     object[] data = new object[reader.FieldCount];
                     reader.GetValues(data);
 
-                    CatalogItem item = DbDeporteAdapter.Current.Get(data);
+                    
+                    CatalogItem item = DbDeporteAdapter.Current.Get(data); 
                     items.Add(item);
                 }
             }
-
             return items;
         }
         
@@ -48,47 +47,40 @@ namespace DAL.Implementations.SqlServer
         public IEnumerable<CatalogItem> GetEstadosFixture()
         {
             var items = new List<CatalogItem>();
-            string SelectAllStatement = $"SELECT IdEstadoFixture, Descripcion FROM DbEstadoFixture";
+            string sql = "SELECT IdEstadoFixture, Descripcion FROM dbo.DbEstadoFixture ORDER BY Descripcion";
 
-            using (SqlDataReader reader = SqlHelper.ExecuteReader(SelectAllStatement,
-                                                                    CommandType.Text,
-                                                                    new SqlParameter[] { }))
+            using (SqlDataReader reader = base.ExecuteReader(sql, CommandType.Text)) 
             {
                 while (reader.Read())
                 {
                     object[] data = new object[reader.FieldCount];
                     reader.GetValues(data);
 
-                    CatalogItem item = DbEstadoFixtureAdapter.Current.Get(data);
+                    CatalogItem item = DbEstadoFixtureAdapter.Current.Get(data); 
                     items.Add(item);
                 }
             }
-
             return items;
         }
 
         public IEnumerable<CatalogItem> GetFormatos()
         {
             var items = new List<CatalogItem>();
-            string SelectAllStatement = $"SELECT IdFormato, Descripcion FROM DbFormato";
+            string sql = "SELECT IdFormato, Descripcion FROM dbo.DbFormato ORDER BY Descripcion";
 
-            using (SqlDataReader reader = SqlHelper.ExecuteReader(SelectAllStatement,
-                                                                    CommandType.Text,
-                                                                    new SqlParameter[] { }))
+            using (SqlDataReader reader = base.ExecuteReader(sql, CommandType.Text)) 
             {
                 while (reader.Read())
                 {
                     object[] data = new object[reader.FieldCount];
                     reader.GetValues(data);
 
-                    CatalogItem item = DbFormatoAdapter.Current.Get(data);
-                    items.Add(item);
+                    CatalogItem item = DbFormatoAdapter.Current.Get(data); 
                 }
             }
-
             return items;
-
         }
-
     }
+
 }
+

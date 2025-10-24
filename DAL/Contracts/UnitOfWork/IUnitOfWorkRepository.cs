@@ -17,7 +17,8 @@ namespace Patrones_3parcial.UnitOfWork
         IClasificacionRepository ClasificacionRepository { get; }
         IEquipoRepository EquipoRepository { get; }
         IJugadorRepository JugadorRepository { get; }         
-        ICanchaHorarioRepository CanchaHorarioRepository { get; } 
-       
+        ICanchaHorarioRepository CanchaHorarioRepository { get; }
+        ICatalogRepository CatalogRepository { get; }
+
     }
 }

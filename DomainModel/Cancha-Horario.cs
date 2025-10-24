@@ -31,6 +31,7 @@ namespace DomainModel
         Libre,
         Espera,
         Reservada,
-        Cancelada
+        Cancelada,
+        OcupadoPorTorneo
     }
 }

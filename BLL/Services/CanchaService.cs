@@ -48,8 +48,9 @@ namespace BLL.Services
                         }
 
                         
-                        context.SaveChanges();
+                        
                     }
+                    context.SaveChanges();
                 }
                 catch (Exception)
                 {

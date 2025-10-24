@@ -5,12 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using DomainModel.CatalogItems;
 
-namespace DAL.Interfaces
+namespace BLL.Interfaces
 {
-    public interface ICatalogRepository
+    public interface ICatalogService
     {
+        
         IEnumerable<CatalogItem> GetDeportes();
         IEnumerable<CatalogItem> GetFormatos();
         IEnumerable<CatalogItem> GetEstadosFixture();
+        
     }
 }

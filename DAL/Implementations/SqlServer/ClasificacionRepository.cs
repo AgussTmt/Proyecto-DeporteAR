@@ -104,5 +104,10 @@ namespace DAL.Implementations.SqlServer
             }
             return list;
         }
+
+        public void Delete(Guid idClasificacion)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

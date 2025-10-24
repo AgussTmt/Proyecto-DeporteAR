@@ -17,5 +17,7 @@ namespace BLL.Facade.Interfaces
         IFixtureService FixtureService { get; }
         IJugadorService JugadorService { get; }
         IClasificacionService ClasificacionService { get; }
+
+        ICatalogService CatalogService { get; }
     }
 }

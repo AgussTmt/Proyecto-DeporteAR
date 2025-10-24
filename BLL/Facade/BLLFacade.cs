@@ -9,7 +9,7 @@ using BLL.Services;
 
 namespace BLL.Facade
 {
-    internal class BLLFacade : IBLLFacade
+    public class BLLFacade : IBLLFacade
     {
 
         private static readonly IBLLFacade _instance = new BLLFacade();
@@ -26,6 +26,7 @@ namespace BLL.Facade
         public IFixtureService FixtureService { get; }
         public IJugadorService JugadorService { get; }
         public IClasificacionService ClasificacionService { get; }
+        public ICatalogService CatalogService { get; }
 
 
         private BLLFacade()
@@ -38,6 +39,7 @@ namespace BLL.Facade
             FixtureService = new FixtureService();
             JugadorService = new JugadorService();
             ClasificacionService = new ClasificacionService();
+            CatalogService = new CatalogService();
         }
     }
 }

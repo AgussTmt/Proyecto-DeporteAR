@@ -29,10 +29,16 @@ namespace DAL.Implementations.SqlServer
         public void Add(Cancha entity)
         {
             Guid idDeporte = GetDeporteIdByDescripcion(entity.Deporte);
-            string sql = @"INSERT INTO DbCancha ..."; // (Misma query SQL que antes)
+
+            
+            string sql = @"INSERT INTO DbCancha 
+                            (IdCancha, Capacidad, IdDeporte, DuracionXPartido, EstadoCancha, FranjaHoraria, Nombre, Precio, FechaDeCreacion) 
+                           VALUES 
+                            (@IdCancha, @Capacidad, @IdDeporte, @DuracionXPartido, @EstadoCancha, @FranjaHoraria, @Nombre, @Precio, @FechaDeCreacion)";
+
             var duracion = TimeSpan.FromMinutes(entity.DuracionXPartidoMin);
 
-            // 5. Usamos el ExecuteNonQuery de la clase base
+
             base.ExecuteNonQuery(sql, CommandType.Text,
                 new SqlParameter("@IdCancha", entity.IdCancha),
                 new SqlParameter("@Capacidad", entity.Capacidad),
@@ -41,7 +47,7 @@ namespace DAL.Implementations.SqlServer
                 new SqlParameter("@EstadoCancha", entity.Estado),
                 new SqlParameter("@FranjaHoraria", (object)entity.FranjaHoraria ?? DBNull.Value),
                 new SqlParameter("@Nombre", (object)entity.Nombre ?? DBNull.Value),
-                new SqlParameter("@Precio", entity.Precio),
+                new SqlParameter("@Precio", entity.Precio.ToString(System.Globalization.CultureInfo.InvariantCulture)),
                 new SqlParameter("@FechaDeCreacion", entity.FechaCreacion)
             );
         }
@@ -52,7 +58,7 @@ namespace DAL.Implementations.SqlServer
                    SET EstadoCancha = ~EstadoCancha 
                    WHERE IdCancha = @IdCancha";
 
-            // Llamamos al método de la clase base (SqlTransactRepository)
+            
             base.ExecuteNonQuery(sql, CommandType.Text,
                 new SqlParameter("@IdCancha", id)
             );
@@ -63,7 +69,7 @@ namespace DAL.Implementations.SqlServer
             var canchas = new List<Cancha>();
 
             // 7. Usamos el ExecuteReader de la clase base
-            using (var reader = base.ExecuteReader(_sqlSelect, CommandType.Text, new SqlParameter()))
+            using (var reader = base.ExecuteReader(_sqlSelect, CommandType.Text))
             {
                 while (reader.Read())
                 {
@@ -140,5 +146,7 @@ namespace DAL.Implementations.SqlServer
             }
             return (Guid)result;
         }
+
+        
     }
 }

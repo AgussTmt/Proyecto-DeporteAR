@@ -19,5 +19,7 @@ namespace DAL.Interfaces
         List<CanchaHorario> GetOrderByDemand();
 
         List<CanchaHorario> GetByEstadoReserva(EstadoReserva estadoReserva);
+
+        CanchaHorario GetByCanchaYHora(Guid idCancha, DateTime hora);
     }
 }

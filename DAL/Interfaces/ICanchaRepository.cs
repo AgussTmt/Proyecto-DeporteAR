@@ -11,5 +11,6 @@ namespace DAL.Interfaces
     //Con IGenericRepository es suficiente
     public interface ICanchaRepository : IGenericRepository <Cancha>
     {
+       
     }
 }

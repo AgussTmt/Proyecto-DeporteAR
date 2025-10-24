@@ -224,5 +224,25 @@ namespace DAL.Implementations.SqlServer
             }
             return (Guid)result;
         }
+
+        public CanchaHorario GetByCanchaYHora(Guid idCancha, DateTime hora)
+        {
+            string sql = $"{_sqlSelect} WHERE ch.IdCancha = @IdCancha AND ch.Horario = @Hora";
+            CanchaHorario horario = null;
+
+            using (var reader = base.ExecuteReader(sql, CommandType.Text,
+                new SqlParameter("@IdCancha", idCancha),
+                new SqlParameter("@Hora", hora)))
+            {
+                if (reader.Read())
+                {
+                    object[] values = new object[reader.FieldCount];
+                    reader.GetValues(values);
+                    horario = CanchaHorarioAdapter.Current.Get(values);
+                }
+            }
+            return horario;
+
+        }
     }
 }

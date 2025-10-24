@@ -15,6 +15,7 @@ using System.Globalization;
 using System.Threading;
 using Services__ArqBase_.Facade;
 using WinUI.WinForms.Gestiones.UserManagment;
+using WinUI.WinForms.Gestiones.Canchas;
 
 namespace WinUI.WinForms
 {
@@ -137,6 +138,9 @@ namespace WinUI.WinForms
         {
             OpenChildForm(new FrmCompeticion(), sender);
         }
+
+        //B8FBBF00-EF47-4C06-A6D2-D6790215F8AB
+        //F8DCEE4C-DF4D-4630-90E0-72B7EBEC30D1
 
         private void BtnReportes_Click(object sender, EventArgs e)
         {

@@ -87,20 +87,26 @@ namespace BLL.Services
             {
                 try
                 {
-                    
+
                     var comp = context.Repositories.CompeticionRepository.GetById(competicion.IdCompeticion);
                     if (comp == null)
                         throw new KeyNotFoundException("La competición no existe.");
 
                     
-
-                    
+                    //Validar cupo mínimo y estado
                     if (comp.ListaEquipos.Count < comp.CuposMinimos)
-                        throw new InvalidOperationException($"No se puede crear el fixture. Se requieren {comp.CuposMinimos} equipos y solo hay {comp.ListaEquipos.Count} inscriptos.");
-
-                    
+                        throw new InvalidOperationException($"...");
                     if (comp.Estado != EstadoCompeticion.SinFixture)
-                        throw new InvalidOperationException("El fixture para esta competición ya fue creado anteriormente.");
+                        throw new InvalidOperationException("...");
+
+                   
+                    if (comp.canchaAsignada == null || comp.canchaAsignada.DuracionXPartidoMin == 0)
+                    {
+                        comp.canchaAsignada = context.Repositories.CanchaRepository.GetById(comp.canchaAsignada.IdCancha);
+                        if (comp.canchaAsignada == null)
+                            throw new InvalidOperationException("La cancha asignada a la competición no fue encontrada.");
+                    }
+                    
 
                     
                     var partidosGenerados = GenerarPartidosRoundRobin(comp);
@@ -108,9 +114,33 @@ namespace BLL.Services
                     
                     foreach (var partido in partidosGenerados)
                     {
+                        
+                        var horarioParaBloquear = context.Repositories.CanchaHorarioRepository.GetByCanchaYHora(
+                            comp.canchaAsignada.IdCancha,
+                            partido.Horario 
+                        );
+
+                        if (horarioParaBloquear != null)
+                        {
+                            
+                            if (horarioParaBloquear.Estado != EstadoReserva.Libre)
+                            { 
+                                throw new InvalidOperationException($"Conflicto al generar fixture: El horario {partido.Horario.ToString("g")} para la cancha '{comp.canchaAsignada.Nombre}' ya se encuentra '{horarioParaBloquear.Estado}'.");
+                            }
+
+                            
+                            horarioParaBloquear.Estado = EstadoReserva.OcupadoPorTorneo;
+                            context.Repositories.CanchaHorarioRepository.Update(horarioParaBloquear);
+                        }
+                        else
+                        {
+                            
+                            throw new InvalidOperationException($"Error al generar fixture: No se encontró un slot de horario disponible para el partido del {partido.Horario.ToString("g")} en la cancha '{comp.canchaAsignada.Nombre}'. Verifique la disponibilidad de horarios.");
+                        }
+
+                        
                         context.Repositories.FixtureRepository.Add(partido);
                     }
-
                     
                     comp.Estado = EstadoCompeticion.ConFixture;
                     context.Repositories.CompeticionRepository.Update(comp);
