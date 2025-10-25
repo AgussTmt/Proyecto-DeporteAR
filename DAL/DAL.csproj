@@ -53,6 +53,7 @@
     <Compile Include="Contracts\UnitOfWork\IUnitOfWorkRepository.cs" />
     <Compile Include="Factory\FactoryDao.cs" />
     <Compile Include="Implementations\SqlServer\Adapters\CanchaAdapter.cs" />
+    <Compile Include="Implementations\SqlServer\Adapters\CanchaDisponibilidadAdapter.cs" />
     <Compile Include="Implementations\SqlServer\Adapters\CanchaHorarioAdapter.cs" />
     <Compile Include="Implementations\SqlServer\Adapters\ClasificacionAdapter.cs" />
     <Compile Include="Implementations\SqlServer\Adapters\ClienteAdapter.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Implementations\SqlServer\Adapters\EquipoAdapter.cs" />
     <Compile Include="Implementations\SqlServer\Adapters\FixtureAdapter.cs" />
     <Compile Include="Implementations\SqlServer\Adapters\JugadorAdapter.cs" />
+    <Compile Include="Implementations\SqlServer\CanchaDisponibilidadRepository.cs" />
     <Compile Include="Implementations\SqlServer\CanchaHorarioRepository.cs" />
     <Compile Include="Implementations\SqlServer\CanchaRepository.cs" />
     <Compile Include="Implementations\SqlServer\CatalogRepository.cs" />
@@ -73,11 +75,13 @@
     <Compile Include="Implementations\SqlServer\EquipoRepository.cs" />
     <Compile Include="Implementations\SqlServer\FixtureRepository.cs" />
     <Compile Include="Implementations\SqlServer\JugadorRepository.cs" />
+    <Compile Include="Implementations\SqlServer\ReservaHistorialRepository.cs" />
     <Compile Include="Implementations\UnitOfWork\UnitOfWorkSqlServer.cs" />
     <Compile Include="Implementations\UnitOfWork\UnitOfWorkSqlServerAdapter.cs" />
     <Compile Include="Implementations\UnitOfWork\UnitOfWorkSqlServerRepository.cs" />
     <Compile Include="Interfaces\Generics\IAdapter.cs" />
     <Compile Include="Interfaces\Generics\IGenericRepository.cs" />
+    <Compile Include="Interfaces\ICanchaDisponibilidadRepository.cs" />
     <Compile Include="Interfaces\ICanchaHorarioRepository.cs" />
     <Compile Include="Interfaces\ICanchaRepository.cs" />
     <Compile Include="Interfaces\ICatalogRepository.cs" />
@@ -87,6 +91,7 @@
     <Compile Include="Interfaces\IEquipoRepository.cs" />
     <Compile Include="Interfaces\IFixtureRepository.cs" />
     <Compile Include="Interfaces\IJugadorRepository.cs" />
+    <Compile Include="Interfaces\IReservaHistorialRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

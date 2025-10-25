@@ -20,8 +20,10 @@ namespace DAL.Implementations.SqlServer.Adapters
         /// </summary>
         public Equipo Get(object[] values)
         {
-            if (values == null || values.Length < 6)
-                throw new ArgumentException("Se requieren 6 valores para mapear un Equipo.");
+            if (values == null || values.Length < 7)
+            {
+                throw new ArgumentException("Se requieren 7 valores para mapear un Equipo.");
+            }
 
             Enum.TryParse(values[5]?.ToString(), out EstadoAsistencia estado);
 
@@ -35,6 +37,7 @@ namespace DAL.Implementations.SqlServer.Adapters
                             ? null
                             : new Cliente { IdCliente = (Guid)values[4] },
                 EstadoProxPartido = estado,
+                Habilitado = values[6] != DBNull.Value && (bool)values[6],
                 Jugadores = new List<Jugador>() // Se llena después
             };
         }

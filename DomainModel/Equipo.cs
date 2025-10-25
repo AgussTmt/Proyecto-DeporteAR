@@ -22,6 +22,8 @@ namespace DomainModel
 
         public EstadoAsistencia EstadoProxPartido { get; set; }
 
+        public bool Habilitado { get; set; }
+
     }
 
     public enum EstadoAsistencia

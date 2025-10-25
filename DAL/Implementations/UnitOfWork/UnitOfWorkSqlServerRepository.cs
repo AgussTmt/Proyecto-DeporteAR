@@ -29,6 +29,10 @@ namespace Patrones_3parcial.UnitOfWork.Implementaciones.UnitOfWork
 
         public ICatalogRepository CatalogRepository { get; }
 
+        public ICanchaDisponibilidadRepository CanchaDisponibilidadRepository { get; }
+
+        public IReservaHistorialRepository ReservaHistorialRepository { get; }
+
         private string CanchaDao = ConfigurationManager.AppSettings["CanchaRepository"];
         private string ClienteDao = ConfigurationManager.AppSettings["ClienteRepository"];
         private string CompeticionDao = ConfigurationManager.AppSettings["CompeticionRepository"];
@@ -37,8 +41,9 @@ namespace Patrones_3parcial.UnitOfWork.Implementaciones.UnitOfWork
         private string CanchaHorarioDao = ConfigurationManager.AppSettings["CanchaHorarioRepository"];
         private string FixtureDao = ConfigurationManager.AppSettings["FixtureRepository"];
         private string ClasificacionDao = ConfigurationManager.AppSettings["ClasificacionRepository"];
-
         private string CatalogDao = ConfigurationManager.AppSettings["CatalogRepository"];
+        private string CanchaDisponibilidadDao = ConfigurationManager.AppSettings["CanchaDisponibilidadRepository"];
+        private string ReservaHistorialDao = ConfigurationManager.AppSettings["ReservaHistorialRepository"];
         public UnitOfWorkSqlServerRepository(SqlConnection context, SqlTransaction transaction)
         {
             Type canchaType = Type.GetType(CanchaDao);
@@ -80,6 +85,12 @@ namespace Patrones_3parcial.UnitOfWork.Implementaciones.UnitOfWork
 
             Type catalogType = Type.GetType(CatalogDao);
             CatalogRepository = (ICatalogRepository)Activator.CreateInstance(catalogType, new object[] { context, transaction });
+
+            Type canchaDisponibilidadType = Type.GetType(CanchaDisponibilidadDao);
+            CanchaDisponibilidadRepository = (ICanchaDisponibilidadRepository)Activator.CreateInstance(canchaDisponibilidadType, new object[] { context, transaction });
+
+            Type historialType = Type.GetType(ReservaHistorialDao);
+            ReservaHistorialRepository = (IReservaHistorialRepository)Activator.CreateInstance(historialType, new object[] { context, transaction });
 
         }
 

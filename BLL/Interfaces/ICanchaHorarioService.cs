@@ -27,8 +27,7 @@ namespace BLL.Interfaces
 
         List<CanchaHorario> ListarPorEstadoReserva(EstadoReserva estado);
 
-        //bool VerificarDisponible(CanchaHorario canchaHorario);
-        //bool VerificarTiempoRestante(CanchaHorario canchaHorario);
+        public void AbonarReserva(Guid idCanchaHorario);
 
     }
 }

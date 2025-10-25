@@ -22,5 +22,7 @@ namespace BLL.Interfaces
 
         void AñadirMiembro(Jugador jugador);
         IEnumerable<Equipo> GetAll();
+
+        void CambiarHabilitado(Guid idEquipo, bool habilitado);
     }
 }

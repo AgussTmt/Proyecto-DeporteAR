@@ -248,7 +248,11 @@ namespace DAL.Implementations.SqlServer
 
         private void PopulateEquipos(Competicion competicion)
         {
-            string sql = "SELECT IdEquipo FROM DbEquipoCompeticion WHERE IdCompeticion = @IdComp";
+            string sql = @"SELECT ec.IdEquipo 
+                   FROM DbEquipoCompeticion ec
+                   JOIN DbEquipo e ON ec.IdEquipo = e.IdEquipo 
+                   WHERE ec.IdCompeticion = @IdComp 
+                   AND e.Habilitado = 1";
             competicion.ListaEquipos = new List<Equipo>();
             using (var reader = base.ExecuteReader(sql, CommandType.Text, new SqlParameter("@IdComp", competicion.IdCompeticion)))
             {

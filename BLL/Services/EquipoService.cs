@@ -148,5 +148,22 @@ namespace BLL.Services
                 return context.Repositories.EquipoRepository.GetById(equipo.IdEquipo);
             }
         }
+
+        public void CambiarHabilitado(Guid idEquipo, bool habilitado)
+        {
+            using (var context = FactoryDao.UnitOfWork.Create())
+            {
+                try
+                {
+                    // (Opcional: BLL podría verificar si el equipo está en una competición activa antes de deshabilitar)
+                    context.Repositories.EquipoRepository.CambiarHabilitado(idEquipo, habilitado);
+                    context.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    throw; // Rollback automático
+                }
+            }
+        }
     }
 }

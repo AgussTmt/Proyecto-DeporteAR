@@ -22,12 +22,14 @@ namespace DomainModel
         public Dictionary<string, int> Puntuacion { get; set; }
 
         public Dictionary<string, int> Sanciones { get; set; }
+        public bool Habilitado { get; set; }
 
         public Jugador()
         {
             
             Puntuacion = new Dictionary<string, int>();
             Sanciones = new Dictionary<string, int>();
+            Habilitado = true;
         }
     }
 }

@@ -16,13 +16,13 @@ namespace DAL.Implementations.SqlServer.Adapters
         /// <summary>
         /// Mapea un array de object[] a una entidad Jugador.
         /// Asume el orden: 0:IdJugador, 1:IdEquipo, 2:Nombre, 
-        /// 3:PartidosJugados, 4:Mvp, 5:Apellido
+        /// 3:PartidosJugados, 4:Mvp, 5:Apellido, 6:Habilitado
         /// </summary>
         public Jugador Get(object[] values)
         {
-            if (values == null || values.Length < 6)
+            if (values == null || values.Length < 7)
             {
-                throw new ArgumentException("Se requieren 6 valores para mapear un Jugador.");
+                throw new ArgumentException("Se requieren 7 valores para mapear un Jugador.");
             }
 
             return new Jugador
@@ -31,9 +31,10 @@ namespace DAL.Implementations.SqlServer.Adapters
                 IdEquipo = (Guid)values[1],
                 Nombre = values[2]?.ToString(),
                 PartidosJugados = values[3] == DBNull.Value ? 0 : (int)values[3],
-                CantMvp = values[4] == DBNull.Value ? 0 : (int)values[4], // Mapea Mvp a CantMvp
-                Apellido = values[5]?.ToString()
-                // Los diccionarios se llenan en el repositorio
+                CantMvp = values[4] == DBNull.Value ? 0 : (int)values[4], 
+                Apellido = values[5]?.ToString(),
+                Habilitado = values[6] != DBNull.Value && (bool)values[6]
+
             };
         }
     }

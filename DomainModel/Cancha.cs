@@ -20,7 +20,7 @@ namespace DomainModel
 
         public DateTime FechaCreacion{ get; set; }
 
-        public string FranjaHoraria { get; set; }
+        //public string FranjaHoraria { get; set; }
 
         public string Nombre { get; set; }
 

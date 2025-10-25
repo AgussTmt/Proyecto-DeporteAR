@@ -28,6 +28,7 @@ namespace WinUI.WinForms.Gestiones.Canchas
 
         private void FrmCanchas_Load(object sender, EventArgs e)
         {
+            dgvCanchas.AutoGenerateColumns = false;
             RefrescarGrid();
         }
 
@@ -36,7 +37,7 @@ namespace WinUI.WinForms.Gestiones.Canchas
             try
             {
                 dgvCanchas.DataSource = null;
-                dgvCanchas.DataSource = BLLFacade.Current.CanchaService.GetAll();
+                dgvCanchas.DataSource = BLLFacade.Current.CanchaService.GetAllIncludingDisabled().ToList();
             }
             catch (Exception ex)
             {
@@ -96,7 +97,7 @@ namespace WinUI.WinForms.Gestiones.Canchas
                 try
                 {
                     
-                    BLLFacade.Current.CanchaService.Delete(canchaSeleccionada.IdCancha);
+                    BLLFacade.Current.CanchaService.CambiarHabilitado(canchaSeleccionada.IdCancha);
 
                     
                     RefrescarGrid();
@@ -105,6 +106,18 @@ namespace WinUI.WinForms.Gestiones.Canchas
                 {
                    
                     MessageBox.Show($"Error al borrar la cancha: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void dgvCanchas_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (dgvCanchas.Columns[e.ColumnIndex].Name == "colEstado" && e.RowIndex >= 0)
+            {
+                if (e.Value is bool estado)
+                {
+                    e.Value = estado ? "Habilitada" : "Deshabilitada";
+                    e.FormattingApplied = true;
                 }
             }
         }

@@ -20,22 +20,23 @@ namespace DAL.Implementations.SqlServer
         {
         }
 
-        private const string _sqlSelect = @"SELECT 
-                c.IdCancha, c.Capacidad, d.Descripcion, c.DuracionXPartido, 
-                c.FechaDeCreacion, c.EstadoCancha, c.FranjaHoraria, c.Nombre, c.Precio 
-            FROM DbCancha c
-            LEFT JOIN DbDeporte d ON c.IdDeporte = d.IdDeporte";
+        private const string _sqlSelectAll = @"SELECT
+            c.IdCancha, c.Capacidad, d.Descripcion AS DeporteDesc, c.DuracionXPartido,
+            c.FechaDeCreacion, c.EstadoCancha, c.Nombre, c.Precio
+        FROM DbCancha c
+        LEFT JOIN DbDeporte d ON c.IdDeporte = d.IdDeporte";
+
+        private const string _sqlSelectEnabled = _sqlSelectAll + " WHERE c.EstadoCancha = 1";
 
         public void Add(Cancha entity)
         {
             Guid idDeporte = GetDeporteIdByDescripcion(entity.Deporte);
 
-            
-            string sql = @"INSERT INTO DbCancha 
-                            (IdCancha, Capacidad, IdDeporte, DuracionXPartido, EstadoCancha, FranjaHoraria, Nombre, Precio, FechaDeCreacion) 
-                           VALUES 
-                            (@IdCancha, @Capacidad, @IdDeporte, @DuracionXPartido, @EstadoCancha, @FranjaHoraria, @Nombre, @Precio, @FechaDeCreacion)";
 
+            string sql = @"INSERT INTO DbCancha
+                            (IdCancha, Capacidad, IdDeporte, DuracionXPartido, EstadoCancha, Nombre, Precio, FechaDeCreacion)
+                           VALUES
+                            (@IdCancha, @Capacidad, @IdDeporte, @DuracionXPartido, @EstadoCancha, @Nombre, @Precio, @FechaDeCreacion)";
             var duracion = TimeSpan.FromMinutes(entity.DuracionXPartidoMin);
 
 
@@ -45,7 +46,6 @@ namespace DAL.Implementations.SqlServer
                 new SqlParameter("@IdDeporte", idDeporte),
                 new SqlParameter("@DuracionXPartido", duracion),
                 new SqlParameter("@EstadoCancha", entity.Estado),
-                new SqlParameter("@FranjaHoraria", (object)entity.FranjaHoraria ?? DBNull.Value),
                 new SqlParameter("@Nombre", (object)entity.Nombre ?? DBNull.Value),
                 new SqlParameter("@Precio", entity.Precio.ToString(System.Globalization.CultureInfo.InvariantCulture)),
                 new SqlParameter("@FechaDeCreacion", entity.FechaCreacion)
@@ -69,7 +69,22 @@ namespace DAL.Implementations.SqlServer
             var canchas = new List<Cancha>();
 
             // 7. Usamos el ExecuteReader de la clase base
-            using (var reader = base.ExecuteReader(_sqlSelect, CommandType.Text))
+            using (var reader = base.ExecuteReader(_sqlSelectEnabled, CommandType.Text))
+            {
+                while (reader.Read())
+                {
+                    object[] values = new object[reader.FieldCount];
+                    reader.GetValues(values);
+                    canchas.Add(CanchaAdapter.Current.Get(values));
+                }
+            }
+            return canchas;
+        }
+
+        public IEnumerable<Cancha> GetAllIncludingDisabled()
+        {
+            var canchas = new List<Cancha>();
+            using (var reader = base.ExecuteReader(_sqlSelectAll, CommandType.Text))
             {
                 while (reader.Read())
                 {
@@ -83,10 +98,9 @@ namespace DAL.Implementations.SqlServer
 
         public Cancha GetById(Guid id)
         {
-            string sql = $"{_sqlSelect} WHERE c.IdCancha = @IdCancha";
+            string sql = $"{_sqlSelectAll} WHERE c.IdCancha = @IdCancha";
             Cancha cancha = null;
 
-            // 8. Usamos el ExecuteReader de la clase base
             using (var reader = base.ExecuteReader(sql, CommandType.Text, new SqlParameter("@IdCancha", id)))
             {
                 if (reader.Read())
@@ -105,14 +119,13 @@ namespace DAL.Implementations.SqlServer
             Guid idDeporte = GetDeporteIdByDescripcion(entity.Deporte);
 
             string sql = @"UPDATE DbCancha SET
-                    Capacidad = @Capacidad,
-                    IdDeporte = @IdDeporte,
-                    DuracionXPartido = @DuracionXPartido,
-                    EstadoCancha = @EstadoCancha,
-                    FranjaHoraria = @FranjaHoraria,
-                    Nombre = @Nombre,
-                    Precio = @Precio
-                   WHERE IdCancha = @IdCancha";
+                            Capacidad = @Capacidad,
+                            IdDeporte = @IdDeporte,
+                            DuracionXPartido = @DuracionXPartido,
+                            EstadoCancha = @EstadoCancha,
+                            Nombre = @Nombre,
+                            Precio = @Precio
+                           WHERE IdCancha = @IdCancha";
 
             var duracion = TimeSpan.FromMinutes(entity.DuracionXPartidoMin);
             var precioString = entity.Precio.ToString(System.Globalization.CultureInfo.InvariantCulture);
@@ -123,7 +136,6 @@ namespace DAL.Implementations.SqlServer
                 new SqlParameter("@IdDeporte", idDeporte),
                 new SqlParameter("@DuracionXPartido", duracion),
                 new SqlParameter("@EstadoCancha", entity.Estado),
-                new SqlParameter("@FranjaHoraria", (object)entity.FranjaHoraria ?? DBNull.Value),
                 new SqlParameter("@Nombre", (object)entity.Nombre ?? DBNull.Value),
                 new SqlParameter("@Precio", precioString),
                 new SqlParameter("@IdCancha", entity.IdCancha) 
@@ -147,6 +159,5 @@ namespace DAL.Implementations.SqlServer
             return (Guid)result;
         }
 
-        
     }
 }

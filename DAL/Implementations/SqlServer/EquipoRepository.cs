@@ -24,16 +24,17 @@ namespace DAL.Implementations.SqlServer
             e.IdCliente, 
             ea.Descripcion AS EstadoAsistenciaDesc
         FROM DbEquipo e
-        LEFT JOIN DbEstadoAsistencia ea ON e.IdEstadoAsistencia = ea.IdEstadoAsistencia";
+        LEFT JOIN DbEstadoAsistencia ea ON e.IdEstadoAsistencia = ea.IdEstadoAsistencia
+        WHERE e.Habilitado = 1";
 
         public void Add(Equipo equipo)
         {
             Guid estadoId = GetEstadoAsistenciaId(equipo.EstadoProxPartido);
 
             string sql = @"INSERT INTO DbEquipo 
-                       (IdEquipo, CantAusencias, IdCliente, IdEstadoAsistencia, FechaDeCreacion, Nombre)
+                       (IdEquipo, CantAusencias, IdCliente, IdEstadoAsistencia, FechaDeCreacion, Nombre, Habilitado)
                        VALUES
-                       (@IdEquipo, @CantAusencias, @IdCliente, @IdEstadoAsistencia, @FechaDeCreacion, @Nombre)";
+                       (@IdEquipo, @CantAusencias, @IdCliente, @IdEstadoAsistencia, @FechaDeCreacion, @Nombre, 1)";
 
             base.ExecuteNonQuery(sql, CommandType.Text,
                 new SqlParameter("@IdEquipo", equipo.IdEquipo),
@@ -87,7 +88,8 @@ namespace DAL.Implementations.SqlServer
                         CantAusencias = @CantAusencias,
                         IdCliente = @IdCliente,
                         IdEstadoAsistencia = @IdEstadoAsistencia,
-                        Nombre = @Nombre
+                        Nombre = @Nombre,
+                        Habilitado = @Habilitado
                        WHERE IdEquipo = @IdEquipo";
 
             base.ExecuteNonQuery(sql, CommandType.Text,
@@ -95,6 +97,7 @@ namespace DAL.Implementations.SqlServer
                 new SqlParameter("@IdCliente", (object)equipo.Capitan?.IdCliente ?? DBNull.Value),
                 new SqlParameter("@IdEstadoAsistencia", estadoId),
                 new SqlParameter("@Nombre", (object)equipo.Nombre ?? DBNull.Value),
+                new SqlParameter("@Habilitado", equipo.Habilitado),
                 new SqlParameter("@IdEquipo", equipo.IdEquipo)
             );
         }
@@ -112,7 +115,7 @@ namespace DAL.Implementations.SqlServer
 
         private void PopulateJugadores(Equipo equipo)
         {
-            
+
             string sql = "SELECT IdJugador, IdEquipo, Nombre, PartidosJugados, Mvp, Apellido FROM DbJugador WHERE IdEquipo = @IdEquipo";
             equipo.Jugadores = new List<Jugador>();
 
@@ -140,29 +143,29 @@ namespace DAL.Implementations.SqlServer
 
             using (var reader = base.ExecuteReader(sql, CommandType.Text, new SqlParameter("@IdEquipo", idEquipo)))
             {
-                // Usamos 'if' porque solo esperamos un resultado
+
                 if (reader.Read())
                 {
-                    // 1. Creamos el array de objectos
+
                     object[] values = new object[reader.FieldCount];
-                    // 2. Llenamos el array
+
                     reader.GetValues(values);
 
-                    // 3. Mapeamos el equipo
+
                     equipo = EquipoAdapter.Current.Get(values);
 
-                    // 4. Rellenamos la lista de jugadores
+
                     PopulateJugadores(equipo);
                 }
             }
-            return equipo; // Devuelve null si no se encontró
+            return equipo;
         }
 
         public IEnumerable<Equipo> GetAll()
         {
             var list = new List<Equipo>();
 
-            
+
             using (var reader = base.ExecuteReader(_sqlSelect, CommandType.Text))
             {
                 while (reader.Read())
@@ -173,6 +176,18 @@ namespace DAL.Implementations.SqlServer
                 }
             }
             return list;
+        }
+
+        public void CambiarHabilitado(Guid idEquipo, bool habilitado)
+        {
+            string sql = @"UPDATE DbEquipo SET
+                            Habilitado = @Habilitado
+                           WHERE IdEquipo = @IdEquipo";
+
+            base.ExecuteNonQuery(sql, CommandType.Text,
+                new SqlParameter("@Habilitado", habilitado),
+                new SqlParameter("@IdEquipo", idEquipo)
+            );
         }
     }
 }

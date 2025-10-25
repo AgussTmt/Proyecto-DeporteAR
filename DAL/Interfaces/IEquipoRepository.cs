@@ -16,5 +16,7 @@ namespace DAL.Interfaces
         List<Equipo> GetByCompeticion(Competicion competicion);
         Equipo GetById(Guid idEquipo);
         IEnumerable<Equipo> GetAll();
+
+        void CambiarHabilitado(Guid idEquipo, bool habilitado);
     }
 }

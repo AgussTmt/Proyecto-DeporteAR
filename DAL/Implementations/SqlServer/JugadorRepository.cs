@@ -20,7 +20,8 @@ namespace DAL.Implementations.SqlServer
 
         private const string _sqlSelect = @"SELECT 
                 IdJugador, IdEquipo, Nombre, PartidosJugados, Mvp, Apellido 
-            FROM DbJugador";
+                FROM DbJugador
+                WHERE Habilitado = 1";
 
         public void Add(Jugador entity)
         {
@@ -29,9 +30,9 @@ namespace DAL.Implementations.SqlServer
 
             // 1. Inserta en la tabla principal (DbJugador)
             string sql = @"INSERT INTO DbJugador 
-                           (IdJugador, IdEquipo, Nombre, PartidosJugados, Mvp, Apellido)
+                           (IdJugador, IdEquipo, Nombre, PartidosJugados, Mvp, Apellido, Habilitado)
                            VALUES
-                           (@IdJ, @IdE, @Nombre, @PJ, @Mvp, @Apellido)";
+                           (@IdJ, @IdE, @Nombre, @PJ, @Mvp, @Apellido, 1)";
 
             base.ExecuteNonQuery(sql, CommandType.Text,
                 new SqlParameter("@IdJ", entity.Idjugador),
@@ -45,11 +46,6 @@ namespace DAL.Implementations.SqlServer
             // 2. Sincroniza las tablas hijas
             SyncPuntuacion(entity);
             SyncSanciones(entity);
-        }
-
-        public void Delete(Guid id)
-        {
-            throw new NotImplementedException();
         }
 
         public IEnumerable<Jugador> GetAll()
@@ -103,7 +99,8 @@ namespace DAL.Implementations.SqlServer
                             Nombre = @Nombre,
                             PartidosJugados = @PJ,
                             Mvp = @Mvp,
-                            Apellido = @Apellido
+                            Apellido = @Apellido,
+                            Habilitado = @Habilitado
                            WHERE IdJugador = @IdJ";
 
             base.ExecuteNonQuery(sql, CommandType.Text,
@@ -112,6 +109,7 @@ namespace DAL.Implementations.SqlServer
                 new SqlParameter("@PJ", entity.PartidosJugados),
                 new SqlParameter("@Mvp", entity.CantMvp),
                 new SqlParameter("@Apellido", (object)entity.Apellido ?? DBNull.Value),
+                new SqlParameter("@Habilitado", entity.Habilitado),
                 new SqlParameter("@IdJ", entity.Idjugador)
             );
 

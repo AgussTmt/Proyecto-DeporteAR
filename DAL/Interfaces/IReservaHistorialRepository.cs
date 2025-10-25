@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Dal.Interfaces;
 using DomainModel;
 
 namespace DAL.Interfaces
 {
-    public interface IJugadorRepository : IGenericRepository<Jugador>
+    public interface IReservaHistorialRepository
     {
-        IEnumerable<Jugador> GetByEquipo(Guid idEquipo);
+        void Add(ReservaHistorial entity);
     }
 }

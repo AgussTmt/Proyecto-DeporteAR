@@ -20,5 +20,8 @@ namespace Patrones_3parcial.UnitOfWork
         ICanchaHorarioRepository CanchaHorarioRepository { get; }
         ICatalogRepository CatalogRepository { get; }
 
+        ICanchaDisponibilidadRepository CanchaDisponibilidadRepository { get; }
+        IReservaHistorialRepository ReservaHistorialRepository { get; }
+
     }
 }

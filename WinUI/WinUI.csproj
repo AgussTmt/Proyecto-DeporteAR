@@ -74,6 +74,18 @@
     <Compile Include="WinForms\Gestiones\Competiciones\FrmCompeticionDetalle.Designer.cs">
       <DependentUpon>FrmCompeticionDetalle.cs</DependentUpon>
     </Compile>
+    <Compile Include="WinForms\Gestiones\Equipos\FrmEquipoDetalle.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\Equipos\FrmEquipoDetalle.Designer.cs">
+      <DependentUpon>FrmEquipoDetalle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\Equipos\FrmEquipos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\Equipos\FrmEquipos.Designer.cs">
+      <DependentUpon>FrmEquipos.cs</DependentUpon>
+    </Compile>
     <Compile Include="WinForms\Gestiones\Equipos\FrmSeleccionarEquipo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -173,6 +185,12 @@
     </Compile>
     <EmbeddedResource Include="WinForms\Gestiones\Competiciones\FrmCompeticionDetalle.resx">
       <DependentUpon>FrmCompeticionDetalle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Gestiones\Equipos\FrmEquipoDetalle.resx">
+      <DependentUpon>FrmEquipoDetalle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Gestiones\Equipos\FrmEquipos.resx">
+      <DependentUpon>FrmEquipos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinForms\Gestiones\Equipos\FrmSeleccionarEquipo.resx">
       <DependentUpon>FrmSeleccionarEquipo.cs</DependentUpon>

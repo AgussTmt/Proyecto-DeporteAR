@@ -11,5 +11,7 @@ namespace BLL.Interfaces
     public interface IJugadorService : IGenericService <Jugador>
     {
         void AddPuntuacion(Guid idJugador, string tipo, int cantidad);
+        void CambiarHabilitado(Guid idJugador);
+        void AddSancion(Guid idJugador, string tipo, int cantidad);
     }
 }

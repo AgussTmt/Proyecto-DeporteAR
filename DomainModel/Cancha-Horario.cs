@@ -25,7 +25,6 @@ namespace DomainModel
 
     }
 
-    //deberia distinguir entre cancha cancelada por el usuario y cancha cancelada porque no asistio?
     public enum EstadoReserva
     {
         Libre,

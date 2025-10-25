@@ -34,18 +34,19 @@ namespace BLL.Services
             }
         }
 
-        public void Delete(Guid id)
+        public void CambiarHabilitado(Guid idJugador)
         {
             using (var context = FactoryDao.UnitOfWork.Create())
             {
                 try
                 {
-                    context.Repositories.JugadorRepository.Delete(id);
+                    
+                    context.Repositories.JugadorRepository.CambiarHabilitado(idJugador);
                     context.SaveChanges();
                 }
                 catch (Exception)
                 {
-                    throw;
+                    throw; 
                 }
             }
         }
@@ -153,6 +154,11 @@ namespace BLL.Services
                     throw;
                 }
             }
+        }
+
+        public void Delete(Guid id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
