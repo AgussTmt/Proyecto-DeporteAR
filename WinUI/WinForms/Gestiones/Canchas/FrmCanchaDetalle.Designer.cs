@@ -43,8 +43,11 @@
             this.colDiaNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colHoraInicio = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.colHoraFin = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.NumDuracionXPartido = new System.Windows.Forms.NumericUpDown();
+            this.LblDuracionXPartido = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numCapacidad)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDisponibilidad)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumDuracionXPartido)).BeginInit();
             this.SuspendLayout();
             // 
             // txtNombre
@@ -73,7 +76,7 @@
             // 
             // BtnCancelar
             // 
-            this.BtnCancelar.Location = new System.Drawing.Point(35, 244);
+            this.BtnCancelar.Location = new System.Drawing.Point(147, 317);
             this.BtnCancelar.Name = "BtnCancelar";
             this.BtnCancelar.Size = new System.Drawing.Size(75, 23);
             this.BtnCancelar.TabIndex = 6;
@@ -169,11 +172,29 @@
             this.colHoraFin.HeaderText = "Hasta";
             this.colHoraFin.Name = "colHoraFin";
             // 
+            // NumDuracionXPartido
+            // 
+            this.NumDuracionXPartido.Location = new System.Drawing.Point(35, 247);
+            this.NumDuracionXPartido.Name = "NumDuracionXPartido";
+            this.NumDuracionXPartido.Size = new System.Drawing.Size(280, 20);
+            this.NumDuracionXPartido.TabIndex = 16;
+            // 
+            // LblDuracionXPartido
+            // 
+            this.LblDuracionXPartido.AutoSize = true;
+            this.LblDuracionXPartido.Location = new System.Drawing.Point(32, 231);
+            this.LblDuracionXPartido.Name = "LblDuracionXPartido";
+            this.LblDuracionXPartido.Size = new System.Drawing.Size(106, 13);
+            this.LblDuracionXPartido.TabIndex = 17;
+            this.LblDuracionXPartido.Text = "Duracion por partido:";
+            // 
             // FrmCanchaDetalle
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1102, 450);
+            this.Controls.Add(this.LblDuracionXPartido);
+            this.Controls.Add(this.NumDuracionXPartido);
             this.Controls.Add(this.dgvDisponibilidad);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -190,6 +211,7 @@
             this.Load += new System.EventHandler(this.FrmCanchaDetalle_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numCapacidad)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDisponibilidad)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumDuracionXPartido)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -212,5 +234,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colDiaNombre;
         private System.Windows.Forms.DataGridViewComboBoxColumn colHoraInicio;
         private System.Windows.Forms.DataGridViewComboBoxColumn colHoraFin;
+        private System.Windows.Forms.NumericUpDown NumDuracionXPartido;
+        private System.Windows.Forms.Label LblDuracionXPartido;
     }
 }

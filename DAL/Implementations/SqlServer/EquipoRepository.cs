@@ -22,7 +22,7 @@ namespace DAL.Implementations.SqlServer
         private const string _sqlSelect = @"SELECT 
             e.IdEquipo, e.CantAusencias, e.FechaDeCreacion, e.Nombre,
             e.IdCliente, 
-            ea.Descripcion AS EstadoAsistenciaDesc,
+            ea.Descripcion AS EstadoProxPartido,
             e.Habilitado
         FROM DbEquipo e
         LEFT JOIN DbEstadoAsistencia ea ON e.IdEstadoAsistencia = ea.IdEstadoAsistencia
@@ -139,9 +139,9 @@ namespace DAL.Implementations.SqlServer
         public Equipo GetById(Guid idEquipo)
         {
             Equipo equipo = null;
-            string sql = $"{_sqlSelect} WHERE e.IdEquipo = @IdEquipo"; 
+            string sql = $"{_sqlSelect} AND e.IdEquipo = @IdEquipo";
 
-            
+
             using (var reader = base.ExecuteReader(sql, CommandType.Text, new SqlParameter("@IdEquipo", idEquipo)))
             {
                 if (reader.Read())

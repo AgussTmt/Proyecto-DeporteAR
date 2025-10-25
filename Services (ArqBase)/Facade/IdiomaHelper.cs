@@ -15,36 +15,44 @@ namespace Services__ArqBase_.Facade
             
             if (!(control is RichTextBox))
             {
-                control.Text = control.Text.Traducir();
-            }
-            // Este es un bucle recursivo que recorre todos los controles dentro del control actual
-            foreach (Control c in control.Controls)
-            {
-                // Llama a la misma función para los controles hijos
-                TraducirControles(c);
-
-                if (control is DataGridView)
+                if (!string.IsNullOrEmpty(control.Text))
                 {
-                    DataGridView dgv = (DataGridView)control;
-                    foreach (DataGridViewColumn col in dgv.Columns)
+                    control.Text = control.Text.Traducir();
+                }
+            }
+
+            
+            if (control is DataGridView dgv)
+            {
+                foreach (DataGridViewColumn col in dgv.Columns)
+                {
+                    if (!string.IsNullOrEmpty(col.HeaderText))
                     {
                         col.HeaderText = col.HeaderText.Traducir();
                     }
                 }
+            }
 
-                
-                if (control is TabControl)
+           
+            if (control is TabControl tc)
+            {
+                foreach (TabPage page in tc.TabPages)
                 {
-                    TabControl tc = (TabControl)control;
-                    foreach (TabPage page in tc.TabPages)
+                    if (!string.IsNullOrEmpty(page.Text))
                     {
                         page.Text = page.Text.Traducir();
                     }
                 }
+            }
 
+            
+            foreach (Control c in control.Controls)
+            {
+                TraducirControles(c);
             }
         }
+    }
 
         
-    }
 }
+

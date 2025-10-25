@@ -133,10 +133,17 @@ namespace DAL.Implementations.SqlServer
                     reader.GetValues(values);
                     competicion = CompeticionAdapter.Current.Get(values);
 
-                    // Llenamos la lista de equipos
-                    PopulateEquipos(competicion);
+                    
                 }
+
             }
+
+            if (competicion != null)
+            {
+               
+                PopulateEquipos(competicion); 
+            }
+
             return competicion;
         }
 

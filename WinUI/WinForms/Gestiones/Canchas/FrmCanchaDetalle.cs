@@ -158,6 +158,12 @@ namespace WinUI.WinForms.Gestiones.Canchas
                 if (cmbDeporte.SelectedValue == null)
                 { MessageBox.Show("Debe seleccionar un deporte.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
 
+                if (NumDuracionXPartido.Value <= 0)
+                {
+                    MessageBox.Show("La duración por partido debe ser mayor a 0.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 var disponibilidadNueva = new Dictionary<DayOfWeek, (TimeSpan start, TimeSpan end)>();
                 foreach (DataGridViewRow row in dgvDisponibilidad.Rows)
                 {
@@ -195,8 +201,9 @@ namespace WinUI.WinForms.Gestiones.Canchas
                         Capacidad = (int)numCapacidad.Value,
                         Deporte = deporteSeleccionado,
                         FechaCreacion = DateTime.Now,
-                        Estado = true
-                        
+                        Estado = true,
+                        DuracionXPartidoMin = (int)NumDuracionXPartido.Value
+
                     };
                     BLLFacade.Current.CanchaService.Add(nuevaCancha, disponibilidadNueva);
                 }
@@ -206,6 +213,7 @@ namespace WinUI.WinForms.Gestiones.Canchas
                     _canchaAEditar.Precio = precio;
                     _canchaAEditar.Capacidad = (int)numCapacidad.Value;
                     _canchaAEditar.Deporte = deporteSeleccionado;
+                    _canchaAEditar.DuracionXPartidoMin = (int)NumDuracionXPartido.Value;
                     BLLFacade.Current.CanchaService.Update(_canchaAEditar, disponibilidadNueva);
                 }
 

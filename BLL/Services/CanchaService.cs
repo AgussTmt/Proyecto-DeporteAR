@@ -17,10 +17,10 @@ namespace BLL.Services
             {
                 try
                 {
-                    
+
                     context.Repositories.CanchaRepository.Add(entity);
 
-                    
+
                     foreach (var kvp in disponibilidad)
                     {
                         var disp = new CanchaDisponibilidad
@@ -31,11 +31,11 @@ namespace BLL.Services
                             HoraInicio = kvp.Value.start,
                             HoraFin = kvp.Value.end
                         };
-                        
+
                         context.Repositories.CanchaDisponibilidadRepository.Add(disp);
                     }
 
-                    
+
                     DateTime proximaSemana = DateTime.Today.AddDays(7);
                     for (DateTime diaActual = DateTime.Today.AddDays(1); diaActual < proximaSemana; diaActual = diaActual.AddDays(1))
                     {
@@ -45,17 +45,17 @@ namespace BLL.Services
                             int endHour = franja.end.Hours;
                             for (int hour = startHour; hour < endHour; hour++)
                             {
-                               
+
                                 var slotTime = diaActual.Date.AddHours(hour);
                                 var newSlot = new CanchaHorario
                                 {
-                                    IdCanchaHorario = Guid.NewGuid(), 
-                                    Cancha = entity,                
-                                    FechaHorario = slotTime,          
-                                    Estado = EstadoReserva.Libre,   
-                                    Abonada = false,                
-                                    FueCambiada = false,              
-                                    ReservadaPor = null              
+                                    IdCanchaHorario = Guid.NewGuid(),
+                                    Cancha = entity,
+                                    FechaHorario = slotTime,
+                                    Estado = EstadoReserva.Libre,
+                                    Abonada = false,
+                                    FueCambiada = false,
+                                    ReservadaPor = null
                                 };
                                 context.Repositories.CanchaHorarioRepository.Add(newSlot);
                             }
@@ -75,7 +75,7 @@ namespace BLL.Services
             {
                 try
                 {
-                   
+
                     context.Repositories.CanchaRepository.CambiarHabilitado(id);
                     context.SaveChanges();
                 }
@@ -137,10 +137,10 @@ namespace BLL.Services
         {
             using (var context = FactoryDao.UnitOfWork.Create())
             {
-                
+
                 var listaDb = context.Repositories.CanchaDisponibilidadRepository.GetByCancha(idCancha);
 
-               
+
                 return listaDb.ToDictionary(
                     disp => disp.DiaSemana,
                     disp => (disp.HoraInicio, disp.HoraFin)
@@ -150,9 +150,9 @@ namespace BLL.Services
 
         public IEnumerable<Cancha> GetAllIncludingDisabled()
         {
-            using (var context = FactoryDao.UnitOfWork.Create()) 
-            { 
-                return context.Repositories.CanchaRepository.GetAllIncludingDisabled(); 
+            using (var context = FactoryDao.UnitOfWork.Create())
+            {
+                return context.Repositories.CanchaRepository.GetAllIncludingDisabled();
             }
         }
 
@@ -160,7 +160,7 @@ namespace BLL.Services
         {
             try
             {
-                
+
                 var disponibilidad = GetDisponibilidadSemanal(idCancha);
 
                 // Verificamos si hay configuración para ese día de la semana
@@ -182,5 +182,7 @@ namespace BLL.Services
                 return false;
             }
         }
+
+        
     }
 }

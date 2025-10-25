@@ -35,5 +35,23 @@ namespace DAL.Implementations.SqlServer.Adapters
                 HoraFin = (TimeSpan)values[4]
             };
         }
+
+        private DayOfWeek? MapearDia(string diaEsp)
+        {
+            // Usamos ToLower() y CompareInfo para ignorar tildes y mayúsculas
+            var cultureInfo = new System.Globalization.CultureInfo("es-ES");
+            var compareInfo = cultureInfo.CompareInfo;
+            var options = System.Globalization.CompareOptions.IgnoreCase | System.Globalization.CompareOptions.IgnoreNonSpace;
+
+            if (compareInfo.Compare(diaEsp, "domingo", options) == 0) return DayOfWeek.Sunday;
+            if (compareInfo.Compare(diaEsp, "lunes", options) == 0) return DayOfWeek.Monday;
+            if (compareInfo.Compare(diaEsp, "martes", options) == 0) return DayOfWeek.Tuesday;
+            if (compareInfo.Compare(diaEsp, "miércoles", options) == 0) return DayOfWeek.Wednesday;
+            if (compareInfo.Compare(diaEsp, "jueves", options) == 0) return DayOfWeek.Thursday;
+            if (compareInfo.Compare(diaEsp, "viernes", options) == 0) return DayOfWeek.Friday;
+            if (compareInfo.Compare(diaEsp, "sábado", options) == 0) return DayOfWeek.Saturday;
+
+            return null; // Opcional: manejar "Miercoles" y "Sabado" sin tilde si así están en tu BD
+        }
     }
 }

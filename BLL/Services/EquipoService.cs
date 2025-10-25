@@ -132,8 +132,8 @@ namespace BLL.Services
         {
             using (var context = FactoryDao.UnitOfWork.Create())
             {
-               
-                return context.Repositories.EquipoRepository.GetAll();
+
+                return context.Repositories.EquipoRepository.GetAll().ToList();
             }
             
         }
