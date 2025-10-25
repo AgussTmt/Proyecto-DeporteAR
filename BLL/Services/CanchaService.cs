@@ -155,5 +155,32 @@ namespace BLL.Services
                 return context.Repositories.CanchaRepository.GetAllIncludingDisabled(); 
             }
         }
+
+        public bool EsHorarioValido(Guid idCancha, DateTime fechaHora)
+        {
+            try
+            {
+                
+                var disponibilidad = GetDisponibilidadSemanal(idCancha);
+
+                // Verificamos si hay configuración para ese día de la semana
+                if (disponibilidad.TryGetValue(fechaHora.DayOfWeek, out var franja))
+                {
+                    // Verificamos si la hora del día está dentro del rango [Inicio, Fin)
+                    TimeSpan horaDelDia = fechaHora.TimeOfDay;
+                    return horaDelDia >= franja.start && horaDelDia < franja.end;
+                }
+                else
+                {
+                    // No hay disponibilidad definida para este día de la semana
+                    return false;
+                }
+            }
+            catch
+            {
+                // Si hay error al cargar disponibilidad, asumimos que no es válido
+                return false;
+            }
+        }
     }
 }

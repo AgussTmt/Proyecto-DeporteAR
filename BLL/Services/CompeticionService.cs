@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BLL.Facade;
 using BLL.Interfaces;
 using DAL.Factory;
 using DomainModel;
@@ -87,91 +88,103 @@ namespace BLL.Services
             }
         }
 
-        public void CrearFixture(Competicion competicion)
+        // EN: BLL/Services/CompeticionService.cs
+
+        public List<string> CrearFixture(Competicion competicion) 
         {
+            List<string> conflictos = new List<string>(); // Lista para guardar errores
+            List<Action> operacionesPendientes = new List<Action>(); // Para guardar cambios si todo OK
+
             using (var context = FactoryDao.UnitOfWork.Create())
             {
                 try
                 {
+                    // --- Validaciones Previas (igual que antes) ---
                     var comp = context.Repositories.CompeticionRepository.GetById(competicion.IdCompeticion);
-                    if (comp == null)
-                    {
-                        throw new KeyNotFoundException("La competición no existe.");
-                    }
+                    if (comp == null) throw new KeyNotFoundException("...");
+                    if (comp.Estado != EstadoCompeticion.SinFixture) throw new InvalidOperationException("...");
+                    if (comp.ListaEquipos.Count < comp.CuposMinimos) throw new InvalidOperationException($"...");
+                    if (comp.ListaEquipos.Count < 2) throw new InvalidOperationException("...");
+                    // ... (Validar y cargar cancha asignada) ...
+                    if (comp.canchaAsignada == null) throw new InvalidOperationException("...");
+                    // ---------------------------------------------
 
-                    if (comp.Estado != EstadoCompeticion.SinFixture)
-                    {
-                        throw new InvalidOperationException("El fixture para esta competición ya fue creado anteriormente.");
-                    }
+                    var partidosGenerados = GenerarPartidosRoundRobin(comp, comp.ListaEquipos);
 
-                    if (comp.ListaEquipos.Count < comp.CuposMinimos)
-                    {
-                        throw new InvalidOperationException($"No se puede crear el fixture. Se requieren {comp.CuposMinimos} equipos habilitados y solo hay {comp.ListaEquipos.Count} inscritos y habilitados.");
-                    }
-
-                    if (comp.ListaEquipos.Count < 2)
-                    {
-                        throw new InvalidOperationException("Se necesitan al menos 2 equipos habilitados para generar un fixture.");
-                    }
-
-                    if (comp.canchaAsignada == null || comp.canchaAsignada.IdCancha == Guid.Empty)
-                    {
-                        throw new InvalidOperationException("La competición no tiene una cancha asignada válida.");
-                    }
-
-                    if (comp.canchaAsignada.DuracionXPartidoMin == 0)
-                    {
-                        comp.canchaAsignada = context.Repositories.CanchaRepository.GetById(comp.canchaAsignada.IdCancha);
-                    }
-
-                    if (comp.canchaAsignada == null)
-                    {
-                        throw new InvalidOperationException("La cancha asignada a la competición no fue encontrada.");
-                    }
-
-
-                    //Logica Principal
-                    var partidosGenerados = GenerarPartidosRoundRobin(comp, comp.ListaEquipos); 
-
-                    //Bloquear Horarios y Guardar Fixtures
+                    // --- Bucle de Verificación y Preparación ---
                     foreach (var partido in partidosGenerados)
                     {
-                        var horarioParaBloquear = context.Repositories.CanchaHorarioRepository.GetByCanchaYHora(
-                            comp.canchaAsignada.IdCancha,
-                            partido.Horario
-                        );
+                        var horarioExistente = context.Repositories.CanchaHorarioRepository.GetByCanchaYHora(
+                            comp.canchaAsignada.IdCancha, partido.Horario);
 
-                        
-                        if (horarioParaBloquear == null)
+                        if (horarioExistente != null)
                         {
-                            throw new InvalidOperationException($"Error al generar fixture: No se encontró un slot de horario disponible para el partido del {partido.Horario:g} en la cancha '{comp.canchaAsignada.Nombre}'. Verifique la disponibilidad de horarios.");
+                            // Si existe pero NO está libre, REGISTRAR CONFLICTO
+                            if (horarioExistente.Estado != EstadoReserva.Libre)
+                            {
+                                conflictos.Add($"El horario {partido.Horario:g} ya está '{horarioExistente.Estado}'.");
+                                continue; // Pasar al siguiente partido, no se puede usar este slot
+                            }
+                            // Si existe Y está libre, PREPARAR la actualización
+                            operacionesPendientes.Add(() =>
+                            {
+                                horarioExistente.Estado = EstadoReserva.OcupadoPorTorneo;
+                                context.Repositories.CanchaHorarioRepository.Update(horarioExistente);
+                                context.Repositories.FixtureRepository.Add(partido);
+                            });
                         }
-
-                      
-                        if (horarioParaBloquear.Estado != EstadoReserva.Libre)
+                        else // El horario no existe
                         {
-                            throw new InvalidOperationException($"Conflicto al generar fixture: El horario {partido.Horario:g} para la cancha '{comp.canchaAsignada.Nombre}' ya se encuentra '{horarioParaBloquear.Estado}'.");
+                            // Validar si la hora es válida según la plantilla
+                            bool esValido = BLLFacade.Current.CanchaService.EsHorarioValido(comp.canchaAsignada.IdCancha, partido.Horario);
+                            if (!esValido)
+                            {
+                                // Registrar conflicto si la hora es inválida
+                                conflictos.Add($"El horario {partido.Horario:g} cae fuera de la disponibilidad de la cancha.");
+                                continue; // Pasar al siguiente partido
+                            }
+                            // Si es válido pero no existe, PREPARAR la creación
+                            operacionesPendientes.Add(() =>
+                            {
+                                var newSlot = new CanchaHorario { /*...*/ Estado = EstadoReserva.OcupadoPorTorneo /*...*/};
+                                context.Repositories.CanchaHorarioRepository.Add(newSlot);
+                                context.Repositories.FixtureRepository.Add(partido);
+                            });
                         }
+                    } // Fin del foreach
 
-                        // Si todo está OK para este horario, lo bloqueamos y guardamos el fixture
-                        horarioParaBloquear.Estado = EstadoReserva.OcupadoPorTorneo; 
-                        context.Repositories.CanchaHorarioRepository.Update(horarioParaBloquear);
-                        context.Repositories.FixtureRepository.Add(partido);
+                    
+                    if (conflictos.Any())
+                    {
+                        // No llamamos a SaveChanges, el UoW hará Rollback al salir del using
+                        return conflictos;
                     }
 
-                    //Actualizar el estado de la competición
+                    // Si NO hay conflictos, ejecutar todas las operaciones preparadas
+                    foreach (var operacion in operacionesPendientes)
+                    {
+                        operacion.Invoke(); // Ejecuta el Update/Add
+                    }
+
+                    // Actualizar estado de la competición
                     comp.Estado = EstadoCompeticion.ConFixture;
                     context.Repositories.CompeticionRepository.Update(comp);
 
-                    
+                    // Guardar TODO
                     context.SaveChanges();
+
+                    return null; // O return new List<string>(); para indicar éxito
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    throw;
+                    // Si ocurre una excepción inesperada (no un conflicto de horario), relanzarla
+                    // O devolverla en la lista también si prefieres
+                    // return new List<string> { $"Error inesperado: {ex.Message}" };
+                    throw; // El Rollback es automático
                 }
             }
         }
+
 
         public void Delete(Guid id)
         {

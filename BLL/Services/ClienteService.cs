@@ -24,7 +24,12 @@ namespace BLL.Services
                         throw new InvalidOperationException($"Ya existe un cliente registrado con el teléfono '{entity.Telefono}'.");
                     }
 
-                    
+                    if (entity.IdCliente == Guid.Empty)
+                    {
+                        entity.IdCliente = Guid.NewGuid();
+                    }
+
+
                     context.Repositories.ClienteRepository.Add(entity);
                     context.SaveChanges();
                 }

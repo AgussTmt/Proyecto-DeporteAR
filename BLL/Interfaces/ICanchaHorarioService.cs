@@ -29,5 +29,8 @@ namespace BLL.Interfaces
 
         public void AbonarReserva(Guid idCanchaHorario);
 
+        DateTime GetMaximaFechaHorario(Guid idCancha);
+        bool ExisteHorario(Guid idCancha, DateTime fechaHora);
+
     }
 }

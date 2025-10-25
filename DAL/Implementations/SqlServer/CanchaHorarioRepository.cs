@@ -244,5 +244,39 @@ namespace DAL.Implementations.SqlServer
             return horario;
 
         }
+
+        public DateTime GetMaximaFechaHorario(Guid idCancha)
+        {
+            string sql = "SELECT MAX(Horario) FROM [DbCancha Horario] WHERE IdCancha = @IdCancha";
+
+            
+            object result = base.ExecuteScalar(sql, CommandType.Text,
+                new SqlParameter("@IdCancha", idCancha));
+
+            
+            if (result == null || result == DBNull.Value)
+            {
+                return DateTime.MinValue;
+            }
+            
+            return Convert.ToDateTime(result);
+        }
+
+        public bool ExisteHorario(Guid idCancha, DateTime fechaHora)
+        {
+            string sql = @"SELECT COUNT(*)
+                           FROM [DbCancha Horario]
+                           WHERE IdCancha = @IdCancha AND Horario = @FechaHora";
+
+            // ExecuteScalar devuelve object (el resultado del COUNT)
+            object result = base.ExecuteScalar(sql, CommandType.Text,
+                new SqlParameter("@IdCancha", idCancha),
+                new SqlParameter("@FechaHora", fechaHora));
+
+            // Convertir el resultado a int y verificar si es mayor que 0
+            int count = Convert.ToInt32(result ?? 0);
+            return count > 0;
+        }
     }
+    
 }

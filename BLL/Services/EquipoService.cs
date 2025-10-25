@@ -93,7 +93,15 @@ namespace BLL.Services
             {
                 try
                 {
-                    
+                    if (equipo.IdEquipo == Guid.Empty)
+                    {
+                        equipo.IdEquipo = Guid.NewGuid();
+                    }
+
+                    equipo.FechaCreacion = DateTime.Now;
+
+                    equipo.Habilitado = true;
+
                     context.Repositories.EquipoRepository.Add(equipo);
 
                     

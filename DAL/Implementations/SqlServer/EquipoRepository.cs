@@ -22,7 +22,8 @@ namespace DAL.Implementations.SqlServer
         private const string _sqlSelect = @"SELECT 
             e.IdEquipo, e.CantAusencias, e.FechaDeCreacion, e.Nombre,
             e.IdCliente, 
-            ea.Descripcion AS EstadoAsistenciaDesc
+            ea.Descripcion AS EstadoAsistenciaDesc,
+            e.Habilitado
         FROM DbEquipo e
         LEFT JOIN DbEstadoAsistencia ea ON e.IdEstadoAsistencia = ea.IdEstadoAsistencia
         WHERE e.Habilitado = 1";
@@ -49,34 +50,33 @@ namespace DAL.Implementations.SqlServer
 
         public List<Equipo> GetByCompeticion(Competicion competicion)
         {
-            // 1. Definimos la consulta (¡sin TOP 1!)
             string sql = $@"SELECT e.*
                     FROM ({_sqlSelect}) e
                     JOIN DbEquipoCompeticion ec ON e.IdEquipo = ec.IdEquipo
                     WHERE ec.IdCompeticion = @IdCompeticion";
 
-            // 2. Creamos la lista que vamos a devolver
             var listaEquipos = new List<Equipo>();
 
-            using (var reader = base.ExecuteReader(sql, CommandType.Text,
+            
+            using (var reader = base.ExecuteReader(sql, CommandType.Text, 
                 new SqlParameter("@IdCompeticion", competicion.IdCompeticion)))
             {
-                // 3. Iteramos con un 'while' en lugar de un 'if'
                 while (reader.Read())
                 {
                     object[] values = new object[reader.FieldCount];
                     reader.GetValues(values);
-                    var equipo = EquipoAdapter.Current.Get(values);
-
-                    // 4. Rellenamos los jugadores de CADA equipo
-                    PopulateJugadores(equipo);
-
-                    // 5. Agregamos el equipo a la lista
-                    listaEquipos.Add(equipo);
+                    
+                    listaEquipos.Add(EquipoAdapter.Current.Get(values));
                 }
-            }
+            } 
 
-            // 6. Devolvemos la lista completa
+            
+            foreach (var equipo in listaEquipos)
+            {
+                PopulateJugadores(equipo);
+            }
+            
+
             return listaEquipos;
         }
 
@@ -139,24 +139,24 @@ namespace DAL.Implementations.SqlServer
         public Equipo GetById(Guid idEquipo)
         {
             Equipo equipo = null;
-            string sql = $"{_sqlSelect} WHERE e.IdEquipo = @IdEquipo";
+            string sql = $"{_sqlSelect} WHERE e.IdEquipo = @IdEquipo"; 
 
+            
             using (var reader = base.ExecuteReader(sql, CommandType.Text, new SqlParameter("@IdEquipo", idEquipo)))
             {
-
                 if (reader.Read())
                 {
-
                     object[] values = new object[reader.FieldCount];
-
                     reader.GetValues(values);
-
-
                     equipo = EquipoAdapter.Current.Get(values);
-
-
-                    PopulateJugadores(equipo);
                 }
+            } 
+
+            
+            if (equipo != null)
+            {
+               
+                PopulateJugadores(equipo);
             }
             return equipo;
         }

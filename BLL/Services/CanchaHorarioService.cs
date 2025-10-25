@@ -209,14 +209,22 @@ namespace BLL.Services
             }
         }
 
-        //public bool VerificarDisponible(CanchaHorario canchaHorario)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public DateTime GetMaximaFechaHorario(Guid idCancha)
+        {
+            using (var context = FactoryDao.UnitOfWork.Create())
+            {
+                
+                return context.Repositories.CanchaHorarioRepository.GetMaximaFechaHorario(idCancha);
+            }
+        }
 
-        //public bool VerificarTiempoRestante(CanchaHorario canchaHorario)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public bool ExisteHorario(Guid idCancha, DateTime fechaHora)
+        {
+            using (var context = FactoryDao.UnitOfWork.Create())
+            {
+               
+                return context.Repositories.CanchaHorarioRepository.ExisteHorario(idCancha, fechaHora);
+            }
+        }
     }
 }

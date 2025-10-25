@@ -24,5 +24,7 @@ namespace BLL.Interfaces
 
         IEnumerable<Cancha> GetAllIncludingDisabled();
 
+        bool EsHorarioValido(Guid idCancha, DateTime fechaHora);
+
     }
 }

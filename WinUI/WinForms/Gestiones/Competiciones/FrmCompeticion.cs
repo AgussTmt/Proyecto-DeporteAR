@@ -163,19 +163,34 @@ namespace WinUI.WinForms.Gestiones.Competiciones
             {
                 try
                 {
-                    
-                    BLLFacade.Current.CompeticionService.CrearFixture(competicionSeleccionada);
-                    MessageBox.Show("¡Fixture generado con éxito!", "Proceso Completado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    
-                    RefrescarGrid();
+                    // Llama a la BLL (ahora devuelve List<string>)
+                    List<string> resultado = BLLFacade.Current.CompeticionService.CrearFixture(competicionSeleccionada);
+
+                    // --- VERIFICAR RESULTADO ---
+                    if (resultado == null || !resultado.Any()) // ¡Éxito!
+                    {
+                        MessageBox.Show("¡Fixture generado con éxito!", "Proceso Completado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        RefrescarGrid(); // Refrescar para ver el cambio de estado
+                    }
+                    else // Hubo conflictos
+                    {
+                        // Unir los mensajes de conflicto en un solo string
+                        string mensajesError = string.Join(Environment.NewLine, resultado);
+                        MessageBox.Show($"No se pudo generar el fixture debido a los siguientes conflictos:{Environment.NewLine}{mensajesError}",
+                                        "Conflictos de Horario", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        // No refrescamos la grid porque no se hizo ningún cambio
+                    }
+                    // ---------------------------
                 }
-                catch (InvalidOperationException bizEx) 
+                // Capturar excepciones específicas de negocio (ej. cupo mínimo) que aún lanza la BLL
+                catch (InvalidOperationException bizEx)
                 {
                     MessageBox.Show($"No se pudo generar el fixture: {bizEx.Message}", "Error de Negocio", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
-                catch (Exception ex) 
+                // Capturar otros errores inesperados
+                catch (Exception ex)
                 {
-                    MessageBox.Show($"Error al generar el fixture: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error inesperado al generar el fixture: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

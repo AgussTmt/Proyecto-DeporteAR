@@ -10,7 +10,7 @@ namespace BLL.Interfaces
 {
     public interface ICompeticionService : IGenericService <Competicion>
     {
-        void CrearFixture(Competicion competicion);
+        List<string> CrearFixture(Competicion competicion);
 
         List<Competicion> ListarConVacantes(Competicion competicion);
 
