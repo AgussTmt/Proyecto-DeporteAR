@@ -32,13 +32,26 @@ namespace WinUI.WinForms.Gestiones.Competiciones
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.btnGenerarFixture = new System.Windows.Forms.Button();
+            this.btnInscribirEquipo = new System.Windows.Forms.Button();
             this.btnBorrar = new System.Windows.Forms.Button();
             this.btnEditar = new System.Windows.Forms.Button();
             this.BtnNueva = new System.Windows.Forms.Button();
             this.dgvCompeticiones = new System.Windows.Forms.DataGridView();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.btnInscribirEquipo = new System.Windows.Forms.Button();
-            this.btnGenerarFixture = new System.Windows.Forms.Button();
+            this.colIdCompeticion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colEstado = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colOcupacion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colCupos = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colCuposMinimos = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colFechaInicio = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colFormato = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colCanchaAsignada = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDeporte = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colPrecio = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colFranjaHoraria = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colFrecuencia = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -52,7 +65,7 @@ namespace WinUI.WinForms.Gestiones.Competiciones
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1220, 559);
+            this.panel2.Size = new System.Drawing.Size(1330, 560);
             this.panel2.TabIndex = 3;
             // 
             // panel1
@@ -62,7 +75,7 @@ namespace WinUI.WinForms.Gestiones.Competiciones
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 99);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1220, 459);
+            this.panel1.Size = new System.Drawing.Size(1330, 459);
             this.panel1.TabIndex = 1;
             // 
             // panel4
@@ -73,10 +86,32 @@ namespace WinUI.WinForms.Gestiones.Competiciones
             this.panel4.Controls.Add(this.btnEditar);
             this.panel4.Controls.Add(this.BtnNueva);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel4.Location = new System.Drawing.Point(1024, 0);
+            this.panel4.Location = new System.Drawing.Point(1133, 0);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(197, 459);
             this.panel4.TabIndex = 1;
+            // 
+            // btnGenerarFixture
+            // 
+            this.btnGenerarFixture.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnGenerarFixture.Location = new System.Drawing.Point(0, 240);
+            this.btnGenerarFixture.Name = "btnGenerarFixture";
+            this.btnGenerarFixture.Size = new System.Drawing.Size(197, 60);
+            this.btnGenerarFixture.TabIndex = 4;
+            this.btnGenerarFixture.Text = "Generar fixture";
+            this.btnGenerarFixture.UseVisualStyleBackColor = true;
+            this.btnGenerarFixture.Click += new System.EventHandler(this.btnGenerarFixture_Click);
+            // 
+            // btnInscribirEquipo
+            // 
+            this.btnInscribirEquipo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnInscribirEquipo.Location = new System.Drawing.Point(0, 180);
+            this.btnInscribirEquipo.Name = "btnInscribirEquipo";
+            this.btnInscribirEquipo.Size = new System.Drawing.Size(197, 60);
+            this.btnInscribirEquipo.TabIndex = 3;
+            this.btnInscribirEquipo.Text = "Inscribir equipo";
+            this.btnInscribirEquipo.UseVisualStyleBackColor = true;
+            this.btnInscribirEquipo.Click += new System.EventHandler(this.btnInscribirEquipo_Click);
             // 
             // btnBorrar
             // 
@@ -113,48 +148,134 @@ namespace WinUI.WinForms.Gestiones.Competiciones
             // 
             // dgvCompeticiones
             // 
+            this.dgvCompeticiones.AllowUserToOrderColumns = true;
+            this.dgvCompeticiones.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            this.dgvCompeticiones.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.dgvCompeticiones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvCompeticiones.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colIdCompeticion,
+            this.colNombre,
+            this.colEstado,
+            this.colOcupacion,
+            this.colCupos,
+            this.colCuposMinimos,
+            this.colFechaInicio,
+            this.colFormato,
+            this.colCanchaAsignada,
+            this.colDeporte,
+            this.colPrecio,
+            this.colFranjaHoraria,
+            this.colFrecuencia});
             this.dgvCompeticiones.Dock = System.Windows.Forms.DockStyle.Left;
             this.dgvCompeticiones.Location = new System.Drawing.Point(0, 0);
             this.dgvCompeticiones.Name = "dgvCompeticiones";
-            this.dgvCompeticiones.Size = new System.Drawing.Size(1024, 459);
+            this.dgvCompeticiones.Size = new System.Drawing.Size(1133, 459);
             this.dgvCompeticiones.TabIndex = 0;
+            this.dgvCompeticiones.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvCompeticiones_CellFormatting);
             // 
             // panel3
             // 
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1220, 99);
+            this.panel3.Size = new System.Drawing.Size(1330, 99);
             this.panel3.TabIndex = 0;
             // 
-            // btnInscribirEquipo
+            // colIdCompeticion
             // 
-            this.btnInscribirEquipo.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnInscribirEquipo.Location = new System.Drawing.Point(0, 180);
-            this.btnInscribirEquipo.Name = "btnInscribirEquipo";
-            this.btnInscribirEquipo.Size = new System.Drawing.Size(197, 60);
-            this.btnInscribirEquipo.TabIndex = 3;
-            this.btnInscribirEquipo.Text = "Inscribir equipo";
-            this.btnInscribirEquipo.UseVisualStyleBackColor = true;
-            this.btnInscribirEquipo.Click += new System.EventHandler(this.btnInscribirEquipo_Click);
+            this.colIdCompeticion.DataPropertyName = "IdCompeticion";
+            this.colIdCompeticion.HeaderText = "";
+            this.colIdCompeticion.Name = "colIdCompeticion";
+            this.colIdCompeticion.Visible = false;
+            this.colIdCompeticion.Width = 19;
             // 
-            // btnGenerarFixture
+            // colNombre
             // 
-            this.btnGenerarFixture.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnGenerarFixture.Location = new System.Drawing.Point(0, 240);
-            this.btnGenerarFixture.Name = "btnGenerarFixture";
-            this.btnGenerarFixture.Size = new System.Drawing.Size(197, 60);
-            this.btnGenerarFixture.TabIndex = 4;
-            this.btnGenerarFixture.Text = "Generar fixture";
-            this.btnGenerarFixture.UseVisualStyleBackColor = true;
-            this.btnGenerarFixture.Click += new System.EventHandler(this.btnGenerarFixture_Click);
+            this.colNombre.DataPropertyName = "Nombre";
+            this.colNombre.HeaderText = "Nombre";
+            this.colNombre.Name = "colNombre";
+            this.colNombre.Width = 69;
+            // 
+            // colEstado
+            // 
+            this.colEstado.DataPropertyName = "Estado";
+            this.colEstado.HeaderText = "Estado";
+            this.colEstado.Name = "colEstado";
+            this.colEstado.Width = 65;
+            // 
+            // colOcupacion
+            // 
+            this.colOcupacion.HeaderText = "Ocupación";
+            this.colOcupacion.Name = "colOcupacion";
+            this.colOcupacion.Width = 84;
+            // 
+            // colCupos
+            // 
+            this.colCupos.DataPropertyName = "Cupos";
+            this.colCupos.HeaderText = "Cupos Max";
+            this.colCupos.Name = "colCupos";
+            this.colCupos.Width = 85;
+            // 
+            // colCuposMinimos
+            // 
+            this.colCuposMinimos.DataPropertyName = "CuposMinimos";
+            this.colCuposMinimos.HeaderText = "Cupos Min.";
+            this.colCuposMinimos.Name = "colCuposMinimos";
+            this.colCuposMinimos.Width = 85;
+            // 
+            // colFechaInicio
+            // 
+            this.colFechaInicio.DataPropertyName = "FechaInicio";
+            this.colFechaInicio.HeaderText = "Fecha de Inicio";
+            this.colFechaInicio.Name = "colFechaInicio";
+            this.colFechaInicio.Width = 74;
+            // 
+            // colFormato
+            // 
+            this.colFormato.DataPropertyName = "Formato";
+            this.colFormato.HeaderText = "Formato";
+            this.colFormato.Name = "colFormato";
+            this.colFormato.Width = 70;
+            // 
+            // colCanchaAsignada
+            // 
+            this.colCanchaAsignada.HeaderText = "Cancha Asignada";
+            this.colCanchaAsignada.Name = "colCanchaAsignada";
+            this.colCanchaAsignada.Width = 106;
+            // 
+            // colDeporte
+            // 
+            this.colDeporte.DataPropertyName = "Deporte";
+            this.colDeporte.HeaderText = "Deporte";
+            this.colDeporte.Name = "colDeporte";
+            this.colDeporte.Width = 70;
+            // 
+            // colPrecio
+            // 
+            this.colPrecio.DataPropertyName = "Precio";
+            this.colPrecio.HeaderText = "Precio Inscripción ($)";
+            this.colPrecio.Name = "colPrecio";
+            this.colPrecio.Width = 109;
+            // 
+            // colFranjaHoraria
+            // 
+            this.colFranjaHoraria.DataPropertyName = "FranjaHoraria";
+            this.colFranjaHoraria.HeaderText = "Franja Horaria";
+            this.colFranjaHoraria.Name = "colFranjaHoraria";
+            this.colFranjaHoraria.Width = 90;
+            // 
+            // colFrecuencia
+            // 
+            this.colFrecuencia.DataPropertyName = "Frecuencia";
+            this.colFrecuencia.HeaderText = "Frecuencia (días)";
+            this.colFrecuencia.Name = "colFrecuencia";
+            this.colFrecuencia.Width = 106;
             // 
             // FrmCompeticion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1220, 559);
+            this.ClientSize = new System.Drawing.Size(1330, 560);
             this.Controls.Add(this.panel2);
             this.Name = "FrmCompeticion";
             this.Text = "FmCompeticion";
@@ -180,5 +301,18 @@ namespace WinUI.WinForms.Gestiones.Competiciones
         private System.Windows.Forms.Button BtnNueva;
         private System.Windows.Forms.DataGridView dgvCompeticiones;
         private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colIdCompeticion;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colNombre;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colEstado;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colOcupacion;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCupos;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCuposMinimos;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colFechaInicio;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colFormato;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCanchaAsignada;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDeporte;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colPrecio;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colFranjaHoraria;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colFrecuencia;
     }
 }

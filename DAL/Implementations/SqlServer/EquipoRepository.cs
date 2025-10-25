@@ -157,5 +157,22 @@ namespace DAL.Implementations.SqlServer
             }
             return equipo; // Devuelve null si no se encontró
         }
+
+        public IEnumerable<Equipo> GetAll()
+        {
+            var list = new List<Equipo>();
+
+            
+            using (var reader = base.ExecuteReader(_sqlSelect, CommandType.Text))
+            {
+                while (reader.Read())
+                {
+                    object[] values = new object[reader.FieldCount];
+                    reader.GetValues(values);
+                    list.Add(EquipoAdapter.Current.Get(values));
+                }
+            }
+            return list;
+        }
     }
 }

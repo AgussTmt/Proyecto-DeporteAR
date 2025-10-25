@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using BLL.Facade;
 using DomainModel;
 using Services__ArqBase_.Facade;
+using WinUI.WinForms.Gestiones.Equipos;
 
 namespace WinUI.WinForms.Gestiones.Competiciones
 {
@@ -23,6 +24,7 @@ namespace WinUI.WinForms.Gestiones.Competiciones
         private void FrmCompeticion_Load(object sender, EventArgs e)
         {
             IdiomaHelper.TraducirControles(this);
+            dgvCompeticiones.AutoGenerateColumns = false;
             RefrescarGrid();
         }
 
@@ -31,8 +33,12 @@ namespace WinUI.WinForms.Gestiones.Competiciones
             try
             {
                 dgvCompeticiones.DataSource = null;
-                // Obtenemos todas las competiciones y las convertimos a lista
+                
                 dgvCompeticiones.DataSource = BLLFacade.Current.CompeticionService.GetAll().ToList();
+                if (dgvCompeticiones.Columns.Contains("IdCompeticion"))
+                {
+                    dgvCompeticiones.Columns["IdCompeticion"].Visible = false;
+                }
             }
             catch (Exception ex)
             {
@@ -114,7 +120,7 @@ namespace WinUI.WinForms.Gestiones.Competiciones
             }
             var competicionSeleccionada = (Competicion)dgvCompeticiones.SelectedRows[0].DataBoundItem;
 
-            // Abre el diálogo para seleccionar un equipo
+            
             using (var frmSeleccionar = new FrmSeleccionarEquipo())
             {
                 var result = frmSeleccionar.ShowDialog();
@@ -173,6 +179,69 @@ namespace WinUI.WinForms.Gestiones.Competiciones
                 }
             }
         }
+
+        private void dgvCompeticiones_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            if (dgvCompeticiones.Columns[e.ColumnIndex].Name == "colOcupacion")
+            {
+                var competicionOcupacion = dgvCompeticiones.Rows[e.RowIndex].DataBoundItem as Competicion;
+                if (competicionOcupacion == null || competicionOcupacion.ListaEquipos == null)
+                {
+                    e.Value = "-";
+                    e.FormattingApplied = true;
+                    return; 
+                }
+                e.Value = $"{competicionOcupacion.ListaEquipos.Count} / {competicionOcupacion.Cupos}";
+                e.FormattingApplied = true;
+                return; 
+            }
+            if (dgvCompeticiones.Columns[e.ColumnIndex].Name == "colCanchaAsignada")
+            {
+                var competicionCancha = dgvCompeticiones.Rows[e.RowIndex].DataBoundItem as Competicion;
+                if (competicionCancha?.canchaAsignada == null)
+                {
+                    e.Value = "(Ninguna)";
+                    e.FormattingApplied = true;
+                    return; 
+                }
+                if (!string.IsNullOrEmpty(competicionCancha.canchaAsignada.Nombre))
+                {
+                    e.Value = competicionCancha.canchaAsignada.Nombre;
+                    e.FormattingApplied = true;
+                    return;
+                }
+                if (competicionCancha.canchaAsignada.IdCancha == Guid.Empty)
+                {
+                    e.Value = "(ID Inválido)";
+                    e.FormattingApplied = true;
+                    return;
+                }
+                try
+                {
+                    var canchaCompleta = BLLFacade.Current.CanchaService.GetById(competicionCancha.canchaAsignada.IdCancha);
+                    if (canchaCompleta == null)
+                    {
+                        e.Value = "(Cancha no encontrada)";
+                        e.FormattingApplied = true;
+                        return; 
+                    }
+                    e.Value = canchaCompleta.Nombre;
+                    competicionCancha.canchaAsignada.Nombre = canchaCompleta.Nombre;
+                    e.FormattingApplied = true;
+                }
+                catch (Exception ex) 
+                {
+                    
+                    e.Value = "(Error al cargar)";
+                    e.FormattingApplied = true;
+                    
+                }
+            }
+
+
+        }
+       
     }
-    }
+    
 }

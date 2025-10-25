@@ -106,7 +106,7 @@ namespace WinUI.WinForms.Login_Register
                 new FrmLogin().ShowDialog();
                 this.Close();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 MessageBox.Show("Hubo un error al resetear la password");
             }

@@ -16,6 +16,7 @@ using System.Threading;
 using Services__ArqBase_.Facade;
 using WinUI.WinForms.Gestiones.UserManagment;
 using WinUI.WinForms.Gestiones.Canchas;
+using WinUI.WinForms.Gestiones.Competiciones;
 
 namespace WinUI.WinForms
 {

@@ -19,7 +19,7 @@ namespace DAL.Implementations.SqlServer
         }
 
         private const string _sqlSelect = @"SELECT 
-                c.IdCompeticion, c.Cupos, c.Estado, c.Cupos_min, c.FechaCreacion, c.FechaInicio, 
+                c.IdCompeticion, c.Cupos, c.Cupos_min, c.Estado, c.FechaCreacion, c.FechaInicio, 
                 c.FranjaHoraria, c.Frecuencia, c.Nombre, c.PrecioInscripcion,
                 f.Descripcion AS FormatoDescripcion,
                 k.IdCancha,
@@ -37,11 +37,12 @@ namespace DAL.Implementations.SqlServer
             string sql = @"INSERT INTO DbCompeticion 
                            (IdCompeticion, Cupos, Cupos_min, Estado, FechaCreacion, FechaInicio, IdFormato, FranjaHoraria, Frecuencia, Nombre, PrecioInscripcion, IdCancha)
                            VALUES
-                           (@Id, @Cupos, 0, @Estado, @FechaC, @FechaI, @IdFormato, @Franja, @Frec, @Nombre, @Precio, @IdCancha)";
+                           (@Id, @Cupos, @CuposMin, @Estado, @FechaC, @FechaI, @IdFormato, @Franja, @Frec, @Nombre, @Precio, @IdCancha)";
 
             base.ExecuteNonQuery(sql, CommandType.Text,
                 new SqlParameter("@Id", entity.IdCompeticion),
                 new SqlParameter("@Cupos", entity.Cupos),
+                new SqlParameter("@CuposMin", entity.CuposMinimos),
                 new SqlParameter("@Estado", estado),
                 new SqlParameter("@FechaC", entity.FechaCreacion),
                 new SqlParameter("@FechaI", entity.FechaInicio),
@@ -76,7 +77,7 @@ namespace DAL.Implementations.SqlServer
         public IEnumerable<Competicion> GetAll()
         {
                 var list = new List<Competicion>();
-                using (var reader = base.ExecuteReader(_sqlSelect, CommandType.Text, new SqlParameter()))
+                using (var reader = base.ExecuteReader(_sqlSelect, CommandType.Text))
                 {
                     while (reader.Read())
                     {
@@ -207,6 +208,7 @@ namespace DAL.Implementations.SqlServer
 
                 string sql = @"UPDATE DbCompeticion SET
                             Cupos = @Cupos,
+                            Cupos_min = @CuposMin,
                             Estado = @Estado,
                             FechaInicio = @FechaI,
                             IdFormato = @IdFormato,
@@ -219,6 +221,7 @@ namespace DAL.Implementations.SqlServer
 
                 base.ExecuteNonQuery(sql, CommandType.Text,
                     new SqlParameter("@Cupos", entity.Cupos),
+                    new SqlParameter("@CuposMin", entity.CuposMinimos),
                     new SqlParameter("@Estado", estado),
                     new SqlParameter("@FechaI", entity.FechaInicio),
                     new SqlParameter("@IdFormato", formatoId),

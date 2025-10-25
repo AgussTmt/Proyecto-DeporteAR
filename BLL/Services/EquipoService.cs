@@ -120,6 +120,17 @@ namespace BLL.Services
             }
         }
 
+        public IEnumerable<Equipo> GetAll()
+        {
+            using (var context = FactoryDao.UnitOfWork.Create())
+            {
+               
+                return context.Repositories.EquipoRepository.GetAll();
+            }
+            
+        }
+        
+
         public List<Equipo> ListarPorCompeticion(Competicion competicion)
         {
             using (var context = FactoryDao.UnitOfWork.Create())

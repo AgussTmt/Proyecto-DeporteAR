@@ -69,17 +69,15 @@ namespace DAL.Implementations.SqlServer.Helper
         protected SqlDataReader ExecuteReader(String commandText,
             CommandType commandType, params SqlParameter[] parameters)
         {
-            using (var cmd = CreateCommand(commandText))
-            {
-                cmd.CommandType = commandType;
+            var cmd = CreateCommand(commandText);
 
-                cmd.Parameters.AddRange(parameters);
-                // When using CommandBehavior.CloseConnection, the connection will be closed when the 
-                // IDataReader is closed.
-                SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            cmd.CommandType = commandType;
+            cmd.Parameters.AddRange(parameters);
 
-                return reader;
-            }
+            
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            return reader;
         }
     }
 }
