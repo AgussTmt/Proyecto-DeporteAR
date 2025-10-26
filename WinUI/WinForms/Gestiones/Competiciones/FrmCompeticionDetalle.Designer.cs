@@ -48,6 +48,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.lblDisponibilidad = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numCupos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCuposMinimos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numFrecuencia)).BeginInit();
@@ -110,6 +111,7 @@
             this.cmbCanchaAsignada.Name = "cmbCanchaAsignada";
             this.cmbCanchaAsignada.Size = new System.Drawing.Size(196, 21);
             this.cmbCanchaAsignada.TabIndex = 7;
+            this.cmbCanchaAsignada.SelectedIndexChanged += new System.EventHandler(this.cmbCanchaAsignada_SelectedIndexChanged);
             // 
             // dtpFechaInicio
             // 
@@ -218,11 +220,21 @@
             this.label8.TabIndex = 19;
             this.label8.Text = "Fecha de inicio";
             // 
+            // lblDisponibilidad
+            // 
+            this.lblDisponibilidad.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblDisponibilidad.Location = new System.Drawing.Point(571, 73);
+            this.lblDisponibilidad.Name = "lblDisponibilidad";
+            this.lblDisponibilidad.Size = new System.Drawing.Size(201, 153);
+            this.lblDisponibilidad.TabIndex = 20;
+            this.lblDisponibilidad.Text = "label9";
+            // 
             // FrmCompeticionDetalle
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(808, 486);
+            this.Controls.Add(this.lblDisponibilidad);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
@@ -276,5 +288,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label lblDisponibilidad;
     }
 }

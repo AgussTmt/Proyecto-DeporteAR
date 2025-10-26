@@ -57,9 +57,7 @@ namespace WinUI.WinForms.Gestiones.Competiciones
         {
             using (var formDetalle = new FrmCompeticionDetalle())
             {
-                // ShowDialog() pausa aquí y espera a que el form se cierre
                 var result = formDetalle.ShowDialog();
-                // Si el usuario guardó (no canceló), refrescamos
                 if (result == DialogResult.OK)
                 {
                     RefrescarGrid();
@@ -120,31 +118,61 @@ namespace WinUI.WinForms.Gestiones.Competiciones
             }
             var competicionSeleccionada = (Competicion)dgvCompeticiones.SelectedRows[0].DataBoundItem;
 
-            
-            using (var frmSeleccionar = new FrmSeleccionarEquipo())
-            {
-                var result = frmSeleccionar.ShowDialog();
 
-                if (result == DialogResult.OK && frmSeleccionar.EquipoSeleccionado != null)
+            try
+            {
+                var idsYaInscriptos = competicionSeleccionada.ListaEquipos
+                                        .Select(eq => eq.IdEquipo)
+                                        .ToList();
+                using (var frm = new FrmSeleccionarEquipo(idsYaInscriptos))
                 {
-                    var equipoAInscribir = frmSeleccionar.EquipoSeleccionado;
-                    try
+                    if (frm.ShowDialog() == DialogResult.OK)
                     {
                         
-                        BLLFacade.Current.CompeticionService.AñadirEquipo(competicionSeleccionada, equipoAInscribir);
-                        MessageBox.Show($"Equipo '{equipoAInscribir.Nombre}' inscripto correctamente.", "Inscripción Exitosa", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        var nuevosEquipos = frm.EquiposSeleccionados;
+
+                        if (nuevosEquipos.Count == 0) return; 
+
+                        var erroresInscripcion = new System.Text.StringBuilder();
+                        int exitosos = 0;
+
                         
+                        foreach (var equipo in nuevosEquipos)
+                        {
+                            try
+                            {
+                               
+                                BLLFacade.Current.CompeticionService.AñadirEquipo(competicionSeleccionada, equipo);
+                                exitosos++;
+                            }
+                            catch (Exception ex)
+                            {
+                                
+                                erroresInscripcion.AppendLine($"- {equipo.Nombre}: {ex.Message}");
+                            }
+                        }
+
                         RefrescarGrid();
-                    }
-                    catch (InvalidOperationException bizEx) 
-                    {
-                        MessageBox.Show($"No se pudo inscribir: {bizEx.Message}", "Error de Negocio", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
-                    catch (Exception ex) 
-                    {
-                        MessageBox.Show($"Error al inscribir equipo: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                        var resumen = new System.Text.StringBuilder();
+                        resumen.AppendLine($"Se inscribieron {exitosos} equipo(s) correctamente.");
+
+                        if (erroresInscripcion.Length > 0)
+                        {
+                            resumen.AppendLine("\nNo se pudieron inscribir los siguientes equipos:");
+                            resumen.Append(erroresInscripcion.ToString());
+                            MessageBox.Show(resumen.ToString(), "Resultado de Inscripción (con errores)", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                        else
+                        {
+                            MessageBox.Show(resumen.ToString(), "Resultado de Inscripción", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al inscribir equipo: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -163,31 +191,31 @@ namespace WinUI.WinForms.Gestiones.Competiciones
             {
                 try
                 {
-                    // Llama a la BLL (ahora devuelve List<string>)
+                   
                     List<string> resultado = BLLFacade.Current.CompeticionService.CrearFixture(competicionSeleccionada);
 
-                    // --- VERIFICAR RESULTADO ---
-                    if (resultado == null || !resultado.Any()) // ¡Éxito!
+                    
+                    if (resultado == null || !resultado.Any()) 
                     {
                         MessageBox.Show("¡Fixture generado con éxito!", "Proceso Completado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        RefrescarGrid(); // Refrescar para ver el cambio de estado
+                        RefrescarGrid(); 
                     }
-                    else // Hubo conflictos
+                    else 
                     {
-                        // Unir los mensajes de conflicto en un solo string
+                        
                         string mensajesError = string.Join(Environment.NewLine, resultado);
                         MessageBox.Show($"No se pudo generar el fixture debido a los siguientes conflictos:{Environment.NewLine}{mensajesError}",
                                         "Conflictos de Horario", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        // No refrescamos la grid porque no se hizo ningún cambio
+                        
                     }
-                    // ---------------------------
+                    
                 }
-                // Capturar excepciones específicas de negocio (ej. cupo mínimo) que aún lanza la BLL
+                
                 catch (InvalidOperationException bizEx)
                 {
                     MessageBox.Show($"No se pudo generar el fixture: {bizEx.Message}", "Error de Negocio", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
-                // Capturar otros errores inesperados
+                
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Error inesperado al generar el fixture: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);

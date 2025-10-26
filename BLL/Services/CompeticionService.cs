@@ -101,13 +101,21 @@ namespace BLL.Services
                 {
                     // --- Validaciones Previas (igual que antes) ---
                     var comp = context.Repositories.CompeticionRepository.GetById(competicion.IdCompeticion);
-                    if (comp == null) throw new KeyNotFoundException("...");
-                    if (comp.Estado != EstadoCompeticion.SinFixture) throw new InvalidOperationException("...");
-                    if (comp.ListaEquipos.Count < comp.CuposMinimos) throw new InvalidOperationException($"...");
-                    if (comp.ListaEquipos.Count < 2) throw new InvalidOperationException("...");
-                    // ... (Validar y cargar cancha asignada) ...
-                    if (comp.canchaAsignada == null) throw new InvalidOperationException("...");
-                    // ---------------------------------------------
+                    if (comp == null)
+                        throw new KeyNotFoundException("La competición no fue encontrada.");
+
+                    if (comp.Estado != EstadoCompeticion.SinFixture)
+                        throw new InvalidOperationException("El fixture para esta competición ya fue creado o está en curso.");
+
+                    if (comp.ListaEquipos.Count < comp.CuposMinimos)
+                        throw new InvalidOperationException($"No se alcanzan los cupos mínimos ({comp.CuposMinimos}). Equipos inscriptos: {comp.ListaEquipos.Count}.");
+
+                    if (comp.ListaEquipos.Count < 2)
+                        throw new InvalidOperationException("Se necesitan al menos 2 equipos para crear un fixture.");
+
+                    if (comp.canchaAsignada == null)
+                        throw new InvalidOperationException("La competición no tiene una cancha asignada.");
+                    
                     var canchaCompleta = context.Repositories.CanchaRepository.GetById(comp.canchaAsignada.IdCancha);
                     if (canchaCompleta == null)
                         throw new KeyNotFoundException("La cancha asignada a la competición no fue encontrada.");
