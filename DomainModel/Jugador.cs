@@ -8,7 +8,7 @@ namespace DomainModel
 {
     public class Jugador
     {
-        public Guid IdEquipo { get; set; }
+        public Guid? IdEquipo { get; set; }
         public Guid Idjugador { get; set; }
 
         public string Nombre { get; set; }
@@ -30,6 +30,14 @@ namespace DomainModel
             Puntuacion = new Dictionary<string, int>();
             Sanciones = new Dictionary<string, int>();
             Habilitado = true;
+        }
+
+
+
+        //Entiendo q esto no deberia estar aca, y con el patron MCV solucionaria esta falta en la arquitectura.
+        public string NombreCompleto
+        {
+            get { return $"{Apellido}, {Nombre}"; }
         }
     }
 }

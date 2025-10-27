@@ -12,6 +12,6 @@ namespace DAL.Interfaces
     {
         IEnumerable<Jugador> GetByEquipo(Guid idEquipo);
 
-
+        List<Jugador> GetSinEquipo();
     }
 }

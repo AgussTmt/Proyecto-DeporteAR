@@ -34,14 +34,15 @@
             this.lblEtiquetaCapitan = new System.Windows.Forms.Label();
             this.lblCapitanSeleccionado = new System.Windows.Forms.Label();
             this.btnSeleccionarCapitan = new System.Windows.Forms.Button();
-            this.gbJugadores = new System.Windows.Forms.GroupBox();
-            this.dgvJugadores = new System.Windows.Forms.DataGridView();
             this.btnAgregarJugador = new System.Windows.Forms.Button();
             this.btnQuitarJugador = new System.Windows.Forms.Button();
             this.btnGuardar = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
-            this.gbJugadores.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvJugadores)).BeginInit();
+            this.btnCrearNuevoJugador = new System.Windows.Forms.Button();
+            this.listBoxJugadoresLibres = new System.Windows.Forms.ListBox();
+            this.listBoxJugadoresAsignados = new System.Windows.Forms.ListBox();
+            this.lblListboxLibre = new System.Windows.Forms.Label();
+            this.lblJugadoresActuales = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txtNombre
@@ -88,48 +89,33 @@
             // 
             // btnSeleccionarCapitan
             // 
-            this.btnSeleccionarCapitan.Location = new System.Drawing.Point(468, 377);
+            this.btnSeleccionarCapitan.Location = new System.Drawing.Point(376, 392);
             this.btnSeleccionarCapitan.Name = "btnSeleccionarCapitan";
-            this.btnSeleccionarCapitan.Size = new System.Drawing.Size(152, 23);
+            this.btnSeleccionarCapitan.Size = new System.Drawing.Size(153, 48);
             this.btnSeleccionarCapitan.TabIndex = 5;
             this.btnSeleccionarCapitan.Text = "Seleccionar capitan";
             this.btnSeleccionarCapitan.UseVisualStyleBackColor = true;
-            // 
-            // gbJugadores
-            // 
-            this.gbJugadores.Controls.Add(this.dgvJugadores);
-            this.gbJugadores.Location = new System.Drawing.Point(468, 36);
-            this.gbJugadores.Name = "gbJugadores";
-            this.gbJugadores.Size = new System.Drawing.Size(309, 187);
-            this.gbJugadores.TabIndex = 6;
-            this.gbJugadores.TabStop = false;
-            this.gbJugadores.Text = "groupBox1";
-            // 
-            // dgvJugadores
-            // 
-            this.dgvJugadores.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvJugadores.Location = new System.Drawing.Point(29, 31);
-            this.dgvJugadores.Name = "dgvJugadores";
-            this.dgvJugadores.Size = new System.Drawing.Size(240, 150);
-            this.dgvJugadores.TabIndex = 0;
+            this.btnSeleccionarCapitan.Click += new System.EventHandler(this.btnSeleccionarCapitan_Click);
             // 
             // btnAgregarJugador
             // 
-            this.btnAgregarJugador.Location = new System.Drawing.Point(354, 241);
+            this.btnAgregarJugador.Location = new System.Drawing.Point(518, 309);
             this.btnAgregarJugador.Name = "btnAgregarJugador";
-            this.btnAgregarJugador.Size = new System.Drawing.Size(152, 23);
+            this.btnAgregarJugador.Size = new System.Drawing.Size(48, 34);
             this.btnAgregarJugador.TabIndex = 7;
-            this.btnAgregarJugador.Text = "Agregar jugador";
+            this.btnAgregarJugador.Text = ">";
             this.btnAgregarJugador.UseVisualStyleBackColor = true;
+            this.btnAgregarJugador.Click += new System.EventHandler(this.btnAgregarJugador_Click);
             // 
             // btnQuitarJugador
             // 
-            this.btnQuitarJugador.Location = new System.Drawing.Point(354, 293);
+            this.btnQuitarJugador.Location = new System.Drawing.Point(711, 309);
             this.btnQuitarJugador.Name = "btnQuitarJugador";
-            this.btnQuitarJugador.Size = new System.Drawing.Size(152, 23);
+            this.btnQuitarJugador.Size = new System.Drawing.Size(48, 34);
             this.btnQuitarJugador.TabIndex = 8;
-            this.btnQuitarJugador.Text = "Quitar jugador";
+            this.btnQuitarJugador.Text = "<";
             this.btnQuitarJugador.UseVisualStyleBackColor = true;
+            this.btnQuitarJugador.Click += new System.EventHandler(this.btnQuitarJugador_Click);
             // 
             // btnGuardar
             // 
@@ -139,6 +125,7 @@
             this.btnGuardar.TabIndex = 9;
             this.btnGuardar.Text = "Guardar";
             this.btnGuardar.UseVisualStyleBackColor = true;
+            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
             // btnCancelar
             // 
@@ -148,17 +135,66 @@
             this.btnCancelar.TabIndex = 10;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
+            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
+            // 
+            // btnCrearNuevoJugador
+            // 
+            this.btnCrearNuevoJugador.Location = new System.Drawing.Point(547, 392);
+            this.btnCrearNuevoJugador.Name = "btnCrearNuevoJugador";
+            this.btnCrearNuevoJugador.Size = new System.Drawing.Size(153, 48);
+            this.btnCrearNuevoJugador.TabIndex = 11;
+            this.btnCrearNuevoJugador.Text = "Crear jugador para equipo";
+            this.btnCrearNuevoJugador.UseVisualStyleBackColor = true;
+            this.btnCrearNuevoJugador.Click += new System.EventHandler(this.btnCrearNuevoJugador_Click);
+            // 
+            // listBoxJugadoresLibres
+            // 
+            this.listBoxJugadoresLibres.FormattingEnabled = true;
+            this.listBoxJugadoresLibres.Location = new System.Drawing.Point(463, 52);
+            this.listBoxJugadoresLibres.Name = "listBoxJugadoresLibres";
+            this.listBoxJugadoresLibres.Size = new System.Drawing.Size(165, 251);
+            this.listBoxJugadoresLibres.TabIndex = 12;
+            // 
+            // listBoxJugadoresAsignados
+            // 
+            this.listBoxJugadoresAsignados.FormattingEnabled = true;
+            this.listBoxJugadoresAsignados.Location = new System.Drawing.Point(663, 52);
+            this.listBoxJugadoresAsignados.Name = "listBoxJugadoresAsignados";
+            this.listBoxJugadoresAsignados.Size = new System.Drawing.Size(148, 251);
+            this.listBoxJugadoresAsignados.TabIndex = 13;
+            // 
+            // lblListboxLibre
+            // 
+            this.lblListboxLibre.AutoSize = true;
+            this.lblListboxLibre.Location = new System.Drawing.Point(475, 36);
+            this.lblListboxLibre.Name = "lblListboxLibre";
+            this.lblListboxLibre.Size = new System.Drawing.Size(107, 13);
+            this.lblListboxLibre.TabIndex = 14;
+            this.lblListboxLibre.Text = "Jugadores sin equipo";
+            // 
+            // lblJugadoresActuales
+            // 
+            this.lblJugadoresActuales.AutoSize = true;
+            this.lblJugadoresActuales.Location = new System.Drawing.Point(660, 36);
+            this.lblJugadoresActuales.Name = "lblJugadoresActuales";
+            this.lblJugadoresActuales.Size = new System.Drawing.Size(151, 13);
+            this.lblJugadoresActuales.TabIndex = 15;
+            this.lblJugadoresActuales.Text = "Jugadores actuales del equipo";
             // 
             // FrmEquipoDetalle
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(861, 505);
+            this.Controls.Add(this.lblJugadoresActuales);
+            this.Controls.Add(this.lblListboxLibre);
+            this.Controls.Add(this.listBoxJugadoresAsignados);
+            this.Controls.Add(this.listBoxJugadoresLibres);
+            this.Controls.Add(this.btnCrearNuevoJugador);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnGuardar);
             this.Controls.Add(this.btnQuitarJugador);
             this.Controls.Add(this.btnAgregarJugador);
-            this.Controls.Add(this.gbJugadores);
             this.Controls.Add(this.btnSeleccionarCapitan);
             this.Controls.Add(this.lblCapitanSeleccionado);
             this.Controls.Add(this.lblEtiquetaCapitan);
@@ -167,8 +203,7 @@
             this.Controls.Add(this.txtNombre);
             this.Name = "FrmEquipoDetalle";
             this.Text = "FrmEquipoDetalle";
-            this.gbJugadores.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvJugadores)).EndInit();
+            this.Load += new System.EventHandler(this.FrmEquipoDetalle_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -182,11 +217,14 @@
         private System.Windows.Forms.Label lblEtiquetaCapitan;
         private System.Windows.Forms.Label lblCapitanSeleccionado;
         private System.Windows.Forms.Button btnSeleccionarCapitan;
-        private System.Windows.Forms.GroupBox gbJugadores;
-        private System.Windows.Forms.DataGridView dgvJugadores;
         private System.Windows.Forms.Button btnAgregarJugador;
         private System.Windows.Forms.Button btnQuitarJugador;
         private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.Button btnCancelar;
+        private System.Windows.Forms.Button btnCrearNuevoJugador;
+        private System.Windows.Forms.ListBox listBoxJugadoresLibres;
+        private System.Windows.Forms.ListBox listBoxJugadoresAsignados;
+        private System.Windows.Forms.Label lblListboxLibre;
+        private System.Windows.Forms.Label lblJugadoresActuales;
     }
 }

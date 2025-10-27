@@ -20,11 +20,14 @@ namespace BLL.Interfaces
 
         void CambiarEstadoAsistencia(EstadoAsistencia estadoAsistencia, Equipo equipo);
 
-        void AñadirMiembro(Jugador jugador);
         IEnumerable<Equipo> GetAll();
 
         void CambiarHabilitado(Guid idEquipo, bool habilitado);
 
         IEnumerable<Equipo> GetAllIncludingDisabled();
+
+        void Update(Equipo equipoActualizado);
+
+
     }
 }

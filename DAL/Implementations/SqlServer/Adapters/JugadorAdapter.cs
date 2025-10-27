@@ -28,7 +28,7 @@ namespace DAL.Implementations.SqlServer.Adapters
             return new Jugador
             {
                 Idjugador = (Guid)values[0],
-                IdEquipo = (Guid)values[1],
+                IdEquipo = values[1] != DBNull.Value ? (Guid)values[1] : (Guid?)null,
                 Nombre = values[2]?.ToString(),
                 PartidosJugados = values[3] == DBNull.Value ? 0 : (int)values[3],
                 CantMvp = values[4] == DBNull.Value ? 0 : (int)values[4], 

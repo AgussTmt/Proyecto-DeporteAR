@@ -13,5 +13,7 @@ namespace BLL.Interfaces
         void AddPuntuacion(Guid idJugador, string tipo, int cantidad);
         void CambiarHabilitado(Guid idJugador);
         void AddSancion(Guid idJugador, string tipo, int cantidad);
+
+        List<Jugador> TraerJugadoresSinEquipo();
     }
 }

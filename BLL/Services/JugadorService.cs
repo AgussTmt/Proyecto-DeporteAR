@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
 using BLL.Interfaces;
@@ -17,13 +18,6 @@ namespace BLL.Services
             {
                 try
                 {
-                    if (entity.IdEquipo == Guid.Empty)
-                        throw new InvalidOperationException("El jugador debe tener un IdEquipo asignado.");
-
-                    var equipo = context.Repositories.EquipoRepository.GetById(entity.IdEquipo);
-                    if (equipo == null)
-                        throw new KeyNotFoundException("El equipo asignado al jugador no existe.");
-
                     context.Repositories.JugadorRepository.Add(entity);
                     context.SaveChanges();
                 }
@@ -159,6 +153,21 @@ namespace BLL.Services
         public void Delete(Guid id)
         {
             throw new NotImplementedException();
+        }
+
+        public List<Jugador> TraerJugadoresSinEquipo()
+        {
+            try
+            {
+                using (var context = FactoryDao.UnitOfWork.Create())
+                {
+                    return context.Repositories.JugadorRepository.GetSinEquipo();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error en BLL al traer jugadores sin equipo.", ex);
+            }
         }
     }
 }

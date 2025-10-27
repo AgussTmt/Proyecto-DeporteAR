@@ -86,8 +86,6 @@ namespace DAL.Implementations.SqlServer
                         list.Add(CompeticionAdapter.Current.Get(values));
                     }
                 }
-
-                // Llenamos las listas de equipos (problema N+1, pero sigue el patrón)
                 foreach (var c in list)
                 {
                     PopulateEquipos(c);
@@ -191,7 +189,7 @@ namespace DAL.Implementations.SqlServer
                     list.Add(CompeticionAdapter.Current.Get(values));
                 }
             }
-            // (Opcional) Llenar equipos para estas también
+            
             foreach (var c in list)
             {
                 PopulateEquipos(c);
