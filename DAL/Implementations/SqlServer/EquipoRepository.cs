@@ -139,7 +139,7 @@ namespace DAL.Implementations.SqlServer
         public Equipo GetById(Guid idEquipo)
         {
             Equipo equipo = null;
-            string sql = $"{_sqlSelect} AND e.IdEquipo = @IdEquipo";
+            string sql = $"{_sqlSelect} WHERE e.IdEquipo = @IdEquipo";
 
 
             using (var reader = base.ExecuteReader(sql, CommandType.Text, new SqlParameter("@IdEquipo", idEquipo)))

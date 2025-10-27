@@ -119,12 +119,14 @@ namespace WinUI.WinForms.Gestiones.Equipos
 
         private void btnEditar_Click(object sender, EventArgs e)
         {
-            if (dgvEquipos.SelectedRows.Count == 0)
+            if (dgvEquipos.CurrentRow == null)
             {
                 MessageBox.Show("Seleccione un equipo para editar.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            var equipoSeleccionado = (Equipo)dgvEquipos.SelectedRows[0].DataBoundItem;
+
+            // 2. Obtener el item desde CurrentRow
+            var equipoSeleccionado = (Equipo)dgvEquipos.CurrentRow.DataBoundItem;
 
             using (var formDetalle = new FrmEquipoDetalle(equipoSeleccionado))
             {
@@ -138,12 +140,13 @@ namespace WinUI.WinForms.Gestiones.Equipos
 
         private void btnBorrar_Click(object sender, EventArgs e)
         {
-            if (dgvEquipos.SelectedRows.Count == 0)
+            if (dgvEquipos.CurrentRow == null)
             {
                 MessageBox.Show("Seleccione un equipo para deshabilitar.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            var equipoSeleccionado = (Equipo)dgvEquipos.SelectedRows[0].DataBoundItem;
+            var equipoSeleccionado = (Equipo)dgvEquipos.CurrentRow.DataBoundItem;
+
             if (!equipoSeleccionado.Habilitado)
             {
                 MessageBox.Show($"El equipo '{equipoSeleccionado.Nombre}' ya está deshabilitado.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
