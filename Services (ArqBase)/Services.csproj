@@ -126,7 +126,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Dal\DataBase\AYUDADADADADA_20251018_224005.bak" />
     <None Include="Dal\DataBase\SecurityDB.bak" />
+    <None Include="Dal\DataBase\_20251024_182648.bak" />
     <None Include="Dal\Tools\SecurityDB.bak" />
     <None Include="packages.config" />
   </ItemGroup>
