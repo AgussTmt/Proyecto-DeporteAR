@@ -35,6 +35,7 @@
             this.BtnUserManagment = new System.Windows.Forms.Button();
             this.BtnReportes = new System.Windows.Forms.Button();
             this.BtnCompeticion = new System.Windows.Forms.Button();
+            this.btnEquipos = new System.Windows.Forms.Button();
             this.BtnCancha = new System.Windows.Forms.Button();
             this.BtnCalendario = new System.Windows.Forms.Button();
             this.panelLogo = new System.Windows.Forms.Panel();
@@ -46,7 +47,6 @@
             this.BtnIdiomaEspañol = new System.Windows.Forms.Button();
             this.LblTitle = new System.Windows.Forms.Label();
             this.panelDesktopPane = new System.Windows.Forms.Panel();
-            this.btnEquipos = new System.Windows.Forms.Button();
             this.panelMenu.SuspendLayout();
             this.panelLogo.SuspendLayout();
             this.panelTitleBar.SuspendLayout();
@@ -170,6 +170,26 @@
             this.BtnCompeticion.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.BtnCompeticion.UseVisualStyleBackColor = true;
             this.BtnCompeticion.Click += new System.EventHandler(this.BtnCompeticion_Click);
+            // 
+            // btnEquipos
+            // 
+            this.btnEquipos.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnEquipos.FlatAppearance.BorderSize = 0;
+            this.btnEquipos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEquipos.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEquipos.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btnEquipos.Image = ((System.Drawing.Image)(resources.GetObject("btnEquipos.Image")));
+            this.btnEquipos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnEquipos.Location = new System.Drawing.Point(0, 179);
+            this.btnEquipos.Name = "btnEquipos";
+            this.btnEquipos.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.btnEquipos.Size = new System.Drawing.Size(220, 54);
+            this.btnEquipos.TabIndex = 8;
+            this.btnEquipos.Text = "Equipos";
+            this.btnEquipos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnEquipos.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnEquipos.UseVisualStyleBackColor = true;
+            this.btnEquipos.Click += new System.EventHandler(this.btnEquipos_Click);
             // 
             // BtnCancha
             // 
@@ -310,26 +330,6 @@
             this.panelDesktopPane.Size = new System.Drawing.Size(897, 568);
             this.panelDesktopPane.TabIndex = 2;
             this.panelDesktopPane.Paint += new System.Windows.Forms.PaintEventHandler(this.panelDesktopPane_Paint);
-            // 
-            // btnEquipos
-            // 
-            this.btnEquipos.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnEquipos.FlatAppearance.BorderSize = 0;
-            this.btnEquipos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnEquipos.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEquipos.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnEquipos.Image = ((System.Drawing.Image)(resources.GetObject("btnEquipos.Image")));
-            this.btnEquipos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnEquipos.Location = new System.Drawing.Point(0, 179);
-            this.btnEquipos.Name = "btnEquipos";
-            this.btnEquipos.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
-            this.btnEquipos.Size = new System.Drawing.Size(220, 54);
-            this.btnEquipos.TabIndex = 8;
-            this.btnEquipos.Text = "Equipos";
-            this.btnEquipos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnEquipos.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnEquipos.UseVisualStyleBackColor = true;
-            this.btnEquipos.Click += new System.EventHandler(this.btnEquipos_Click);
             // 
             // FrmMain
             // 

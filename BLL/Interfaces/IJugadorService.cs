@@ -15,5 +15,6 @@ namespace BLL.Interfaces
         void AddSancion(Guid idJugador, string tipo, int cantidad);
 
         List<Jugador> TraerJugadoresSinEquipo();
+        List<Jugador> GetAllIncludingDisabled();
     }
 }

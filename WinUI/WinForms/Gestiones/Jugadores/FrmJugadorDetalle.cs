@@ -14,9 +14,32 @@ namespace WinUI.WinForms.Gestiones.Jugadores
 {
     public partial class FrmJugadorDetalle : Form
     {
+        private Jugador _jugadorActual;
         public FrmJugadorDetalle()
         {
             InitializeComponent();
+            _jugadorActual = new Jugador(); 
+        }
+
+        public FrmJugadorDetalle(Jugador jugadorAEditar)
+        {
+            InitializeComponent();
+
+            _jugadorActual = BLLFacade.Current.JugadorService.GetById(jugadorAEditar.Idjugador); 
+        }
+
+        private void FrmJugadorDetalle_Load(object sender, EventArgs e)
+        {
+            if (_jugadorActual.Idjugador != Guid.Empty)
+            {
+                this.Text = "Editar Jugador";
+                txtNombre.Text = _jugadorActual.Nombre;
+                txtApellido.Text = _jugadorActual.Apellido;
+            }
+            else
+            {
+                this.Text = "Nuevo Jugador";
+            }
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
@@ -33,20 +56,34 @@ namespace WinUI.WinForms.Gestiones.Jugadores
                 MessageBox.Show("El Apellido es obligatorio.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtApellido.Focus();
                 return;
-            }            
+            }
+
             try
             {
-                var nuevoJugador = new Jugador();
-                nuevoJugador.Idjugador = Guid.NewGuid();
-                nuevoJugador.Nombre = txtNombre.Text.Trim();
-                nuevoJugador.Apellido = txtApellido.Text.Trim();
-                nuevoJugador.IdEquipo = null;
-                nuevoJugador.PartidosJugados = 0;
-                nuevoJugador.CantMvp = 0; 
-                nuevoJugador.Habilitado = true;
+                
+                _jugadorActual.Nombre = txtNombre.Text.Trim();
+                _jugadorActual.Apellido = txtApellido.Text.Trim();
+                //crear
+                if (_jugadorActual.Idjugador == Guid.Empty) 
+                {
+                    
+                    _jugadorActual.Idjugador = Guid.NewGuid();
+                    _jugadorActual.IdEquipo = null;
+                    _jugadorActual.PartidosJugados = 0;
+                    _jugadorActual.CantMvp = 0;
+                    _jugadorActual.Habilitado = true;
 
-                BLLFacade.Current.JugadorService.Add(nuevoJugador);
-                MessageBox.Show("Jugador creado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    BLLFacade.Current.JugadorService.Add(_jugadorActual);
+                    MessageBox.Show("Jugador creado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                //editar
+                else 
+                {
+                    
+                    BLLFacade.Current.JugadorService.Update(_jugadorActual);
+                    MessageBox.Show("Jugador actualizado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
@@ -61,5 +98,6 @@ namespace WinUI.WinForms.Gestiones.Jugadores
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
+
     }
 }

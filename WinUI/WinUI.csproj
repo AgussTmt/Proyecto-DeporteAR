@@ -122,6 +122,12 @@
     <Compile Include="WinForms\Gestiones\Jugadores\FrmJugadorDetalle.Designer.cs">
       <DependentUpon>FrmJugadorDetalle.cs</DependentUpon>
     </Compile>
+    <Compile Include="WinForms\Gestiones\Jugadores\FrmJugadores.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\Jugadores\FrmJugadores.Designer.cs">
+      <DependentUpon>FrmJugadores.cs</DependentUpon>
+    </Compile>
     <Compile Include="WinForms\Gestiones\Settings\FrmSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -227,6 +233,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="WinForms\Gestiones\Jugadores\FrmJugadorDetalle.resx">
       <DependentUpon>FrmJugadorDetalle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Gestiones\Jugadores\FrmJugadores.resx">
+      <DependentUpon>FrmJugadores.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinForms\Gestiones\Settings\FrmSettings.resx">
       <DependentUpon>FrmSettings.cs</DependentUpon>

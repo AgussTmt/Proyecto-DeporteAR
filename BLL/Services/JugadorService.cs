@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using BLL.Interfaces;
 using DAL.Factory;
+using DAL.Interfaces;
 using DomainModel;
+using Patrones_3parcial.UnitOfWork;
 
 namespace BLL.Services
 {
@@ -167,6 +169,23 @@ namespace BLL.Services
             catch (Exception ex)
             {
                 throw new Exception("Error en BLL al traer jugadores sin equipo.", ex);
+            }
+        }
+
+        public List<Jugador> GetAllIncludingDisabled()
+        {
+            try
+            {
+                using (var context = FactoryDao.UnitOfWork.Create())
+                {
+                    var jugadores = context.Repositories.JugadorRepository.GetAllIncludingDisabled().ToList();
+                    return jugadores;
+                }
+                   
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error en BLL al obtener jugadores (incl. deshabilitados)", ex);
             }
         }
     }

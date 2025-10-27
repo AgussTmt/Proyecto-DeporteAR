@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BLL.Facade;
 using DomainModel;
+using WinUI.WinForms.Gestiones.Jugadores;
 
 namespace WinUI.WinForms.Gestiones.Equipos
 {
@@ -210,6 +211,20 @@ namespace WinUI.WinForms.Gestiones.Equipos
         private void panel3_Paint(object sender, PaintEventArgs e)
         {
             
+        }
+
+        private void btnVerJugadores_Click(object sender, EventArgs e)
+        {
+            var frmMain = this.ParentForm as FrmMain;
+            if (frmMain != null)
+            {
+
+                frmMain.OpenChildForm(new FrmJugadores(), sender);
+            }
+            else
+            {
+                MessageBox.Show("No se pudo encontrar el formulario principal.");
+            }
         }
     }
 }

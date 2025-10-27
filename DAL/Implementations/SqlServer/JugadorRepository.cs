@@ -21,7 +21,7 @@ namespace DAL.Implementations.SqlServer
         private const string _sqlSelect = @"SELECT 
                 IdJugador, IdEquipo, Nombre, PartidosJugados, Mvp, Apellido, Habilitado 
                 FROM DbJugador
-                WHERE Habilitado = 1";
+                ";
 
         public void Add(Jugador entity)
         {
@@ -48,8 +48,10 @@ namespace DAL.Implementations.SqlServer
         {
             var lista = new List<Jugador>();
 
-            
-            using (var reader = base.ExecuteReader(_sqlSelect, CommandType.Text))
+            string sql = $"{_sqlSelect} WHERE Habilitado = 1";
+
+
+            using (var reader = base.ExecuteReader(sql, CommandType.Text))
             {
                 while (reader.Read())
                 {
@@ -72,7 +74,7 @@ namespace DAL.Implementations.SqlServer
         public Jugador GetById(Guid id)
         {
             Jugador jugador = null;
-            string sql = $"{_sqlSelect} WHERE IdJugador = @Id";
+            string sql = $"{_sqlSelect} WHERE IdJugador = @Id AND Habilitado = 1";
 
             using (var reader = base.ExecuteReader(sql, CommandType.Text, new SqlParameter("@Id", id)))
             {
@@ -189,7 +191,7 @@ namespace DAL.Implementations.SqlServer
         public IEnumerable<Jugador> GetByEquipo(Guid idEquipo)
         {
             var lista = new List<Jugador>();
-            string sql = $"{_sqlSelect} AND IdEquipo = @IdEquipo";
+            string sql = $"{_sqlSelect} AND IdEquipo = @IdEquipo AND Habilitado = 1";
 
             using (var reader = base.ExecuteReader(sql, CommandType.Text, new SqlParameter("@IdEquipo", idEquipo)))
             {
@@ -215,7 +217,7 @@ namespace DAL.Implementations.SqlServer
         public List<Jugador> GetSinEquipo()
         {
             var lista = new List<Jugador>();
-            string sql = $"{_sqlSelect} AND IdEquipo IS NULL";
+            string sql = $"{_sqlSelect} WHERE IdEquipo IS NULL AND Habilitado = 1";
             using (var reader = base.ExecuteReader(sql, CommandType.Text))
             {
                 while (reader.Read())
@@ -232,6 +234,25 @@ namespace DAL.Implementations.SqlServer
                 PopulateSanciones(jugador);
             }
             return lista;
+        }
+
+        public IEnumerable<Jugador> GetAllIncludingDisabled()
+        {
+            
+            string sql = _sqlSelect;
+
+            List<Jugador> jugadores = new List<Jugador>();
+
+            using (var reader = base.ExecuteReader(sql, CommandType.Text))
+            {
+                while (reader.Read())
+                {
+                    object[] values = new object[reader.FieldCount];
+                    reader.GetValues(values);
+                    jugadores.Add(JugadorAdapter.Current.Get(values));
+                }
+            }
+            return jugadores;
         }
     }
 }
