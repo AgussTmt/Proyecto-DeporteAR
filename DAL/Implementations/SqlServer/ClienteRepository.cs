@@ -19,19 +19,20 @@ namespace DAL.Implementations.SqlServer
 
         }
         private const string _sqlSelect = @"SELECT 
-                IdCliente, Nombre, Telefono 
+                IdCliente, Nombre, Telefono, Email
             FROM DbCliente";
         public void Add(Cliente cliente)
         {
             string sql = @"INSERT INTO DbCliente 
-                           (IdCliente, Nombre, Telefono)
+                           (IdCliente, Nombre, Telefono, Email)
                            VALUES
-                           (@IdCliente, @Nombre, @Telefono)";
+                           (@IdCliente, @Nombre, @Telefono, @Email)";
 
             base.ExecuteNonQuery(sql, CommandType.Text,
                 new SqlParameter("@IdCliente", cliente.IdCliente),
                 new SqlParameter("@Nombre", (object)cliente.Nombre ?? DBNull.Value),
                 new SqlParameter("@Telefono", (object)cliente.Telefono ?? DBNull.Value)
+                new SqlParameter("@Email", (object)cliente.Email ?? DBNull.Value)
             );
         }
 
@@ -94,12 +95,14 @@ namespace DAL.Implementations.SqlServer
         {
             string sql = @"UPDATE DbCliente SET
                             Nombre = @Nombre,
-                            Telefono = @Telefono
+                            Telefono = @Telefono,
+                            Email = @Email
                            WHERE IdCliente = @IdCliente";
 
             base.ExecuteNonQuery(sql, CommandType.Text,
                 new SqlParameter("@Nombre", (object)entity.Nombre ?? DBNull.Value),
                 new SqlParameter("@Telefono", (object)entity.Telefono ?? DBNull.Value),
+                new SqlParameter("@Email", (object)entity.Email ?? DBNull.Value),
                 new SqlParameter("@IdCliente", entity.IdCliente)
             );
         }

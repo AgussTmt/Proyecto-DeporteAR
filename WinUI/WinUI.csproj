@@ -62,6 +62,12 @@
     <Compile Include="WinForms\Gestiones\Canchas\FrmCanchaDetalle.Designer.cs">
       <DependentUpon>FrmCanchaDetalle.cs</DependentUpon>
     </Compile>
+    <Compile Include="WinForms\Gestiones\Clientes\Clientes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\Clientes\Clientes.Designer.cs">
+      <DependentUpon>Clientes.cs</DependentUpon>
+    </Compile>
     <Compile Include="WinForms\Gestiones\Clientes\FrmSeleccionarCliente.cs">
       <SubType>Form</SubType>
     </Compile>
