@@ -74,8 +74,6 @@ namespace WinUI.WinForms.Gestiones.Jugadores
             {
                 dgvJugadores.Columns["NombreCompleto"].Visible = false;
             }
-            
-            // Cambiar nombre de columna si es necesario
             if (dgvJugadores.Columns.Contains("NombreEquipo"))
             {
                 dgvJugadores.Columns["NombreEquipo"].HeaderText = "Equipo";
@@ -116,7 +114,6 @@ namespace WinUI.WinForms.Gestiones.Jugadores
 
         private void btnNuevo_Click(object sender, EventArgs e)
         {
-            // Llamamos al FrmJugadorDetalle en modo 'Crear'
             using (var formDetalle = new FrmJugadorDetalle())
             {
                 var result = formDetalle.ShowDialog();
@@ -167,8 +164,6 @@ namespace WinUI.WinForms.Gestiones.Jugadores
             {
                 try
                 {
-                    // Asumiendo que existe un método 'CambiarHabilitado' en JugadorService
-                    // (Si no existe, tendríamos que crearlo en BLL y DAL)
                     BLLFacade.Current.JugadorService.CambiarHabilitado(jugadorSeleccionado.Idjugador);
                     CargarGrid();
                 }

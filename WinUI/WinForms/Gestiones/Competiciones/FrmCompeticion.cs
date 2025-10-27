@@ -284,7 +284,89 @@ namespace WinUI.WinForms.Gestiones.Competiciones
 
 
         }
-       
+
+        private void btnDesinscribirEquipo_Click(object sender, EventArgs e)
+        {
+            if (dgvCompeticiones.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Seleccione una competición para desinscribir un equipo.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var competicionSeleccionada = (Competicion)dgvCompeticiones.SelectedRows[0].DataBoundItem;
+
+            if (competicionSeleccionada.ListaEquipos == null || !competicionSeleccionada.ListaEquipos.Any())
+            {
+                MessageBox.Show("Esta competición no tiene equipos inscriptos.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            
+            if (competicionSeleccionada.Estado != EstadoCompeticion.SinFixture)
+            {
+                MessageBox.Show("No se pueden quitar equipos, el fixture ya está generado.", "Acción Bloqueada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                var IdEquipos = competicionSeleccionada.ListaEquipos
+                                     .Select(e => e.IdEquipo)
+                                     .ToList();
+
+                var AllEquipos = BLLFacade.Current.EquipoService.GetAll().ToList();
+                var EquiposInscriptos = AllEquipos
+                                             .Where(e => IdEquipos.Contains(e.IdEquipo))
+                                             .ToList();
+                using (var frm = new FrmSeleccionarEquipo(EquiposInscriptos))
+                {
+                    if (frm.ShowDialog() == DialogResult.OK)
+                    {
+                        var equiposAQuitar = frm.EquiposSeleccionados;
+                        if (equiposAQuitar.Count == 0) return;
+
+                        var confirmacion = MessageBox.Show($"¿Está seguro de quitar {equiposAQuitar.Count} equipo(s) de la competición '{competicionSeleccionada.Nombre}'?", "Confirmar Desinscripción", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        if (confirmacion == DialogResult.No) return;
+
+                        int exitosos = 0;
+                        var errores = new System.Text.StringBuilder();
+
+                        foreach (var equipo in equiposAQuitar)
+                        {
+                            try
+                            {
+                                BLLFacade.Current.CompeticionService.QuitarEquipo(competicionSeleccionada, equipo);
+                                exitosos++;
+                            }
+                            catch (Exception ex)
+                            {
+                                errores.AppendLine($"- {equipo.Nombre}: {ex.Message}");
+                            }
+                        }
+
+                        RefrescarGrid(); 
+                        var resumen = new System.Text.StringBuilder();
+                        resumen.AppendLine($"Se quitaron {exitosos} equipo(s) correctamente.");
+
+                        if (errores.Length > 0)
+                        {
+                            resumen.AppendLine("\nNo se pudieron quitar los siguientes equipos:");
+                            resumen.Append(errores.ToString());
+                            MessageBox.Show(resumen.ToString(), "Resultado (con errores)", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                        else
+                        {
+                            MessageBox.Show(resumen.ToString(), "Resultado de Desinscripción", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al desinscribir equipo: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
     
 }

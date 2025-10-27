@@ -11,6 +11,8 @@ namespace DomainModel
         public Guid? IdEquipo { get; set; }
         public Guid Idjugador { get; set; }
 
+        public string NombreEquipo { get; set; }
+
         public string Nombre { get; set; }
 
         public string Apellido { get; set; }

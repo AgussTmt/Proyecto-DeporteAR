@@ -107,7 +107,8 @@ namespace DAL.Implementations.SqlServer
 
         public void Delete(Guid idClasificacion)
         {
-            throw new NotImplementedException();
+            string sql = "DELETE FROM DbClasificacion WHERE IdClasificacion = @IdClasificacion";
+            base.ExecuteNonQuery(sql, CommandType.Text, new SqlParameter("@IdClasificacion", idClasificacion));
         }
     }
 }

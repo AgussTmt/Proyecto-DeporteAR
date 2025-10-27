@@ -16,7 +16,7 @@ namespace DAL.Implementations.SqlServer.Adapters
         /// <summary>
         /// Mapea un array de object[] a una entidad Jugador.
         /// Asume el orden: 0:IdJugador, 1:IdEquipo, 2:Nombre, 
-        /// 3:PartidosJugados, 4:Mvp, 5:Apellido, 6:Habilitado
+        /// 3:PartidosJugados, 4:Mvp, 5:Apellido, 6:nombre_equipo, 7:Habilitado
         /// </summary>
         public Jugador Get(object[] values)
         {
@@ -33,7 +33,9 @@ namespace DAL.Implementations.SqlServer.Adapters
                 PartidosJugados = values[3] == DBNull.Value ? 0 : (int)values[3],
                 CantMvp = values[4] == DBNull.Value ? 0 : (int)values[4], 
                 Apellido = values[5]?.ToString(),
-                Habilitado = values[6] != DBNull.Value && (bool)values[6]
+                Habilitado = (bool)values[6],
+                NombreEquipo = values[7] != DBNull.Value ? values[7].ToString() : "(Sin Equipo)"
+
 
             };
         }

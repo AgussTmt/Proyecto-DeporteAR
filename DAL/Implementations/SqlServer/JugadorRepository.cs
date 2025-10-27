@@ -19,9 +19,10 @@ namespace DAL.Implementations.SqlServer
         }
 
         private const string _sqlSelect = @"SELECT 
-                IdJugador, IdEquipo, Nombre, PartidosJugados, Mvp, Apellido, Habilitado 
-                FROM DbJugador
-                ";
+                j.IdJugador, j.IdEquipo, j.Nombre, j.PartidosJugados, j.Mvp, j.Apellido, j.Habilitado,
+                e.Nombre as NombreEquipo
+            FROM DbJugador j
+            LEFT JOIN DbEquipo e ON j.IdEquipo = e.IdEquipo";
 
         public void Add(Jugador entity)
         {

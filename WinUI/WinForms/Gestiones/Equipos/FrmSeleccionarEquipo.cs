@@ -18,6 +18,9 @@ namespace WinUI.WinForms.Gestiones.Equipos
         public List<Equipo> EquiposSeleccionados { get; private set; }
         private readonly List<Guid> _idsEquiposYaInscriptos;
         private List<Equipo> _listaCompletaEquipos;
+
+        private readonly bool _modoDesinscribir = false;
+        private readonly List<Equipo> _listaEquiposInscriptos;
         public FrmSeleccionarEquipo(List<Guid> idsEquiposYaInscriptos)
         {
             InitializeComponent();
@@ -27,13 +30,33 @@ namespace WinUI.WinForms.Gestiones.Equipos
         }
 
 
+        public FrmSeleccionarEquipo(List<Equipo> equiposYaInscriptos)
+        {
+            InitializeComponent();
+            _idsEquiposYaInscriptos = new List<Guid>();
+            EquiposSeleccionados = new List<Equipo>();
+            _listaEquiposInscriptos = equiposYaInscriptos ?? new List<Equipo>();
+            _modoDesinscribir = true;
+
+            // Cambiamos la UI para que tenga sentido
+            this.Text = "Desinscribir Equipos";
+            this.btnSeleccionar.Text = "Desinscribir";
+        }
+
+
         private void FrmSeleccionarEquipo_Load(object sender, EventArgs e)
         {
             try
             {
-                _listaCompletaEquipos = BLLFacade.Current.EquipoService.GetAll().ToList();                
+                if (_modoDesinscribir)
+                {
+                    _listaCompletaEquipos = _listaEquiposInscriptos;
+                }
+                else
+                {
+                    _listaCompletaEquipos = BLLFacade.Current.EquipoService.GetAll().ToList();
+                }
                 RefrescarGrid();
-                
             }
             catch (Exception ex)
             {
@@ -51,7 +74,7 @@ namespace WinUI.WinForms.Gestiones.Equipos
                 EquiposSeleccionados.Clear();
                 foreach (DataGridViewRow row in dgvEquipos.SelectedRows)
                 {
-                    if (row.ReadOnly) continue;
+                    if (row.ReadOnly && !_modoDesinscribir) continue;
                     EquiposSeleccionados.Add((Equipo)row.DataBoundItem);
                 }
                 if (EquiposSeleccionados.Count > 0)
@@ -80,8 +103,8 @@ namespace WinUI.WinForms.Gestiones.Equipos
         {
             if (e.RowIndex >= 0)
             {
-                
-                if (dgvEquipos.Rows[e.RowIndex].ReadOnly) return;
+
+                if (dgvEquipos.Rows[e.RowIndex].ReadOnly && !_modoDesinscribir) return;
                 dgvEquipos.Rows[e.RowIndex].Selected = true;
                 btnSeleccionar_Click(sender, e);
             }
@@ -128,21 +151,23 @@ namespace WinUI.WinForms.Gestiones.Equipos
                 dgvEquipos.Columns["EstadoProxPartido"].HeaderText = "Estado";
             }
 
-
-            foreach (DataGridViewRow row in dgvEquipos.Rows)
+            if (!_modoDesinscribir)
             {
-                var equipo = (Equipo)row.DataBoundItem;
-                if (equipo != null && _idsEquiposYaInscriptos.Contains(equipo.IdEquipo))
+                foreach (DataGridViewRow row in dgvEquipos.Rows)
                 {
-                    row.DefaultCellStyle.BackColor = Color.LightGray;
-                    row.DefaultCellStyle.SelectionBackColor = Color.DarkGray;
-                    row.DefaultCellStyle.ForeColor = Color.Gray;
-                    row.ReadOnly = true;
-
-                    string toolTip = "Este equipo ya está inscripto en la competición.";
-                    foreach (DataGridViewCell cell in row.Cells)
+                    var equipo = (Equipo)row.DataBoundItem;
+                    if (equipo != null && _idsEquiposYaInscriptos.Contains(equipo.IdEquipo))
                     {
-                        cell.ToolTipText = toolTip;
+                        row.DefaultCellStyle.BackColor = Color.LightGray;
+                        row.DefaultCellStyle.SelectionBackColor = Color.DarkGray;
+                        row.DefaultCellStyle.ForeColor = Color.Gray;
+                        row.ReadOnly = true;
+
+                        string toolTip = "Este equipo ya está inscripto en la competición.";
+                        foreach (DataGridViewCell cell in row.Cells)
+                        {
+                            cell.ToolTipText = toolTip;
+                        }
                     }
                 }
             }
