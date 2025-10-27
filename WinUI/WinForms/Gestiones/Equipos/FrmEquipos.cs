@@ -14,36 +14,94 @@ namespace WinUI.WinForms.Gestiones.Equipos
 {
     public partial class FrmEquipos : Form
     {
+        private List<Equipo> _listaCompletaEquipos;
+        
         public FrmEquipos()
         {
             InitializeComponent();
+            _listaCompletaEquipos = new List<Equipo>();
         }
 
         private void FrmEquipos_Load(object sender, EventArgs e)
         {
-            dgvEquipos.AutoGenerateColumns = false;
-            dgvEquipos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvEquipos.MultiSelect = false;
-            // Define manualmente las columnas en el diseñador:
-            // - Nombre (DataPropertyName="Nombre")
-            // - Capitan (Name="colCapitan", DataPropertyName vacío, usar CellFormatting)
-            // - CantAusencias (DataPropertyName="CantAusencias")
-            // - EstadoProxPartido (DataPropertyName="EstadoProxPartido")
-            // - IdEquipo (DataPropertyName="IdEquipo", Visible=False)
-
-            RefrescarGrid();
+            CargarGrid();
         }
 
-        private void RefrescarGrid()
+        private void CargarGrid()
         {
             try
             {
-                dgvEquipos.DataSource = null;
-                dgvEquipos.DataSource = BLLFacade.Current.EquipoService.GetAll().ToList();
+                _listaCompletaEquipos = BLLFacade.Current.EquipoService.GetAllIncludingDisabled().ToList();
+                RefrescarGrid();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error al cargar equipos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _listaCompletaEquipos = new List<Equipo>();
+                RefrescarGrid();
+            }
+        }
+
+        private void RefrescarGrid()
+        {
+            string filtro = txtBuscar.Text.ToLower().Trim();
+
+
+            List<Equipo> listaFiltrada;
+
+            if (string.IsNullOrEmpty(filtro))
+            {
+                listaFiltrada = _listaCompletaEquipos;
+            }
+            else
+            {
+                listaFiltrada = _listaCompletaEquipos
+                    .Where(e => e.Nombre.ToLower().Contains(filtro))
+                    .ToList();
+            }
+
+
+            dgvEquipos.DataSource = null;
+            dgvEquipos.DataSource = listaFiltrada;
+
+            if (dgvEquipos.Columns.Contains("IdEquipo"))
+            {
+                dgvEquipos.Columns["IdEquipo"].Visible = false;
+            }
+            if (dgvEquipos.Columns.Contains("Jugadores"))
+            {
+                dgvEquipos.Columns["Jugadores"].Visible = false;
+            }
+            if (dgvEquipos.Columns.Contains("EstadoProxPartido"))
+            {
+                dgvEquipos.Columns["EstadoProxPartido"].HeaderText = "Estado";
+            }
+
+
+            PintarFilasDeshabilitadas();
+        }
+
+        private void PintarFilasDeshabilitadas()
+        {
+            foreach (DataGridViewRow row in dgvEquipos.Rows)
+            {
+                var equipo = (Equipo)row.DataBoundItem;
+                if (equipo != null && !equipo.Habilitado) 
+                {
+                    row.DefaultCellStyle.BackColor = Color.LightGray;
+                    row.DefaultCellStyle.ForeColor = Color.DarkGray;
+                    row.DefaultCellStyle.SelectionBackColor = Color.Gray;
+                    string toolTip = "Este equipo está deshabilitado.";
+                    foreach (DataGridViewCell cell in row.Cells)
+                    {
+                        cell.ToolTipText = toolTip;
+                    }
+                }
+                else if (equipo != null) 
+                    row.DefaultCellStyle.BackColor = SystemColors.Window;
+                    row.DefaultCellStyle.ForeColor = SystemColors.ControlText;
+                    row.DefaultCellStyle.SelectionBackColor = SystemColors.Highlight;
+                
             }
         }
 
@@ -54,7 +112,7 @@ namespace WinUI.WinForms.Gestiones.Equipos
                 var result = formDetalle.ShowDialog();
                 if (result == DialogResult.OK)
                 {
-                    RefrescarGrid();
+                    CargarGrid();
                 }
             }
         }
@@ -73,7 +131,7 @@ namespace WinUI.WinForms.Gestiones.Equipos
                 var result = formDetalle.ShowDialog();
                 if (result == DialogResult.OK)
                 {
-                    RefrescarGrid();
+                    CargarGrid();
                 }
             }
         }
@@ -86,17 +144,19 @@ namespace WinUI.WinForms.Gestiones.Equipos
                 return;
             }
             var equipoSeleccionado = (Equipo)dgvEquipos.SelectedRows[0].DataBoundItem;
+            if (!equipoSeleccionado.Habilitado)
+            {
+                MessageBox.Show($"El equipo '{equipoSeleccionado.Nombre}' ya está deshabilitado.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
 
-            // Cambiamos el mensaje
             var confirmacion = MessageBox.Show($"¿Está seguro de deshabilitar el equipo '{equipoSeleccionado.Nombre}'? No aparecerá en las listas.", "Confirmar Deshabilitación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
             if (confirmacion == DialogResult.Yes)
             {
                 try
                 {
-                    // ¡Llamamos al nuevo método de la BLL!
-                    BLLFacade.Current.EquipoService.CambiarHabilitado(equipoSeleccionado.IdEquipo, false); // false = Deshabilitar
-                    RefrescarGrid(); // El equipo desaparecerá de la lista
+                    BLLFacade.Current.EquipoService.CambiarHabilitado(equipoSeleccionado.IdEquipo, false);
+                    CargarGrid();
                 }
                 catch (Exception ex)
                 {
@@ -105,9 +165,48 @@ namespace WinUI.WinForms.Gestiones.Equipos
             }
         }
 
+        private void txtBuscar_TextChanged(object sender, EventArgs e)
+        {
+            RefrescarGrid();
+        }
+
+        private void dgvEquipos_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (this.dgvEquipos.Columns[e.ColumnIndex].Name == "Capitan")
+            {
+                if (e.Value != null)
+                {
+                    Cliente stubCliente = (Cliente)e.Value;
+
+                    try
+                    {
+                        var capitanCompleto = BLLFacade.Current.ClienteService.GetById(stubCliente.IdCliente);
+                        if (capitanCompleto != null)
+                        {
+                            e.Value = $"{capitanCompleto.Nombre}";
+                        }
+                        else
+                        {
+                            e.Value = "(Capitán no encontrado)";
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        e.Value = "(Error al cargar)";
+                    }
+                    e.FormattingApplied = true;
+                }
+                else
+                {
+                    e.Value = "(Sin Capitán)";
+                    e.FormattingApplied = true;
+                }
+            }
+        }
+
         private void panel3_Paint(object sender, PaintEventArgs e)
         {
-
+            
         }
     }
 }

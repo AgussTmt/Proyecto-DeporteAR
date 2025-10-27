@@ -46,6 +46,7 @@
             this.BtnIdiomaEspañol = new System.Windows.Forms.Button();
             this.LblTitle = new System.Windows.Forms.Label();
             this.panelDesktopPane = new System.Windows.Forms.Panel();
+            this.btnEquipos = new System.Windows.Forms.Button();
             this.panelMenu.SuspendLayout();
             this.panelLogo.SuspendLayout();
             this.panelTitleBar.SuspendLayout();
@@ -60,6 +61,7 @@
             this.panelMenu.Controls.Add(this.BtnUserManagment);
             this.panelMenu.Controls.Add(this.BtnReportes);
             this.panelMenu.Controls.Add(this.BtnCompeticion);
+            this.panelMenu.Controls.Add(this.btnEquipos);
             this.panelMenu.Controls.Add(this.BtnCancha);
             this.panelMenu.Controls.Add(this.BtnCalendario);
             this.panelMenu.Controls.Add(this.panelLogo);
@@ -78,7 +80,7 @@
             this.BtnLogout.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.BtnLogout.Image = ((System.Drawing.Image)(resources.GetObject("BtnLogout.Image")));
             this.BtnLogout.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnLogout.Location = new System.Drawing.Point(0, 395);
+            this.BtnLogout.Location = new System.Drawing.Point(0, 449);
             this.BtnLogout.Name = "BtnLogout";
             this.BtnLogout.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
             this.BtnLogout.Size = new System.Drawing.Size(220, 54);
@@ -98,7 +100,7 @@
             this.BtnSettings.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.BtnSettings.Image = ((System.Drawing.Image)(resources.GetObject("BtnSettings.Image")));
             this.BtnSettings.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSettings.Location = new System.Drawing.Point(0, 341);
+            this.BtnSettings.Location = new System.Drawing.Point(0, 395);
             this.BtnSettings.Name = "BtnSettings";
             this.BtnSettings.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
             this.BtnSettings.Size = new System.Drawing.Size(220, 54);
@@ -118,7 +120,7 @@
             this.BtnUserManagment.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.BtnUserManagment.Image = ((System.Drawing.Image)(resources.GetObject("BtnUserManagment.Image")));
             this.BtnUserManagment.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnUserManagment.Location = new System.Drawing.Point(0, 287);
+            this.BtnUserManagment.Location = new System.Drawing.Point(0, 341);
             this.BtnUserManagment.Name = "BtnUserManagment";
             this.BtnUserManagment.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
             this.BtnUserManagment.Size = new System.Drawing.Size(220, 54);
@@ -138,7 +140,7 @@
             this.BtnReportes.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.BtnReportes.Image = ((System.Drawing.Image)(resources.GetObject("BtnReportes.Image")));
             this.BtnReportes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnReportes.Location = new System.Drawing.Point(0, 233);
+            this.BtnReportes.Location = new System.Drawing.Point(0, 287);
             this.BtnReportes.Name = "BtnReportes";
             this.BtnReportes.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
             this.BtnReportes.Size = new System.Drawing.Size(220, 54);
@@ -158,7 +160,7 @@
             this.BtnCompeticion.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.BtnCompeticion.Image = ((System.Drawing.Image)(resources.GetObject("BtnCompeticion.Image")));
             this.BtnCompeticion.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnCompeticion.Location = new System.Drawing.Point(0, 179);
+            this.BtnCompeticion.Location = new System.Drawing.Point(0, 233);
             this.BtnCompeticion.Name = "BtnCompeticion";
             this.BtnCompeticion.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
             this.BtnCompeticion.Size = new System.Drawing.Size(220, 54);
@@ -309,6 +311,26 @@
             this.panelDesktopPane.TabIndex = 2;
             this.panelDesktopPane.Paint += new System.Windows.Forms.PaintEventHandler(this.panelDesktopPane_Paint);
             // 
+            // btnEquipos
+            // 
+            this.btnEquipos.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnEquipos.FlatAppearance.BorderSize = 0;
+            this.btnEquipos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEquipos.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEquipos.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btnEquipos.Image = ((System.Drawing.Image)(resources.GetObject("btnEquipos.Image")));
+            this.btnEquipos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnEquipos.Location = new System.Drawing.Point(0, 179);
+            this.btnEquipos.Name = "btnEquipos";
+            this.btnEquipos.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.btnEquipos.Size = new System.Drawing.Size(220, 54);
+            this.btnEquipos.TabIndex = 8;
+            this.btnEquipos.Text = "Equipos";
+            this.btnEquipos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnEquipos.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnEquipos.UseVisualStyleBackColor = true;
+            this.btnEquipos.Click += new System.EventHandler(this.btnEquipos_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -351,5 +373,6 @@
         private System.Windows.Forms.Button BtnIdiomaIngles;
         private System.Windows.Forms.Button BtnIdiomaEspañol;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button btnEquipos;
     }
 }

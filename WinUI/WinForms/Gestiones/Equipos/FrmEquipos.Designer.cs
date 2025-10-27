@@ -31,15 +31,19 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.btnVerDeshabilitados = new System.Windows.Forms.Button();
             this.btnBorrar = new System.Windows.Forms.Button();
             this.btnEditar = new System.Windows.Forms.Button();
             this.BtnNuevo = new System.Windows.Forms.Button();
             this.dgvEquipos = new System.Windows.Forms.DataGridView();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.txtBuscar = new System.Windows.Forms.TextBox();
+            this.lblBuscar = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEquipos)).BeginInit();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel2
@@ -64,6 +68,7 @@
             // 
             // panel4
             // 
+            this.panel4.Controls.Add(this.btnVerDeshabilitados);
             this.panel4.Controls.Add(this.btnBorrar);
             this.panel4.Controls.Add(this.btnEditar);
             this.panel4.Controls.Add(this.BtnNuevo);
@@ -72,6 +77,16 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(197, 459);
             this.panel4.TabIndex = 1;
+            // 
+            // btnVerDeshabilitados
+            // 
+            this.btnVerDeshabilitados.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnVerDeshabilitados.Location = new System.Drawing.Point(0, 180);
+            this.btnVerDeshabilitados.Name = "btnVerDeshabilitados";
+            this.btnVerDeshabilitados.Size = new System.Drawing.Size(197, 60);
+            this.btnVerDeshabilitados.TabIndex = 3;
+            this.btnVerDeshabilitados.Text = "Ver deshabilitados";
+            this.btnVerDeshabilitados.UseVisualStyleBackColor = true;
             // 
             // btnBorrar
             // 
@@ -108,21 +123,45 @@
             // 
             // dgvEquipos
             // 
+            this.dgvEquipos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvEquipos.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvEquipos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvEquipos.Dock = System.Windows.Forms.DockStyle.Left;
             this.dgvEquipos.Location = new System.Drawing.Point(0, 0);
             this.dgvEquipos.Name = "dgvEquipos";
             this.dgvEquipos.Size = new System.Drawing.Size(1024, 459);
             this.dgvEquipos.TabIndex = 0;
+            this.dgvEquipos.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvEquipos_CellFormatting);
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.lblBuscar);
+            this.panel3.Controls.Add(this.txtBuscar);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1227, 99);
             this.panel3.TabIndex = 0;
             this.panel3.Paint += new System.Windows.Forms.PaintEventHandler(this.panel3_Paint);
+            // 
+            // txtBuscar
+            // 
+            this.txtBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtBuscar.Location = new System.Drawing.Point(0, 79);
+            this.txtBuscar.Name = "txtBuscar";
+            this.txtBuscar.Size = new System.Drawing.Size(404, 20);
+            this.txtBuscar.TabIndex = 0;
+            this.txtBuscar.TextChanged += new System.EventHandler(this.txtBuscar_TextChanged);
+            // 
+            // lblBuscar
+            // 
+            this.lblBuscar.AutoSize = true;
+            this.lblBuscar.Location = new System.Drawing.Point(7, 60);
+            this.lblBuscar.Name = "lblBuscar";
+            this.lblBuscar.Size = new System.Drawing.Size(134, 13);
+            this.lblBuscar.TabIndex = 1;
+            this.lblBuscar.Text = "Buscar equipo por nombre:";
             // 
             // FrmEquipos
             // 
@@ -137,6 +176,8 @@
             this.panel1.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvEquipos)).EndInit();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -151,5 +192,8 @@
         private System.Windows.Forms.Button BtnNuevo;
         private System.Windows.Forms.DataGridView dgvEquipos;
         private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Button btnVerDeshabilitados;
+        private System.Windows.Forms.TextBox txtBuscar;
+        private System.Windows.Forms.Label lblBuscar;
     }
 }

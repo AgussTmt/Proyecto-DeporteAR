@@ -119,7 +119,7 @@ namespace WinUI.WinForms.Gestiones.Equipos
             {
                 dgvEquipos.Columns["IdEquipo"].Visible = false;
             }
-            if (dgvEquipos.Columns.Contains("Jugadores")) // La propiedad "Jugadores"
+            if (dgvEquipos.Columns.Contains("Jugadores")) 
             {
                 dgvEquipos.Columns["Jugadores"].Visible = false;
             }

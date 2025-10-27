@@ -47,6 +47,7 @@ namespace WinUI.WinForms.Gestiones.Canchas
                 cmbDeporte.DataSource = deportes.ToList();
                 cmbDeporte.DisplayMember = "Descripcion";
                 cmbDeporte.ValueMember = "Descripcion";
+                
             }
             catch (Exception ex)
             {
@@ -63,11 +64,13 @@ namespace WinUI.WinForms.Gestiones.Canchas
                 numCapacidad.Value = _canchaAEditar.Capacidad;
                 cmbDeporte.SelectedValue = _canchaAEditar.Deporte;
 
+
                 CargarDisponibilidadGuardada(_canchaAEditar.IdCancha);
             }
             else 
             {
                 this.Text = "Nueva Cancha";
+                NumDuracionXPartido.Value = 60;
             }
         }
 

@@ -17,6 +17,7 @@ using Services__ArqBase_.Facade;
 using WinUI.WinForms.Gestiones.UserManagment;
 using WinUI.WinForms.Gestiones.Canchas;
 using WinUI.WinForms.Gestiones.Competiciones;
+using WinUI.WinForms.Gestiones.Equipos;
 
 namespace WinUI.WinForms
 {
@@ -199,5 +200,10 @@ namespace WinUI.WinForms
         }
 
         #endregion
+
+        private void btnEquipos_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new FrmEquipos(), sender);
+        }
     }
 }

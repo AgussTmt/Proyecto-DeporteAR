@@ -18,5 +18,7 @@ namespace DAL.Interfaces
         IEnumerable<Equipo> GetAll();
 
         void CambiarHabilitado(Guid idEquipo, bool habilitado);
+
+        IEnumerable<Equipo> GetAllIncludingDisabled();
     }
 }

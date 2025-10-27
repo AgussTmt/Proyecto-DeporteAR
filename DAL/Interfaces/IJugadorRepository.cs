@@ -11,5 +11,7 @@ namespace DAL.Interfaces
     public interface IJugadorRepository : IGenericRepository<Jugador>
     {
         IEnumerable<Jugador> GetByEquipo(Guid idEquipo);
+
+
     }
 }

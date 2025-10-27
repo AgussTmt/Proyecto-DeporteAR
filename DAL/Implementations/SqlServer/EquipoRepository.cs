@@ -26,7 +26,7 @@ namespace DAL.Implementations.SqlServer
             e.Habilitado
         FROM DbEquipo e
         LEFT JOIN DbEstadoAsistencia ea ON e.IdEstadoAsistencia = ea.IdEstadoAsistencia
-        WHERE e.Habilitado = 1";
+        ";
 
         public void Add(Equipo equipo)
         {
@@ -164,6 +164,7 @@ namespace DAL.Implementations.SqlServer
         public IEnumerable<Equipo> GetAll()
         {
             var list = new List<Equipo>();
+            string sql = $"{_sqlSelect} WHERE e.Habilitado = 1";
 
 
             using (var reader = base.ExecuteReader(_sqlSelect, CommandType.Text))
@@ -188,6 +189,24 @@ namespace DAL.Implementations.SqlServer
                 new SqlParameter("@Habilitado", habilitado),
                 new SqlParameter("@IdEquipo", idEquipo)
             );
+        }
+
+        public IEnumerable<Equipo> GetAllIncludingDisabled()
+        {
+            var list = new List<Equipo>();
+            
+            string sql = _sqlSelect;
+
+            using (var reader = base.ExecuteReader(sql, CommandType.Text))
+            {
+                while (reader.Read())
+                {
+                    object[] values = new object[reader.FieldCount];
+                    reader.GetValues(values);
+                    list.Add(EquipoAdapter.Current.Get(values));
+                }
+            }
+            return list;
         }
     }
 }
