@@ -116,12 +116,25 @@ namespace BLL.Services
             }
         }
 
-        public Equipo TraerPorId(Equipo equipo)
+        public Equipo TraerPorId(Equipo entity)
         {
             using (var context = FactoryDao.UnitOfWork.Create())
             {
-                
-                return context.Repositories.EquipoRepository.GetById(equipo.IdEquipo);
+                try
+                {
+                    // 1. El repositorio trae el equipo CON los jugadores (¡BIEN!)
+                    var equipo = context.Repositories.EquipoRepository.GetById(entity.IdEquipo);
+
+                    if (equipo != null)
+                    {
+                        equipo.Jugadores = context.Repositories.JugadorRepository.GetByEquipo(equipo.IdEquipo).ToList();
+                    }
+                    return equipo;
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
             }
         }
 

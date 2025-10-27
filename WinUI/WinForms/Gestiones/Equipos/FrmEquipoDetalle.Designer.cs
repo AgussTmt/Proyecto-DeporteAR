@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.txtNombre = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
             this.lblNombre = new System.Windows.Forms.Label();
             this.lblEtiquetaCapitan = new System.Windows.Forms.Label();
             this.lblCapitanSeleccionado = new System.Windows.Forms.Label();
@@ -52,13 +51,6 @@
             this.txtNombre.Size = new System.Drawing.Size(229, 20);
             this.txtNombre.TabIndex = 0;
             // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(55, 180);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(229, 20);
-            this.textBox2.TabIndex = 1;
-            // 
             // lblNombre
             // 
             this.lblNombre.AutoSize = true;
@@ -71,7 +63,7 @@
             // lblEtiquetaCapitan
             // 
             this.lblEtiquetaCapitan.AutoSize = true;
-            this.lblEtiquetaCapitan.Location = new System.Drawing.Point(65, 92);
+            this.lblEtiquetaCapitan.Location = new System.Drawing.Point(52, 85);
             this.lblEtiquetaCapitan.Name = "lblEtiquetaCapitan";
             this.lblEtiquetaCapitan.Size = new System.Drawing.Size(43, 13);
             this.lblEtiquetaCapitan.TabIndex = 3;
@@ -81,7 +73,7 @@
             // 
             this.lblCapitanSeleccionado.AutoSize = true;
             this.lblCapitanSeleccionado.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblCapitanSeleccionado.Location = new System.Drawing.Point(66, 126);
+            this.lblCapitanSeleccionado.Location = new System.Drawing.Point(55, 108);
             this.lblCapitanSeleccionado.Name = "lblCapitanSeleccionado";
             this.lblCapitanSeleccionado.Size = new System.Drawing.Size(31, 15);
             this.lblCapitanSeleccionado.TabIndex = 4;
@@ -89,7 +81,7 @@
             // 
             // btnSeleccionarCapitan
             // 
-            this.btnSeleccionarCapitan.Location = new System.Drawing.Point(376, 392);
+            this.btnSeleccionarCapitan.Location = new System.Drawing.Point(376, 427);
             this.btnSeleccionarCapitan.Name = "btnSeleccionarCapitan";
             this.btnSeleccionarCapitan.Size = new System.Drawing.Size(153, 48);
             this.btnSeleccionarCapitan.TabIndex = 5;
@@ -99,7 +91,7 @@
             // 
             // btnAgregarJugador
             // 
-            this.btnAgregarJugador.Location = new System.Drawing.Point(518, 309);
+            this.btnAgregarJugador.Location = new System.Drawing.Point(517, 349);
             this.btnAgregarJugador.Name = "btnAgregarJugador";
             this.btnAgregarJugador.Size = new System.Drawing.Size(48, 34);
             this.btnAgregarJugador.TabIndex = 7;
@@ -109,7 +101,7 @@
             // 
             // btnQuitarJugador
             // 
-            this.btnQuitarJugador.Location = new System.Drawing.Point(711, 309);
+            this.btnQuitarJugador.Location = new System.Drawing.Point(720, 349);
             this.btnQuitarJugador.Name = "btnQuitarJugador";
             this.btnQuitarJugador.Size = new System.Drawing.Size(48, 34);
             this.btnQuitarJugador.TabIndex = 8;
@@ -119,7 +111,7 @@
             // 
             // btnGuardar
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(27, 392);
+            this.btnGuardar.Location = new System.Drawing.Point(25, 427);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(157, 48);
             this.btnGuardar.TabIndex = 9;
@@ -129,7 +121,7 @@
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(204, 392);
+            this.btnCancelar.Location = new System.Drawing.Point(203, 427);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(153, 48);
             this.btnCancelar.TabIndex = 10;
@@ -139,7 +131,7 @@
             // 
             // btnCrearNuevoJugador
             // 
-            this.btnCrearNuevoJugador.Location = new System.Drawing.Point(547, 392);
+            this.btnCrearNuevoJugador.Location = new System.Drawing.Point(549, 427);
             this.btnCrearNuevoJugador.Name = "btnCrearNuevoJugador";
             this.btnCrearNuevoJugador.Size = new System.Drawing.Size(153, 48);
             this.btnCrearNuevoJugador.TabIndex = 11;
@@ -152,7 +144,7 @@
             this.listBoxJugadoresLibres.FormattingEnabled = true;
             this.listBoxJugadoresLibres.Location = new System.Drawing.Point(463, 52);
             this.listBoxJugadoresLibres.Name = "listBoxJugadoresLibres";
-            this.listBoxJugadoresLibres.Size = new System.Drawing.Size(165, 251);
+            this.listBoxJugadoresLibres.Size = new System.Drawing.Size(165, 290);
             this.listBoxJugadoresLibres.TabIndex = 12;
             // 
             // listBoxJugadoresAsignados
@@ -160,7 +152,7 @@
             this.listBoxJugadoresAsignados.FormattingEnabled = true;
             this.listBoxJugadoresAsignados.Location = new System.Drawing.Point(663, 52);
             this.listBoxJugadoresAsignados.Name = "listBoxJugadoresAsignados";
-            this.listBoxJugadoresAsignados.Size = new System.Drawing.Size(148, 251);
+            this.listBoxJugadoresAsignados.Size = new System.Drawing.Size(148, 290);
             this.listBoxJugadoresAsignados.TabIndex = 13;
             // 
             // lblListboxLibre
@@ -199,7 +191,6 @@
             this.Controls.Add(this.lblCapitanSeleccionado);
             this.Controls.Add(this.lblEtiquetaCapitan);
             this.Controls.Add(this.lblNombre);
-            this.Controls.Add(this.textBox2);
             this.Controls.Add(this.txtNombre);
             this.Name = "FrmEquipoDetalle";
             this.Text = "FrmEquipoDetalle";
@@ -212,7 +203,6 @@
         #endregion
 
         private System.Windows.Forms.TextBox txtNombre;
-        private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label lblNombre;
         private System.Windows.Forms.Label lblEtiquetaCapitan;
         private System.Windows.Forms.Label lblCapitanSeleccionado;

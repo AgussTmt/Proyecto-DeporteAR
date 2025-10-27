@@ -24,6 +24,12 @@ namespace DomainModel
 
         public bool Habilitado { get; set; }
 
+        //Entiendo q esto no deberia estar aca, y con el patron MCV solucionaria esta falta en la arquitectura.
+        public int CantidadJugadores
+        {
+            get { return Jugadores?.Count ?? 0; }
+        }
+
     }
 
     public enum EstadoAsistencia

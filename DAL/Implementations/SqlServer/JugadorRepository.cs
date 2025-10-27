@@ -189,7 +189,7 @@ namespace DAL.Implementations.SqlServer
         public IEnumerable<Jugador> GetByEquipo(Guid idEquipo)
         {
             var lista = new List<Jugador>();
-            string sql = $"{_sqlSelect} WHERE IdEquipo = @IdEquipo";
+            string sql = $"{_sqlSelect} AND IdEquipo = @IdEquipo";
 
             using (var reader = base.ExecuteReader(sql, CommandType.Text, new SqlParameter("@IdEquipo", idEquipo)))
             {
