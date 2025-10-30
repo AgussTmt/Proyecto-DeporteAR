@@ -22,16 +22,9 @@ namespace DAL.Interfaces
 
         CanchaHorario GetByCanchaYHora(Guid idCancha, DateTime hora);
 
-        /// <summary>
-        /// Obtiene la fecha y hora MÁXIMA de un CanchaHorario existente para una cancha específica.
-        /// Devuelve DateTime.MinValue si no existen horarios para esa cancha.
-        /// </summary>
         DateTime GetMaximaFechaHorario(Guid idCancha);
-
-
-        /// <summary>
-        /// Verifica si ya existe un CanchaHorario para una cancha y fecha/hora exactas.
-        /// </summary>
         bool ExisteHorario(Guid idCancha, DateTime fechaHora);
+
+        IEnumerable<CanchaHorario> GetHorariosRango(Guid idCancha, DateTime fechaDesde, DateTime fechaHasta);
     }
 }

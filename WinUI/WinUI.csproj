@@ -56,17 +56,35 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WinForms\Gestiones\Calendario\FrmCalendario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\Calendario\FrmCalendario.Designer.cs">
+      <DependentUpon>FrmCalendario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\Calendario\FrmReservaDetalle.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\Calendario\FrmReservaDetalle.Designer.cs">
+      <DependentUpon>FrmReservaDetalle.cs</DependentUpon>
+    </Compile>
     <Compile Include="WinForms\Gestiones\Canchas\FrmCanchaDetalle.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="WinForms\Gestiones\Canchas\FrmCanchaDetalle.Designer.cs">
       <DependentUpon>FrmCanchaDetalle.cs</DependentUpon>
     </Compile>
-    <Compile Include="WinForms\Gestiones\Clientes\Clientes.cs">
+    <Compile Include="WinForms\Gestiones\Clientes\FrmClientes.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="WinForms\Gestiones\Clientes\Clientes.Designer.cs">
-      <DependentUpon>Clientes.cs</DependentUpon>
+    <Compile Include="WinForms\Gestiones\Clientes\FrmClientes.Designer.cs">
+      <DependentUpon>FrmClientes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\Clientes\FrmClientesDetalle.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\Clientes\FrmClientesDetalle.Designer.cs">
+      <DependentUpon>FrmClientesDetalle.cs</DependentUpon>
     </Compile>
     <Compile Include="WinForms\Gestiones\Clientes\FrmSeleccionarCliente.cs">
       <SubType>Form</SubType>
@@ -103,12 +121,6 @@
     </Compile>
     <Compile Include="WinForms\Gestiones\Equipos\FrmSeleccionarEquipo.Designer.cs">
       <DependentUpon>FrmSeleccionarEquipo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="WinForms\Gestiones\FrmCalendario.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WinForms\Gestiones\FrmCalendario.Designer.cs">
-      <DependentUpon>FrmCalendario.cs</DependentUpon>
     </Compile>
     <Compile Include="WinForms\Gestiones\Canchas\FrmCanchas.cs">
       <SubType>Form</SubType>
@@ -207,6 +219,15 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="WinForms\Gestiones\Calendario\FrmCalendario.resx">
+      <DependentUpon>FrmCalendario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Gestiones\Clientes\FrmClientes.resx">
+      <DependentUpon>FrmClientes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Gestiones\Clientes\FrmClientesDetalle.resx">
+      <DependentUpon>FrmClientesDetalle.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WinForms\Gestiones\Clientes\FrmSeleccionarCliente.resx">
       <DependentUpon>FrmSeleccionarCliente.cs</DependentUpon>
     </EmbeddedResource>
@@ -221,9 +242,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="WinForms\Gestiones\Equipos\FrmSeleccionarEquipo.resx">
       <DependentUpon>FrmSeleccionarEquipo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WinForms\Gestiones\FrmCalendario.resx">
-      <DependentUpon>FrmCalendario.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinForms\Gestiones\Canchas\FrmCanchaDetalle.resx">
       <DependentUpon>FrmCanchaDetalle.cs</DependentUpon>

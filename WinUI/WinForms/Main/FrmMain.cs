@@ -18,6 +18,8 @@ using WinUI.WinForms.Gestiones.UserManagment;
 using WinUI.WinForms.Gestiones.Canchas;
 using WinUI.WinForms.Gestiones.Competiciones;
 using WinUI.WinForms.Gestiones.Equipos;
+using WinUI.WinForms.Gestiones.Clientes;
+
 
 namespace WinUI.WinForms
 {
@@ -204,6 +206,11 @@ namespace WinUI.WinForms
         private void btnEquipos_Click(object sender, EventArgs e)
         {
             OpenChildForm(new FrmEquipos(), sender);
+        }
+
+        private void BtnClientes_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new FrmClientes(), sender);
         }
     }
 }

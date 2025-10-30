@@ -47,6 +47,7 @@
             this.BtnIdiomaEspañol = new System.Windows.Forms.Button();
             this.LblTitle = new System.Windows.Forms.Label();
             this.panelDesktopPane = new System.Windows.Forms.Panel();
+            this.BtnClientes = new System.Windows.Forms.Button();
             this.panelMenu.SuspendLayout();
             this.panelLogo.SuspendLayout();
             this.panelTitleBar.SuspendLayout();
@@ -60,6 +61,7 @@
             this.panelMenu.Controls.Add(this.BtnSettings);
             this.panelMenu.Controls.Add(this.BtnUserManagment);
             this.panelMenu.Controls.Add(this.BtnReportes);
+            this.panelMenu.Controls.Add(this.BtnClientes);
             this.panelMenu.Controls.Add(this.BtnCompeticion);
             this.panelMenu.Controls.Add(this.btnEquipos);
             this.panelMenu.Controls.Add(this.BtnCancha);
@@ -80,7 +82,7 @@
             this.BtnLogout.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.BtnLogout.Image = ((System.Drawing.Image)(resources.GetObject("BtnLogout.Image")));
             this.BtnLogout.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnLogout.Location = new System.Drawing.Point(0, 449);
+            this.BtnLogout.Location = new System.Drawing.Point(0, 503);
             this.BtnLogout.Name = "BtnLogout";
             this.BtnLogout.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
             this.BtnLogout.Size = new System.Drawing.Size(220, 54);
@@ -100,7 +102,7 @@
             this.BtnSettings.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.BtnSettings.Image = ((System.Drawing.Image)(resources.GetObject("BtnSettings.Image")));
             this.BtnSettings.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnSettings.Location = new System.Drawing.Point(0, 395);
+            this.BtnSettings.Location = new System.Drawing.Point(0, 449);
             this.BtnSettings.Name = "BtnSettings";
             this.BtnSettings.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
             this.BtnSettings.Size = new System.Drawing.Size(220, 54);
@@ -120,7 +122,7 @@
             this.BtnUserManagment.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.BtnUserManagment.Image = ((System.Drawing.Image)(resources.GetObject("BtnUserManagment.Image")));
             this.BtnUserManagment.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnUserManagment.Location = new System.Drawing.Point(0, 341);
+            this.BtnUserManagment.Location = new System.Drawing.Point(0, 395);
             this.BtnUserManagment.Name = "BtnUserManagment";
             this.BtnUserManagment.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
             this.BtnUserManagment.Size = new System.Drawing.Size(220, 54);
@@ -140,7 +142,7 @@
             this.BtnReportes.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.BtnReportes.Image = ((System.Drawing.Image)(resources.GetObject("BtnReportes.Image")));
             this.BtnReportes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.BtnReportes.Location = new System.Drawing.Point(0, 287);
+            this.BtnReportes.Location = new System.Drawing.Point(0, 341);
             this.BtnReportes.Name = "BtnReportes";
             this.BtnReportes.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
             this.BtnReportes.Size = new System.Drawing.Size(220, 54);
@@ -331,6 +333,26 @@
             this.panelDesktopPane.TabIndex = 2;
             this.panelDesktopPane.Paint += new System.Windows.Forms.PaintEventHandler(this.panelDesktopPane_Paint);
             // 
+            // BtnClientes
+            // 
+            this.BtnClientes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnClientes.FlatAppearance.BorderSize = 0;
+            this.BtnClientes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnClientes.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnClientes.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.BtnClientes.Image = ((System.Drawing.Image)(resources.GetObject("BtnClientes.Image")));
+            this.BtnClientes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnClientes.Location = new System.Drawing.Point(0, 287);
+            this.BtnClientes.Name = "BtnClientes";
+            this.BtnClientes.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
+            this.BtnClientes.Size = new System.Drawing.Size(220, 54);
+            this.BtnClientes.TabIndex = 9;
+            this.BtnClientes.Text = "Clientes";
+            this.BtnClientes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.BtnClientes.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.BtnClientes.UseVisualStyleBackColor = true;
+            this.BtnClientes.Click += new System.EventHandler(this.BtnClientes_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -374,5 +396,6 @@
         private System.Windows.Forms.Button BtnIdiomaEspañol;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnEquipos;
+        private System.Windows.Forms.Button BtnClientes;
     }
 }

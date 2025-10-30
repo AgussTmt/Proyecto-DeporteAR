@@ -31,5 +31,6 @@ namespace DomainModel
         Pendiente,
         Finalizado,
         Postergado
+
     }
 }

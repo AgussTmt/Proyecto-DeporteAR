@@ -11,7 +11,7 @@ namespace BLL.Services
 {
     internal class CanchaHorarioService : ICanchaHorarioService
     {
-        
+
 
         public void AsignarCliente(Cliente cliente, CanchaHorario canchaHorario)
         {
@@ -19,19 +19,16 @@ namespace BLL.Services
             {
                 try
                 {
-                    // --- LÓGICA DE NEGOCIO ---
-                    // 1. Nos aseguramos de tener la última versión del horario
+
                     var horarioActual = context.Repositories.CanchaHorarioRepository.GetById(canchaHorario.IdCanchaHorario);
 
                     if (horarioActual == null)
                         throw new KeyNotFoundException("El horario seleccionado no existe.");
                     string estadoAnterior = horarioActual.Estado.ToString();
-                    // 2. Validamos la regla de negocio
+
                     if (horarioActual.Estado != EstadoReserva.Libre)
                         throw new InvalidOperationException("Solo se puede asignar un cliente a un horario que esté 'Libre'.");
 
-                    // 3. Llamamos al método optimizado de la DAL
-                    // (Este método ya pone el estado 'Reservada' y suma 1 a 'CantReservas')
                     context.Repositories.CanchaHorarioRepository.AssignCliente(cliente, horarioActual);
 
                     var historial = new ReservaHistorial
@@ -46,12 +43,12 @@ namespace BLL.Services
                     };
                     context.Repositories.ReservaHistorialRepository.Add(historial);
 
-                    // 4. Persistimos la transacción
+
                     context.SaveChanges();
                 }
                 catch (Exception)
                 {
-                    throw; // El UoW hará rollback en el Dispose()
+                    throw;
                 }
             }
         }
@@ -62,7 +59,7 @@ namespace BLL.Services
             {
                 try
                 {
-                    
+
                     var horarioActual = context.Repositories.CanchaHorarioRepository.GetById(canchaHorario.IdCanchaHorario);
 
                     if (horarioActual == null)
@@ -78,7 +75,7 @@ namespace BLL.Services
                         horarioActual.ReservadaPor = null;
                         horarioActual.Abonada = false;
                     }
-                          
+
                     context.Repositories.CanchaHorarioRepository.Update(horarioActual);
 
                     var historial = new ReservaHistorial
@@ -89,7 +86,7 @@ namespace BLL.Services
                         FechaHoraEvento = DateTime.Now,
                         EstadoAnterior = estadoAnterior,
                         EstadoNuevo = estado.ToString(),
-                        Detalle = $"Estado cambiado a {estado}" 
+                        Detalle = $"Estado cambiado a {estado}"
                     };
                     context.Repositories.ReservaHistorialRepository.Add(historial);
 
@@ -123,7 +120,7 @@ namespace BLL.Services
         {
             using (var context = FactoryDao.UnitOfWork.Create())
             {
-                
+
                 return context.Repositories.CanchaHorarioRepository.GetByCliente(cliente);
             }
         }
@@ -167,7 +164,7 @@ namespace BLL.Services
                     }
                     if (horarioActual.Estado != EstadoReserva.Reservada)
                     {
-                        
+
                         throw new InvalidOperationException($"Solo se pueden abonar reservas en estado 'Reservada'. Estado actual: '{horarioActual.Estado}'.");
                     }
                     if (horarioActual.Abonada)
@@ -178,26 +175,26 @@ namespace BLL.Services
                     {
                         throw new InvalidOperationException("Esta reserva no tiene un cliente asignado para abonar.");
                     }
-         
+
                     string estadoAnterior = horarioActual.Estado.ToString();
 
-                    
+
                     horarioActual.Abonada = true;
                     context.Repositories.CanchaHorarioRepository.Update(horarioActual);
 
-                    
+
                     var historial = new ReservaHistorial
                     {
                         IdHistorial = Guid.NewGuid(),
                         IdCanchaHorario = horarioActual.IdCanchaHorario,
                         IdCliente = horarioActual.ReservadaPor.IdCliente,
                         FechaHoraEvento = DateTime.Now,
-                        EstadoAnterior = estadoAnterior, 
+                        EstadoAnterior = estadoAnterior,
                         EstadoNuevo = "Pagada",
                         Detalle = "Reserva marcada como abonada."
                     };
 
-                   
+
                     context.Repositories.ReservaHistorialRepository.Add(historial);
                     context.SaveChanges();
                 }
@@ -213,7 +210,7 @@ namespace BLL.Services
         {
             using (var context = FactoryDao.UnitOfWork.Create())
             {
-                
+
                 return context.Repositories.CanchaHorarioRepository.GetMaximaFechaHorario(idCancha);
             }
         }
@@ -222,8 +219,142 @@ namespace BLL.Services
         {
             using (var context = FactoryDao.UnitOfWork.Create())
             {
-               
+
                 return context.Repositories.CanchaHorarioRepository.ExisteHorario(idCancha, fechaHora);
+            }
+        }
+
+        //dentro de un rango busco horarios en base, y les hidrato el cliente y la cancha
+        public IEnumerable<CanchaHorario> GetHorariosRango(Guid idCancha, DateTime fechaDesde, DateTime fechaHasta)
+        {
+            using (var context = FactoryDao.UnitOfWork.Create())
+            {
+                try
+                {
+                    var canchaCompleta = context.Repositories.CanchaRepository.GetById(idCancha);
+                    if (canchaCompleta == null)
+                    {
+                        throw new KeyNotFoundException("Cancha no encontrada.");
+                    }
+
+
+                    var horarios = context.Repositories.CanchaHorarioRepository.GetHorariosRango(idCancha, fechaDesde, fechaHasta).ToList();
+
+                    //agarro los id q necesito
+                    var idsClientes = horarios
+                        .Where(h => h.ReservadaPor != null)
+                        .Select(h => h.ReservadaPor.IdCliente)
+                        .Distinct()
+                        .ToList();
+
+                    var clientesCompletos = new Dictionary<Guid, Cliente>();
+                    if (idsClientes.Any())
+                    {
+                        clientesCompletos = context.Repositories.ClienteRepository.GetAll()
+                            .Where(c => idsClientes.Contains(c.IdCliente))
+                            .ToDictionary(c => c.IdCliente, c => c);
+                    }
+
+                    //Hidrato horarios
+                    foreach (var horario in horarios)
+                    {
+                        horario.Cancha = canchaCompleta;
+                        if (horario.ReservadaPor != null && clientesCompletos.ContainsKey(horario.ReservadaPor.IdCliente))
+                        {
+                            horario.ReservadaPor = clientesCompletos[horario.ReservadaPor.IdCliente];
+                        }
+                    }
+
+                    return horarios;
+                }
+                catch (Exception ex)
+                {
+
+                    throw new Exception("Error en BLL GetHorariosRango.", ex);
+                }
+            }
+
+
+        }
+
+        public void ActualizarReserva(Guid idCanchaHorario, EstadoReserva nuevoEstado, Cliente cliente, bool abonada)
+        {
+            using (var context = FactoryDao.UnitOfWork.Create())
+            {
+                try
+                {
+                    var horarioActual = context.Repositories.CanchaHorarioRepository.GetById(idCanchaHorario);
+                    if (horarioActual == null)
+                    {
+                        throw new KeyNotFoundException("El horario a modificar no existe.");
+                    }
+
+                    string estadoAnteriorStr = horarioActual.Estado.ToString();
+                    string detalleHistorial = $"Cambio de estado: {estadoAnteriorStr} -> {nuevoEstado}.";
+
+                    //validaciones
+                    if (nuevoEstado == EstadoReserva.Reservada && cliente == null)
+                    {
+                        throw new InvalidOperationException("No se puede pasar a 'Reservada' sin asignar un cliente.");
+                    }
+                    if (nuevoEstado != EstadoReserva.Reservada && abonada)
+                    {
+                        throw new InvalidOperationException("Un turno solo puede estar abonado si está 'Reservado'.");
+                    }
+                    if (nuevoEstado == EstadoReserva.Libre)
+                    {
+                        cliente = null;
+                        abonada = false;
+                    }
+
+                    horarioActual.Estado = nuevoEstado;
+                    horarioActual.Abonada = abonada;
+
+
+                    horarioActual.ReservadaPor = (cliente != null)
+                        ? new Cliente { IdCliente = cliente.IdCliente }
+                        : null;
+
+
+                    if (estadoAnteriorStr != nuevoEstado.ToString())
+                    {
+                        var historial = new ReservaHistorial
+                        {
+                            IdHistorial = Guid.NewGuid(),
+                            IdCanchaHorario = horarioActual.IdCanchaHorario,
+                            IdCliente = (cliente != null) ? (Guid?)cliente.IdCliente : null,
+                            FechaHoraEvento = DateTime.Now,
+                            EstadoAnterior = estadoAnteriorStr,
+                            EstadoNuevo = nuevoEstado.ToString(),
+                            Detalle = detalleHistorial
+                        };
+                        context.Repositories.ReservaHistorialRepository.Add(historial);
+                    }
+
+
+                    if (horarioActual.Abonada != abonada && abonada == true)
+                    {
+                        var historialPago = new ReservaHistorial
+                        {
+                            IdHistorial = Guid.NewGuid(),
+                            IdCanchaHorario = horarioActual.IdCanchaHorario,
+                            IdCliente = (cliente != null) ? (Guid?)cliente.IdCliente : null,
+                            FechaHoraEvento = DateTime.Now,
+                            EstadoAnterior = estadoAnteriorStr,
+                            EstadoNuevo = estadoAnteriorStr,
+                            Detalle = "Reserva marcada como ABONADA."
+                        };
+                        context.Repositories.ReservaHistorialRepository.Add(historialPago);
+                    }
+
+                    context.Repositories.CanchaHorarioRepository.Update(horarioActual);
+                    context.SaveChanges();
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
             }
         }
     }

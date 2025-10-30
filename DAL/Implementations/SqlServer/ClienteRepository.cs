@@ -31,7 +31,7 @@ namespace DAL.Implementations.SqlServer
             base.ExecuteNonQuery(sql, CommandType.Text,
                 new SqlParameter("@IdCliente", cliente.IdCliente),
                 new SqlParameter("@Nombre", (object)cliente.Nombre ?? DBNull.Value),
-                new SqlParameter("@Telefono", (object)cliente.Telefono ?? DBNull.Value)
+                new SqlParameter("@Telefono", (object)cliente.Telefono ?? DBNull.Value),
                 new SqlParameter("@Email", (object)cliente.Email ?? DBNull.Value)
             );
         }

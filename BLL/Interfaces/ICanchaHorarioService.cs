@@ -15,8 +15,6 @@ namespace BLL.Interfaces
 
         List<CanchaHorario> ListarPorRangoTiempo(DateTime date);
 
-       
-
         void AsignarCliente(Cliente cliente, CanchaHorario canchaHorario);
 
         void AsignarEstado(CanchaHorario canchaHorario, EstadoReserva estado);
@@ -31,6 +29,10 @@ namespace BLL.Interfaces
 
         DateTime GetMaximaFechaHorario(Guid idCancha);
         bool ExisteHorario(Guid idCancha, DateTime fechaHora);
+
+        IEnumerable<CanchaHorario> GetHorariosRango(Guid idCancha, DateTime fechaDesde, DateTime fechaHasta);
+
+        void ActualizarReserva(Guid idCanchaHorario, EstadoReserva nuevoEstado, Cliente cliente, bool abonada);
 
     }
 }

@@ -178,6 +178,19 @@
         Zn5WVa6nvK5AqMNpHIqp2MqhXM8EhI7n2y/M76HQ0V85CjkfARh9L2kveafIAAAAAElFTkSuQmCC
 </value>
   </data>
+  <data name="BtnClientes.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAABGdBTUEAALGPC/xhBQAAAa9JREFUWEft
+        ljFOw0AQRVMhAULiDFQUlBRQU9FxAS7BCbbw/FWUyOeh4wBcgFtEINFQANpio81nbM/uxnZBnjRSdvfP
+        /O/YcrJYHJgZAD9asW5yOFBXcd8kcIihEpFXnjEabM7nEdZ57y9Ys3fI8IvPNSwXszdKzJxz5yV92dSY
+        1PSaqTEB8FTaa6YmYKCm18QhYC01AWt6zaQPOoBHPu9jkoCBEqOSnmIAXOYYplqLfi+wqWYM4HNIMyoA
+        3jlAX3H/ZHAQLkX/oO1PQtM0N9779XK5POOzAIdfrVanrJkVDjjaNwnghY2GTAHcsq5LWwQP7ivtFnOo
+        +FlErlibBZt31Ef4leHelK6AcZ2N9/5bCRL+5q9Zm8J6LqsuPBK7kxMUsfkquY+rVLvFJOqhpldE7gb7
+        BwUD8AU2TXPNGg3uA/DMmupwEe35ZU2KWWsSGWnb9thibNFsMQsziPO0d2MgyzNLbKBrnrbmPZWugaXw
+        vHQdyjl3xPs8YwceUFrxdsZ1zmzO9AduKKkQ0Hv/xvuxROSe92JxnlFhcw7AZ3w+OiKyicbOuRM+D8wW
+        7l/xC6ow+hcwADHbAAAAAElFTkSuQmCC
+</value>
+  </data>
   <data name="BtnCompeticion.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1

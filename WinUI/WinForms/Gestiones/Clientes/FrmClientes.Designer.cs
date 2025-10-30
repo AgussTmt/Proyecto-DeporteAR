@@ -1,6 +1,6 @@
-﻿namespace WinUI.WinForms.Gestiones.Equipos
+﻿namespace WinUI.WinForms.Gestiones.Clientes
 {
-    partial class FrmEquipos
+    partial class FrmClientes
     {
         /// <summary>
         /// Required designer variable.
@@ -31,19 +31,17 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
-            this.btnVerJugadores = new System.Windows.Forms.Button();
-            this.btnVerDeshabilitados = new System.Windows.Forms.Button();
             this.btnBorrar = new System.Windows.Forms.Button();
             this.btnEditar = new System.Windows.Forms.Button();
             this.BtnNuevo = new System.Windows.Forms.Button();
-            this.dgvEquipos = new System.Windows.Forms.DataGridView();
+            this.dgvClientes = new System.Windows.Forms.DataGridView();
             this.panel3 = new System.Windows.Forms.Panel();
             this.lblBuscar = new System.Windows.Forms.Label();
             this.txtBuscar = new System.Windows.Forms.TextBox();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvEquipos)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvClientes)).BeginInit();
             this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,23 +52,21 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1311, 584);
-            this.panel2.TabIndex = 3;
+            this.panel2.Size = new System.Drawing.Size(1223, 560);
+            this.panel2.TabIndex = 4;
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this.panel4);
-            this.panel1.Controls.Add(this.dgvEquipos);
+            this.panel1.Controls.Add(this.dgvClientes);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 99);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1311, 459);
+            this.panel1.Size = new System.Drawing.Size(1223, 459);
             this.panel1.TabIndex = 1;
             // 
             // panel4
             // 
-            this.panel4.Controls.Add(this.btnVerJugadores);
-            this.panel4.Controls.Add(this.btnVerDeshabilitados);
             this.panel4.Controls.Add(this.btnBorrar);
             this.panel4.Controls.Add(this.btnEditar);
             this.panel4.Controls.Add(this.BtnNuevo);
@@ -79,27 +75,6 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(197, 459);
             this.panel4.TabIndex = 1;
-            // 
-            // btnVerJugadores
-            // 
-            this.btnVerJugadores.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnVerJugadores.Location = new System.Drawing.Point(0, 240);
-            this.btnVerJugadores.Name = "btnVerJugadores";
-            this.btnVerJugadores.Size = new System.Drawing.Size(197, 60);
-            this.btnVerJugadores.TabIndex = 4;
-            this.btnVerJugadores.Text = "Ver jugadores";
-            this.btnVerJugadores.UseVisualStyleBackColor = true;
-            this.btnVerJugadores.Click += new System.EventHandler(this.btnVerJugadores_Click);
-            // 
-            // btnVerDeshabilitados
-            // 
-            this.btnVerDeshabilitados.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnVerDeshabilitados.Location = new System.Drawing.Point(0, 180);
-            this.btnVerDeshabilitados.Name = "btnVerDeshabilitados";
-            this.btnVerDeshabilitados.Size = new System.Drawing.Size(197, 60);
-            this.btnVerDeshabilitados.TabIndex = 3;
-            this.btnVerDeshabilitados.Text = "Ver deshabilitados";
-            this.btnVerDeshabilitados.UseVisualStyleBackColor = true;
             // 
             // btnBorrar
             // 
@@ -132,19 +107,18 @@
             this.BtnNuevo.TabIndex = 0;
             this.BtnNuevo.Text = "Nueva";
             this.BtnNuevo.UseVisualStyleBackColor = true;
-            this.BtnNuevo.Click += new System.EventHandler(this.BtnNuevo_Click);
+            this.BtnNuevo.Click += new System.EventHandler(this.btnNuevo_Click);
             // 
-            // dgvEquipos
+            // dgvClientes
             // 
-            this.dgvEquipos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dgvEquipos.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dgvEquipos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvEquipos.Dock = System.Windows.Forms.DockStyle.Left;
-            this.dgvEquipos.Location = new System.Drawing.Point(0, 0);
-            this.dgvEquipos.Name = "dgvEquipos";
-            this.dgvEquipos.Size = new System.Drawing.Size(1024, 459);
-            this.dgvEquipos.TabIndex = 0;
-            this.dgvEquipos.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvEquipos_CellFormatting);
+            this.dgvClientes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvClientes.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvClientes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvClientes.Dock = System.Windows.Forms.DockStyle.Left;
+            this.dgvClientes.Location = new System.Drawing.Point(0, 0);
+            this.dgvClientes.Name = "dgvClientes";
+            this.dgvClientes.Size = new System.Drawing.Size(1024, 459);
+            this.dgvClientes.TabIndex = 0;
             // 
             // panel3
             // 
@@ -153,9 +127,8 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1311, 99);
+            this.panel3.Size = new System.Drawing.Size(1223, 99);
             this.panel3.TabIndex = 0;
-            this.panel3.Paint += new System.Windows.Forms.PaintEventHandler(this.panel3_Paint);
             // 
             // lblBuscar
             // 
@@ -172,23 +145,23 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtBuscar.Location = new System.Drawing.Point(0, 79);
             this.txtBuscar.Name = "txtBuscar";
-            this.txtBuscar.Size = new System.Drawing.Size(488, 20);
+            this.txtBuscar.Size = new System.Drawing.Size(400, 20);
             this.txtBuscar.TabIndex = 0;
             this.txtBuscar.TextChanged += new System.EventHandler(this.txtBuscar_TextChanged);
             // 
-            // FrmEquipos
+            // FrmClientes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1311, 584);
+            this.ClientSize = new System.Drawing.Size(1223, 560);
             this.Controls.Add(this.panel2);
-            this.Name = "FrmEquipos";
-            this.Text = "FrmEquipos";
-            this.Load += new System.EventHandler(this.FrmEquipos_Load);
+            this.Name = "FrmClientes";
+            this.Text = "Clientes";
+            this.Load += new System.EventHandler(this.FrmClientes_Load);
             this.panel2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvEquipos)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvClientes)).EndInit();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.ResumeLayout(false);
@@ -203,11 +176,9 @@
         private System.Windows.Forms.Button btnBorrar;
         private System.Windows.Forms.Button btnEditar;
         private System.Windows.Forms.Button BtnNuevo;
-        private System.Windows.Forms.DataGridView dgvEquipos;
+        private System.Windows.Forms.DataGridView dgvClientes;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Button btnVerDeshabilitados;
-        private System.Windows.Forms.TextBox txtBuscar;
         private System.Windows.Forms.Label lblBuscar;
-        private System.Windows.Forms.Button btnVerJugadores;
+        private System.Windows.Forms.TextBox txtBuscar;
     }
 }

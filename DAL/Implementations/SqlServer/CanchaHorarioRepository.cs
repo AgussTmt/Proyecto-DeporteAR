@@ -21,10 +21,10 @@ namespace DAL.Implementations.SqlServer
         }
 
         private const string _sqlSelect = @"SELECT 
-                ch.[IdCancha-Horario], ch.IdCancha, ch.Horario, ch.IdCliente, 
-                ch.Abonada, ch.FueCambiada, ch.CantReservas, e.Descripcion
-            FROM [DbCancha Horario] ch
-            LEFT JOIN DbEstadoReserva e ON ch.IdEstadoReserva = e.IdEstadoReserva";
+                    ch.[IdCancha-Horario], ch.IdCancha, ch.Horario, ch.IdCliente, 
+                    ch.Abonada, ch.FueCambiada, e.Descripcion
+                FROM [DbCancha Horario] ch
+                LEFT JOIN DbEstadoReserva e ON ch.IdEstadoReserva = e.IdEstadoReserva";
 
         public void Add(CanchaHorario entity)
         {
@@ -268,14 +268,43 @@ namespace DAL.Implementations.SqlServer
                            FROM [DbCancha Horario]
                            WHERE IdCancha = @IdCancha AND Horario = @FechaHora";
 
-            // ExecuteScalar devuelve object (el resultado del COUNT)
+            
             object result = base.ExecuteScalar(sql, CommandType.Text,
                 new SqlParameter("@IdCancha", idCancha),
                 new SqlParameter("@FechaHora", fechaHora));
 
-            // Convertir el resultado a int y verificar si es mayor que 0
+
             int count = Convert.ToInt32(result ?? 0);
             return count > 0;
+        }
+
+        public IEnumerable<CanchaHorario> GetHorariosRango(Guid idCancha, DateTime fechaDesde, DateTime fechaHasta)
+        {
+            string sql = $"{_sqlSelect} WHERE ch.IdCancha = @IdCancha " +
+                   "AND ch.Horario >= @FechaDesde " +
+                   "AND ch.Horario < @FechaHasta";
+
+            var lista = new List<CanchaHorario>();
+
+            using (var reader = base.ExecuteReader(sql, CommandType.Text,
+                new SqlParameter("@IdCancha", idCancha),
+                new SqlParameter("@FechaDesde", fechaDesde),
+                new SqlParameter("@FechaHasta", fechaHasta)
+            ))
+            {
+                while (reader.Read())
+                {
+                    object[] values = new object[reader.FieldCount];
+                    reader.GetValues(values);
+                    // El adapter solo mapea las 8 columnas
+                    lista.Add(CanchaHorarioAdapter.Current.Get(values));
+                }
+            }
+            return lista;
+
+
+
+
         }
     }
     

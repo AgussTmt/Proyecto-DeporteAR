@@ -21,35 +21,29 @@ namespace DAL.Implementations.SqlServer.Adapters
 
         public CanchaHorario Get(object[] values)
         {
-            if (values == null || values.Length < 8)
+            if (values == null || values.Length < 7)
             {
-                throw new ArgumentException("Se requieren 8 valores para mapear una CanchaHorario.");
+                throw new ArgumentException("Se requieren 7 valores para mapear una CanchaHorario.");
             }
 
 
             var estado = EstadoReserva.Libre;
-            if (values[7] != DBNull.Value)
+            if (values[6] != DBNull.Value)
             {
 
-                Enum.TryParse(values[7].ToString(), out estado);
+                Enum.TryParse(values[6].ToString(), out estado);
             }
 
             return new CanchaHorario
             {
                 IdCanchaHorario = (Guid)values[0],
-
-                // Crea un objeto "stub" solo con el ID
                 Cancha = new Cancha { IdCancha = (Guid)values[1] },
-
-                FechaHorario = (DateTime)values[2],
-
-                // Crea un objeto "stub" si el IdCliente no es nulo
+                FechaHorario = values[2] == DBNull.Value ? default(DateTime) : (DateTime)values[2],
                 ReservadaPor = (values[3] == DBNull.Value)
                                 ? null
                                 : new Cliente { IdCliente = (Guid)values[3] },
-
-                Abonada = (values[4] != DBNull.Value) && (bool)values[4],
-                FueCambiada = (values[5] != DBNull.Value) && (bool)values[5],
+                Abonada = Convert.ToBoolean(values[4]),
+                FueCambiada = Convert.ToBoolean(values[5]),
 
                 Estado = estado
             };
