@@ -35,9 +35,9 @@ namespace DAL.Implementations.SqlServer
 
             
             string sql = @"INSERT INTO [DbCancha Horario] 
-                           (IdCancha, Horario, IdCliente, Abonada, FueCambiada, IdEstadoReserva, [IdCancha-Horario], CantReservas)
+                           (IdCancha, Horario, IdCliente, Abonada, FueCambiada, IdEstadoReserva, [IdCancha-Horario])
                            VALUES
-                           (@IdCancha, @Horario, @IdCliente, @Abonada, @FueCambiada, @IdEstadoReserva, @IdCanchaHorario, 0)";
+                           (@IdCancha, @Horario, @IdCliente, @Abonada, @FueCambiada, @IdEstadoReserva, @IdCanchaHorario)";
 
             base.ExecuteNonQuery(sql, CommandType.Text,
                 new SqlParameter("@IdCancha", idCancha),
@@ -83,7 +83,7 @@ namespace DAL.Implementations.SqlServer
         public IEnumerable<CanchaHorario> GetAll()
         {
             var horarios = new List<CanchaHorario>();
-            using (var reader = base.ExecuteReader(_sqlSelect, CommandType.Text,new SqlParameter()))
+            using (var reader = base.ExecuteReader(_sqlSelect, CommandType.Text))
             {
                 while (reader.Read())
                 {

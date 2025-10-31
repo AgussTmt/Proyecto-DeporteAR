@@ -10,10 +10,14 @@ namespace BLL.Interfaces
 {
     public interface IFixtureService : IGenericService <Fixture>
     {
-        void postergar(Fixture fixture);
 
-        void CargarResul(Fixture fixture);
+        void CargarResul(Fixture fixture, List<Jugador> jugadoresActualizados);
 
         List<Fixture> ListarPorRangoTiempo(DateTime dateTime);
+
+        IEnumerable<Fixture> GetPartidosPendientes(Guid idCompeticion);
+
+        IEnumerable<Fixture> GetByCompeticion(Guid idCompeticion);
     }
 }
+

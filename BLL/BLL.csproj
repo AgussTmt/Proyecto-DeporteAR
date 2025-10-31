@@ -67,6 +67,7 @@
     <Compile Include="Services\EquipoService.cs" />
     <Compile Include="Services\FixtureService.cs" />
     <Compile Include="Services\JugadorService.cs" />
+    <Compile Include="Services\PartidoGenerado.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DAL\DAL.csproj">

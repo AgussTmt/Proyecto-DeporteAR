@@ -49,7 +49,7 @@ namespace DAL.Implementations.SqlServer
         {
             var lista = new List<Jugador>();
 
-            string sql = $"{_sqlSelect} WHERE Habilitado = 1";
+            string sql = $"{_sqlSelect} WHERE j.Habilitado = 1";
 
 
             using (var reader = base.ExecuteReader(sql, CommandType.Text))
@@ -75,7 +75,7 @@ namespace DAL.Implementations.SqlServer
         public Jugador GetById(Guid id)
         {
             Jugador jugador = null;
-            string sql = $"{_sqlSelect} WHERE IdJugador = @Id AND Habilitado = 1";
+            string sql = $"{_sqlSelect} WHERE j.IdJugador = @Id AND j.Habilitado = 1";
 
             using (var reader = base.ExecuteReader(sql, CommandType.Text, new SqlParameter("@Id", id)))
             {
@@ -192,7 +192,7 @@ namespace DAL.Implementations.SqlServer
         public IEnumerable<Jugador> GetByEquipo(Guid idEquipo)
         {
             var lista = new List<Jugador>();
-            string sql = $"{_sqlSelect} AND IdEquipo = @IdEquipo AND Habilitado = 1";
+            string sql = $"{_sqlSelect} WHERE j.IdEquipo = @IdEquipo AND j.Habilitado = 1";
 
             using (var reader = base.ExecuteReader(sql, CommandType.Text, new SqlParameter("@IdEquipo", idEquipo)))
             {
@@ -218,7 +218,7 @@ namespace DAL.Implementations.SqlServer
         public List<Jugador> GetSinEquipo()
         {
             var lista = new List<Jugador>();
-            string sql = $"{_sqlSelect} WHERE IdEquipo IS NULL AND Habilitado = 1";
+            string sql = $"{_sqlSelect} WHERE j.IdEquipo IS NULL AND j.Habilitado = 1";
             using (var reader = base.ExecuteReader(sql, CommandType.Text))
             {
                 while (reader.Read())

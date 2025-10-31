@@ -16,5 +16,7 @@ namespace DAL.Interfaces
 
         List<Fixture> GetByTimeRange(DateTime dateTime);
         void Delete(Guid id);
+
+        IEnumerable<Fixture> GetByCompeticionPendientes(Guid idCompeticion);
     }
 }

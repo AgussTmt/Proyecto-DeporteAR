@@ -62,11 +62,29 @@
     <Compile Include="WinForms\Gestiones\Calendario\FrmCalendario.Designer.cs">
       <DependentUpon>FrmCalendario.cs</DependentUpon>
     </Compile>
+    <Compile Include="WinForms\Gestiones\Calendario\FrmCargarResultadoDetalle.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\Calendario\FrmCargarResultadoDetalle.Designer.cs">
+      <DependentUpon>FrmCargarResultadoDetalle.cs</DependentUpon>
+    </Compile>
     <Compile Include="WinForms\Gestiones\Calendario\FrmReservaDetalle.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="WinForms\Gestiones\Calendario\FrmReservaDetalle.Designer.cs">
       <DependentUpon>FrmReservaDetalle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\Calendario\PartidoControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\Calendario\PartidoControl.Designer.cs">
+      <DependentUpon>PartidoControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\Calendario\SlotReservaControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\Calendario\SlotReservaControl.Designer.cs">
+      <DependentUpon>SlotReservaControl.cs</DependentUpon>
     </Compile>
     <Compile Include="WinForms\Gestiones\Canchas\FrmCanchaDetalle.cs">
       <SubType>Form</SubType>
@@ -221,6 +239,15 @@
     </Compile>
     <EmbeddedResource Include="WinForms\Gestiones\Calendario\FrmCalendario.resx">
       <DependentUpon>FrmCalendario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Gestiones\Calendario\FrmCargarResultadoDetalle.resx">
+      <DependentUpon>FrmCargarResultadoDetalle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Gestiones\Calendario\PartidoControl.resx">
+      <DependentUpon>PartidoControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinForms\Gestiones\Calendario\SlotReservaControl.resx">
+      <DependentUpon>SlotReservaControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinForms\Gestiones\Clientes\FrmClientes.resx">
       <DependentUpon>FrmClientes.cs</DependentUpon>

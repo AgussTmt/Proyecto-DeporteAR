@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BLL.Facade;
 using DomainModel;
+using WinUI.WinForms.Gestiones.Calendario;
 using WinUI.WinForms.Gestiones.Reservas;
 
 namespace WinUI.WinForms.Gestiones
@@ -19,12 +20,20 @@ namespace WinUI.WinForms.Gestiones
         private List<Cancha> _listaCanchas;
         private List<Competicion> _listaCompeticiones;
         private DateTime _fechaReferenciaSemana;
+
+        private List<Fixture> _partidosCompeticionActual;
+        private List<IGrouping<DateTime, Fixture>> _jornadasCompeticion;
+        private int _jornadaActualIndex;
         public FrmCalendario()
         {
             InitializeComponent();
             _listaCanchas = new List<Cancha>();
             _listaCompeticiones = new List<Competicion>();
             _fechaReferenciaSemana = DateTime.Today;
+
+            _partidosCompeticionActual = new List<Fixture>();
+            _jornadasCompeticion = new List<IGrouping<DateTime, Fixture>>();
+            _jornadaActualIndex = 0;
         }
 
         private void FrmCalendario_Load(object sender, EventArgs e)
@@ -36,8 +45,9 @@ namespace WinUI.WinForms.Gestiones
             this.cmbCancha.SelectedIndexChanged += new System.EventHandler(this.cmbCancha_SelectedIndexChanged);
 
             this.cmbCompeticion.SelectedIndexChanged += new System.EventHandler(this.cmbCompeticion_SelectedIndexChanged);
+
             RefrescarVistaSemanal();
-            //RefrescarVistaPartidos();
+            CargarPartidosDeCompeticion();
 
         }
 
@@ -97,7 +107,7 @@ namespace WinUI.WinForms.Gestiones
                 Guid idCancha = canchaSeleccionada.IdCancha;
 
                 DateTime inicioSemana = GetInicioSemana(_fechaReferenciaSemana);
-                DateTime finSemana = inicioSemana.AddDays(7); 
+                DateTime finSemana = inicioSemana.AddDays(7);
 
                 lblRangoSemana.Text = $"{inicioSemana:dd/MM} al {finSemana.AddDays(-1):dd/MM/yyyy}";
                 tlpSemanaReservas.Controls.Clear();
@@ -136,7 +146,7 @@ namespace WinUI.WinForms.Gestiones
                         FlowDirection = FlowDirection.TopDown,
                         AutoScroll = true,
                         BackColor = Color.White,
-                        WrapContents = false 
+                        WrapContents = false
                     };
                     panelDia.Controls.Add(flowDia);
                     flowDia.BringToFront();
@@ -147,8 +157,17 @@ namespace WinUI.WinForms.Gestiones
 
                         foreach (var slot in slotsDelDia.OrderBy(s => s.FechaHorario))
                         {
-                            Panel panelSlot = CrearPanelSlot(slot);
-                            flowDia.Controls.Add(panelSlot);
+                            // 1. Creamos nuestro nuevo UserControl
+                            SlotReservaControl panelSlot = new SlotReservaControl();
+
+                            // 2. Nos suscribimos a SU evento
+                            panelSlot.EditarReservaClick += PanelSlot_EditarReservaClick;
+
+                            // 3. Lo añadimos al panel
+                            flowDia.Controls.Add(panelSlot); // ¡¡Importante añadirlo ANTES de CargarSlot!!
+
+                            // 4. Le pasamos los datos (esto ajustará su tamaño)
+                            panelSlot.CargarSlot(slot);
                         }
                     }
 
@@ -162,136 +181,16 @@ namespace WinUI.WinForms.Gestiones
             }
         }
 
-        private DateTime GetInicioSemana(DateTime fecha)
+        private void PanelSlot_EditarReservaClick(object sender, CanchaHorario slotParaEditar)
         {
-            int diff = (7 + (fecha.DayOfWeek - DayOfWeek.Monday)) % 7;
-            return fecha.AddDays(-1 * diff).Date;
-        }
-
-
-        private Panel CrearPanelSlot(CanchaHorario slot)
-        {
-            // Panel principal del slot
-            var panelSlot = new Panel
-            {
-                // El ancho se ajusta al FlowLayoutPanel
-                Width = tlpSemanaReservas.GetColumnWidths()[0] - 25, // Ancho de la columna menos scrollbar
-                Height = 110, // Alto fijo para cada slot
-                BorderStyle = BorderStyle.FixedSingle,
-                Margin = new Padding(3)
-            };
-
-            if (slot.Estado == EstadoReserva.OcupadoPorTorneo)
-            {
-                // --- Panel "OCUPADO POR TORNEO" (Deshabilitado) ---
-                panelSlot.BackColor = Color.LightGray; // Grisado
-
-                var lblHora = new Label
-                {
-                    Text = $"{slot.FechaHorario:HH:mm} - {slot.FechaHorario.AddMinutes(slot.Cancha.DuracionXPartidoMin):HH:mm}",
-                    Dock = DockStyle.Top,
-                    Font = new Font(this.Font, FontStyle.Bold),
-                    TextAlign = ContentAlignment.MiddleCenter
-                };
-                panelSlot.Controls.Add(lblHora);
-
-                var lblEstado = new Label
-                {
-                    Text = "OCUPADO POR TORNEO",
-                    Dock = DockStyle.Fill, // Ocupa todo el espacio
-                    TextAlign = ContentAlignment.MiddleCenter,
-                    Font = new Font(this.Font, FontStyle.Bold),
-                    ForeColor = Color.DarkSlateGray
-                };
-                panelSlot.Controls.Add(lblEstado);
-            }
-            else
-            {
-                var lblHora = new Label
-                {
-                    Text = $"{slot.FechaHorario:HH:mm} - {slot.FechaHorario.AddMinutes(slot.Cancha.DuracionXPartidoMin):HH:mm}",
-                    Dock = DockStyle.Top,
-                    Font = new Font(this.Font, FontStyle.Bold),
-                    TextAlign = ContentAlignment.MiddleCenter
-                };
-                panelSlot.Controls.Add(lblHora);
-
-                // --- Estado (Ej: LIBRE / RESERVADA) ---
-                string estado = slot.Estado.ToString().ToUpper();
-                var lblEstado = new Label
-                {
-                    Text = estado,
-                    Dock = DockStyle.Top,
-                    TextAlign = ContentAlignment.MiddleCenter,
-                    ForeColor = (estado == "LIBRE") ? Color.DarkGreen : Color.DarkRed,
-                    Font = new Font(this.Font, FontStyle.Bold)
-                };
-                panelSlot.Controls.Add(lblEstado);
-
-                // --- Cliente (si está reservado) ---
-                // ¡Usa el Cliente hidratado!
-                if (slot.Estado == EstadoReserva.Reservada && slot.ReservadaPor != null)
-                {
-                    var lblCliente = new Label
-                    {
-                        Text = $"Cliente: {slot.ReservadaPor.Nombre ?? "..."}",
-                        Dock = DockStyle.Top,
-                        TextAlign = ContentAlignment.MiddleCenter,
-                        AutoSize = false,
-                        Height = 15
-                    };
-                    panelSlot.Controls.Add(lblCliente);
-
-                    // --- Estado de Pago ---
-                    var lblPago = new Label
-                    {
-                        Text = slot.Abonada ? "PAGADO" : "NO PAGO",
-                        Dock = DockStyle.Top,
-                        TextAlign = ContentAlignment.MiddleCenter,
-                        ForeColor = slot.Abonada ? Color.Blue : Color.OrangeRed,
-                        Font = new Font(this.Font, FontStyle.Bold)
-                    };
-                    panelSlot.Controls.Add(lblPago);
-                }
-
-                // --- Botón Editar ---
-                var btnEditar = new Button
-                {
-                    Text = "Editar",
-                    Dock = DockStyle.Bottom,
-                    Tag = slot
-                };
-                btnEditar.Click += BtnEditarReserva_Click; // Conectamos el evento
-                panelSlot.Controls.Add(btnEditar);
-
-                // Asignar color de fondo
-                if (estado == "LIBRE")
-                    panelSlot.BackColor = Color.FromArgb(230, 255, 230); // Verde claro
-                else if (estado == "RESERVADA")
-                    panelSlot.BackColor = Color.FromArgb(255, 230, 230); // Rojo claro
-                else
-                    panelSlot.BackColor = Color.LightYellow; // Otro estado (ej: Mantenimiento)
-
-
-                
-            }
-            return panelSlot;
-
-        }
-
-        private void BtnEditarReserva_Click(object sender, EventArgs e)
-        {
-            Button btn = sender as Button;
-            CanchaHorario slotSeleccionado = (CanchaHorario)btn.Tag;
-
+            // Esta es la lógica que antes estaba en 'BtnEditarReserva_Click'
             try
             {
-                
-                using (var frmDetalle = new FrmReservaDetalle(slotSeleccionado))
+                using (var frmDetalle = new FrmReservaDetalle(slotParaEditar))
                 {
                     if (frmDetalle.ShowDialog() == DialogResult.OK)
                     {
-                        RefrescarVistaSemanal();
+                        RefrescarVistaSemanal(); // Refrescamos todo el calendario
                     }
                 }
             }
@@ -301,13 +200,143 @@ namespace WinUI.WinForms.Gestiones
             }
         }
 
+        private DateTime GetInicioSemana(DateTime fecha)
+        {
+            int diff = (7 + (fecha.DayOfWeek - DayOfWeek.Monday)) % 7;
+            return fecha.AddDays(-1 * diff).Date;
+        }
         #endregion 
 
+
+        #region === PANEL INFERIOR (COMPETICIONES) ===
         private void cmbCompeticion_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //RefrescarVistaPartidos();
+            CargarPartidosDeCompeticion();
+        }
+
+        private void BtnJornadaAnterior_Click(object sender, EventArgs e)
+        {
+            if (_jornadaActualIndex > 0)
+            {
+                _jornadaActualIndex--;
+                MostrarJornadaActual();
+            }
+        }
+
+        private void BtnJornadaSiguiente_Click(object sender, EventArgs e)
+        {
+            if (_jornadaActualIndex < _jornadasCompeticion.Count - 1)
+            {
+                _jornadaActualIndex++;
+                MostrarJornadaActual();
+            }
+        }
+
+        private void CargarPartidosDeCompeticion()
+        {
+            flowPartidos.Controls.Clear();
+            _partidosCompeticionActual.Clear();
+            _jornadasCompeticion.Clear();
+            _jornadaActualIndex = 0;
+
+            if (cmbCompeticion.SelectedItem == null || !(cmbCompeticion.SelectedItem is Competicion))
+            {
+                lblJornadaInfo.Text = "Seleccione competición";
+                ActualizarEstadoBotonesJornada();
+                return;
+            }
+
+            var competicion = (Competicion)cmbCompeticion.SelectedItem;
+
+            try
+            {
+                _partidosCompeticionActual = BLLFacade.Current.FixtureService.GetByCompeticion(competicion.IdCompeticion).ToList();
+
+                if (!_partidosCompeticionActual.Any())
+                {
+                    var lblVacio = new Label { Text = "No hay partidos pendientes programados para esta competición.", Dock = DockStyle.Top, AutoSize = true, Padding = new Padding(10) };
+                    flowPartidos.Controls.Add(lblVacio);
+                    lblJornadaInfo.Text = "Sin partidos";
+                    ActualizarEstadoBotonesJornada();
+                    return;
+                }
+
+                // 2. Agrupamos por día (esto crea las "Jornadas")
+                _jornadasCompeticion = _partidosCompeticionActual
+                    .OrderBy(p => p.CanchaHorario.FechaHorario)
+                    .GroupBy(p => p.CanchaHorario.FechaHorario.Date)
+                    .ToList();
+
+                // 3. Mostramos la primera jornada
+                MostrarJornadaActual();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar partidos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        
+
+        private void MostrarJornadaActual()
+        {
+            flowPartidos.Controls.Clear();
+
+            if (_jornadaActualIndex < 0 || _jornadaActualIndex >= _jornadasCompeticion.Count)
+            {
+                ActualizarEstadoBotonesJornada();
+                return;
+            }
+
+            var jornadaActual = _jornadasCompeticion[_jornadaActualIndex];
+            var fechaJornada = jornadaActual.Key;
+
+            // 2. Título del Día (sin cambios)
+            var lblTituloDia = new Label
+            {
+                Text = fechaJornada.ToString("dddd, dd 'de' MMMM").ToUpper(),
+                Font = new Font(this.Font, FontStyle.Bold),
+                BackColor = Color.FromArgb(60, 60, 60),
+                ForeColor = Color.White,
+                Width = flowPartidos.Width - 25,
+                Height = 25,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Margin = new Padding(0, 10, 0, 5)
+            };
+            flowPartidos.Controls.Add(lblTituloDia);
+
+            // 3. (NUEVA LÓGICA) Dibujar usando el UserControl
+            foreach (var partido in jornadaActual)
+            {
+                // Creamos nuestro nuevo control
+                PartidoControl panelPartido = new PartidoControl();
+
+                // Le pasamos los datos
+                panelPartido.CargarPartido(partido);
+
+                // Nos suscribimos a su evento para saber cuándo refrescar
+                panelPartido.ResultadoCargado += (s, ev) => {
+                    // Cuando un partido se cargue, recargamos toda la competición
+                    CargarPartidosDeCompeticion();
+                };
+
+                // Lo añadimos al panel
+                flowPartidos.Controls.Add(panelPartido);
+            }
+
+            // 4. Actualizar UI de navegación (sin cambios)
+            lblJornadaInfo.Text = $"Jornada {_jornadaActualIndex + 1} de {_jornadasCompeticion.Count} ({fechaJornada:dd/MM})";
+            ActualizarEstadoBotonesJornada();
         }
 
 
+        private void ActualizarEstadoBotonesJornada()
+        {
+            BtnJornadaAnterior.Enabled = _jornadaActualIndex > 0;
+            BtnJornadaSiguiente.Enabled = _jornadaActualIndex < _jornadasCompeticion.Count - 1;
+        }
+        #endregion
+
+        
     }
 }

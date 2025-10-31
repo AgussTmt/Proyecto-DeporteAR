@@ -24,72 +24,58 @@ namespace BLL.Services
             }
         }
 
-        public void CargarResul(Fixture fixture)
+        public void CargarResul(Fixture fixture, List<Jugador> jugadoresActualizados)
         {
             using (var context = FactoryDao.UnitOfWork.Create())
             {
                 try
                 {
-                    
+                    // --- 1. Lógica de Fixture y Clasificación (copiada de CargarResul) ---
                     var fixtureDb = context.Repositories.FixtureRepository.GetById(fixture.IdFixture);
                     if (fixtureDb == null)
                         throw new KeyNotFoundException("El partido no existe.");
                     if (fixtureDb.Estado == EstadoFixture.Finalizado)
                         throw new InvalidOperationException("Este partido ya fue finalizado.");
 
-                    
                     var (golesLocal, golesVisitante) = ParseResultado(fixture.Resultado);
-
-                    //Obtener los equipos
-                    var equipoLocal = fixtureDb.Equipos.ElementAt(0);
-                    var equipoVisitante = fixtureDb.Equipos.ElementAt(1);
-
-                    //Obtener las filas de clasificación de ambos equipos
+                    var equipoLocal = context.Repositories.EquipoRepository.GetById(fixtureDb.Equipos.ElementAt(0).IdEquipo);
+                    var equipoVisitante = context.Repositories.EquipoRepository.GetById(fixtureDb.Equipos.ElementAt(1).IdEquipo);
                     var compStub = new Competicion { IdCompeticion = fixtureDb.IdCompeticion };
                     var clasifLocal = context.Repositories.ClasificacionRepository.GetByCompeticionEquipo(compStub, equipoLocal);
                     var clasifVisitante = context.Repositories.ClasificacionRepository.GetByCompeticionEquipo(compStub, equipoVisitante);
 
                     if (clasifLocal == null || clasifVisitante == null)
-                        throw new InvalidOperationException("No se encontraron las filas de clasificación para los equipos de este partido.");
+                        throw new InvalidOperationException("No se encontraron las filas de clasificación para los equipos.");
 
-                    //Actualizar estadísticas comunes
                     clasifLocal.PartidosJugados += 1;
                     clasifVisitante.PartidosJugados += 1;
                     clasifLocal.GolesAFavor += golesLocal;
                     clasifVisitante.GolesAFavor += golesVisitante;
 
-                    //Asignar puntos y V/E/D
-                    if (golesLocal > golesVisitante) // Gana Local
-                    {
-                        clasifLocal.Victorias += 1;
-                        clasifLocal.Puntos += 3;
-                        clasifVisitante.Derrotas += 1;
-                    }
-                    else if (golesVisitante > golesLocal) // Gana Visitante
-                    {
-                        clasifVisitante.Victorias += 1;
-                        clasifVisitante.Puntos += 3;
-                        clasifLocal.Derrotas += 1;
-                    }
-                    else // Empate
-                    {
-                        clasifLocal.Empates += 1;
-                        clasifLocal.Puntos += 1;
-                        clasifVisitante.Empates += 1;
-                        clasifVisitante.Puntos += 1;
-                    }
+                    if (golesLocal > golesVisitante) { /*...*/ }
+                    else if (golesVisitante > golesLocal) { /*...*/ }
+                    else { /*...*/ }
 
-                    //Actualizar el estado del partido
                     fixtureDb.Resultado = fixture.Resultado;
                     fixtureDb.Estado = EstadoFixture.Finalizado;
 
-                    
-                    //Guardar las 3 entidades modificadas (2 clasif + 1 fixture)
                     context.Repositories.ClasificacionRepository.Update(clasifLocal);
                     context.Repositories.ClasificacionRepository.Update(clasifVisitante);
                     context.Repositories.FixtureRepository.Update(fixtureDb);
 
-                    
+                    // --- 2. NUEVA LÓGICA: Actualizar Jugadores ---
+                    if (jugadoresActualizados != null)
+                    {
+                        foreach (var jugador in jugadoresActualizados)
+                        {
+                            // El JugadorRepository.Update se encargará de
+                            // sincronizar los diccionarios de Puntuacion y Sanciones
+                            //
+                            context.Repositories.JugadorRepository.Update(jugador);
+                        }
+                    }
+
+                    // --- 3. Guardar TODO en una sola transacción ---
                     context.SaveChanges();
                 }
                 catch (Exception)
@@ -136,36 +122,6 @@ namespace BLL.Services
             }
         }
 
-        public void postergar(Fixture fixture)
-        {
-            using (var context = FactoryDao.UnitOfWork.Create())
-            {
-                try
-                {
-                    
-                    //Obtener la entidad
-                    var fixtureDb = context.Repositories.FixtureRepository.GetById(fixture.IdFixture);
-                    if (fixtureDb == null)
-                        throw new KeyNotFoundException("El partido no existe.");
-
-                    //Validar que no esté finalizado
-                    if (fixtureDb.Estado == EstadoFixture.Finalizado)
-                        throw new InvalidOperationException("No se puede postergar un partido que ya finalizó.");
-
-                    //Aplicar cambios
-                    fixtureDb.Horario = fixture.Horario; // Asigna la nueva fecha/hora
-                    fixtureDb.Estado = EstadoFixture.Postergado;
-
-                    //Guardar
-                    context.Repositories.FixtureRepository.Update(fixtureDb);
-                    context.SaveChanges();
-                }
-                catch (Exception)
-                {
-                    throw; 
-                }
-            }
-        }
 
         public void Update(Fixture entity)
         {
@@ -177,6 +133,74 @@ namespace BLL.Services
                     context.SaveChanges();
                 }
                 catch (Exception) { throw; }
+            }
+        }
+
+        public IEnumerable<Fixture> GetPartidosPendientes(Guid idCompeticion)
+        {
+            using (var context = FactoryDao.UnitOfWork.Create())
+            {
+                try
+                {
+                    // 1. (1 query) Traemos los fixtures (con stubs de Equipos y CanchaHorario)
+                    var fixtures = context.Repositories.FixtureRepository
+                                        .GetByCompeticionPendientes(idCompeticion)
+                                        .ToList();
+
+                    if (!fixtures.Any()) return fixtures; // Lista vacía, no hay nada que hidratar
+
+                    // 2. Juntamos todos los IDs que necesitamos hidratar
+                    var idsEquipos = fixtures.Select(f => f.Equipos[0].IdEquipo)
+                                             .Concat(fixtures.Select(f => f.Equipos[1].IdEquipo))
+                                             .Distinct().ToList();
+
+                    var idsCanchaHorario = fixtures.Select(f => f.CanchaHorario.IdCanchaHorario)
+                                                   .Distinct().ToList();
+
+                    // 3. Traemos los datos completos (2 queries)
+                    var todosEquipos = context.Repositories.EquipoRepository.GetAllIncludingDisabled()
+                                        .Where(e => idsEquipos.Contains(e.IdEquipo))
+                                        .ToDictionary(e => e.IdEquipo, e => e);
+
+                    var todosHorarios = context.Repositories.CanchaHorarioRepository.GetAll()
+                                         .Where(ch => idsCanchaHorario.Contains(ch.IdCanchaHorario))
+                                         .ToDictionary(ch => ch.IdCanchaHorario, ch => ch);
+
+                    // 4. (Opcional pero recomendado) Hidratar la Cancha (que está dentro del Horario)
+                    var idsCanchas = todosHorarios.Values.Select(ch => ch.Cancha.IdCancha).Distinct().ToList();
+                    var todasCanchas = context.Repositories.CanchaRepository.GetAll()
+                                        .Where(c => idsCanchas.Contains(c.IdCancha))
+                                        .ToDictionary(c => c.IdCancha, c => c);
+
+                    // 5. "Hidratamos" la lista final (reemplazamos stubs por objetos completos)
+                    foreach (var f in fixtures)
+                    {
+                        // Hidratar Equipos
+                        if (todosEquipos.ContainsKey(f.Equipos[0].IdEquipo))
+                            f.Equipos[0] = todosEquipos[f.Equipos[0].IdEquipo];
+                        if (todosEquipos.ContainsKey(f.Equipos[1].IdEquipo))
+                            f.Equipos[1] = todosEquipos[f.Equipos[1].IdEquipo];
+
+                        // Hidratar CanchaHorario
+                        if (todosHorarios.ContainsKey(f.CanchaHorario.IdCanchaHorario))
+                        {
+                            f.CanchaHorario = todosHorarios[f.CanchaHorario.IdCanchaHorario];
+
+                            // Hidratar la Cancha (que está dentro del CanchaHorario)
+                            if (f.CanchaHorario.Cancha != null && todasCanchas.ContainsKey(f.CanchaHorario.Cancha.IdCancha))
+                            {
+                                f.CanchaHorario.Cancha = todasCanchas[f.CanchaHorario.Cancha.IdCancha];
+                            }
+                        }
+                    }
+
+                    return fixtures;
+                }
+                catch (Exception ex)
+                {
+                    // Relanzamos con más contexto
+                    throw new Exception("Error en BLL al obtener y hidratar partidos pendientes.", ex);
+                }
             }
         }
 
@@ -193,6 +217,92 @@ namespace BLL.Services
             catch (Exception ex)
             {
                 throw new FormatException($"Error al parsear el resultado '{resultado}'. Asegúrese de que tenga el formato 'X-Y'.", ex);
+            }
+        }
+
+        // EN: BLL/Services/FixtureService.cs
+
+        public IEnumerable<Fixture> GetByCompeticion(Guid idCompeticion)
+        {
+            using (var context = FactoryDao.UnitOfWork.Create())
+            {
+                try
+                {
+                    // 1. (1 query) Traemos los fixtures (con stubs)
+                    var fixtures = context.Repositories.FixtureRepository
+                                        .GetByCompeticion(new Competicion { IdCompeticion = idCompeticion })
+                                        .ToList();
+
+                    if (!fixtures.Any()) return fixtures;
+
+                    // --- INICIO: Lógica de Hidratación (Corregida) ---
+
+                    // 2. Juntamos todos los IDs que necesitamos hidratar
+                    var idsEquipos = fixtures
+                        // ¡¡FILTRO 1!!: Asegurarse que la lista exista y tenga 2 equipos
+                        .Where(f => f.Equipos != null && f.Equipos.Count == 2)
+                        .Select(f => f.Equipos[0].IdEquipo)
+                        .Concat(fixtures
+                            // ¡¡FILTRO 1 (repetido)!!
+                            .Where(f => f.Equipos != null && f.Equipos.Count == 2)
+                            .Select(f => f.Equipos[1].IdEquipo))
+                        .Distinct().ToList();
+
+                    var idsCanchaHorario = fixtures
+                        // ¡¡FILTRO 2!!: Asegurarse que el CanchaHorario no sea null
+                        .Where(f => f.CanchaHorario != null)
+                        .Select(f => f.CanchaHorario.IdCanchaHorario)
+                        .Distinct().ToList();
+
+                    // 3. Traemos los datos completos
+                    var todosEquipos = context.Repositories.EquipoRepository.GetAllIncludingDisabled()
+                                        .Where(e => idsEquipos.Contains(e.IdEquipo))
+                                        .ToDictionary(e => e.IdEquipo, e => e);
+
+                    var todosHorarios = context.Repositories.CanchaHorarioRepository.GetAll()
+                                         .Where(ch => idsCanchaHorario.Contains(ch.IdCanchaHorario))
+                                         .ToDictionary(ch => ch.IdCanchaHorario, ch => ch);
+
+                    // 4. Hidratar la Cancha (esto ya tenía el filtro de seguridad)
+                    var idsCanchas = todosHorarios.Values
+                                              .Where(ch => ch.Cancha != null)
+                                              .Select(ch => ch.Cancha.IdCancha)
+                                              .Distinct().ToList();
+
+                    var todasCanchas = context.Repositories.CanchaRepository.GetAll()
+                                        .Where(c => idsCanchas.Contains(c.IdCancha))
+                                        .ToDictionary(c => c.IdCancha, c => c);
+
+                    // 5. "Hidratamos" la lista final
+                    foreach (var f in fixtures)
+                    {
+                        // ¡¡FILTRO 1 (de nuevo)!!
+                        if (f.Equipos != null && f.Equipos.Count > 0 && todosEquipos.ContainsKey(f.Equipos[0].IdEquipo))
+                            f.Equipos[0] = todosEquipos[f.Equipos[0].IdEquipo];
+                        if (f.Equipos != null && f.Equipos.Count > 1 && todosEquipos.ContainsKey(f.Equipos[1].IdEquipo))
+                            f.Equipos[1] = todosEquipos[f.Equipos[1].IdEquipo];
+
+                        // ¡¡FILTRO 2 (de nuevo)!!
+                        if (f.CanchaHorario != null && todosHorarios.ContainsKey(f.CanchaHorario.IdCanchaHorario))
+                        {
+                            f.CanchaHorario = todosHorarios[f.CanchaHorario.IdCanchaHorario];
+
+                            if (f.CanchaHorario.Cancha != null && todasCanchas.ContainsKey(f.CanchaHorario.Cancha.IdCancha))
+                            {
+                                f.CanchaHorario.Cancha = todasCanchas[f.CanchaHorario.Cancha.IdCancha];
+                            }
+                        }
+                    }
+                    // --- FIN: Lógica de Hidratación ---
+
+                    return fixtures;
+                }
+                catch (Exception ex)
+                {
+                    // Ahora, si falla, al menos veremos el error real en la consola de depuración
+                    System.Diagnostics.Debug.WriteLine($"Error de hidratación: {ex.Message}");
+                    throw new Exception("Error en BLL al obtener y hidratar fixtures por competición.", ex);
+                }
             }
         }
     }

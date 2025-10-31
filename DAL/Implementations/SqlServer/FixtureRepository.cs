@@ -20,7 +20,7 @@ namespace DAL.Implementations.SqlServer
         }
 
         private const string _sqlSelect = @"SELECT 
-                f.IdFixture, f.IdCompeticion, e.Descripcion, f.Resultado, f.Horario
+                f.IdFixture, f.IdCompeticion, e.Descripcion, f.Resultado, f.IdCanchaHorario
             FROM DbFixture f
             LEFT JOIN DbEstadoFixture e ON f.IdEstadoFixture = e.IdEstadoFixture";
 
@@ -30,19 +30,19 @@ namespace DAL.Implementations.SqlServer
             Guid estadoId = GetEstadoFixtureId(entity.Estado);
 
             string sql = @"INSERT INTO DbFixture 
-                           (IdFixture, IdCompeticion, IdEstadoFixture, Resultado, Horario)
+                           (IdFixture, IdCompeticion, IdEstadoFixture, Resultado, IdCanchaHorario)
                            VALUES
-                           (@IdF, @IdC, @IdE, @Res, @Horario)";
+                           (@IdF, @IdC, @IdE, @Res, @IdCanchaHorario)";
 
             base.ExecuteNonQuery(sql, CommandType.Text,
                 new SqlParameter("@IdF", entity.IdFixture),
                 new SqlParameter("@IdC", entity.IdCompeticion),
                 new SqlParameter("@IdE", estadoId),
                 new SqlParameter("@Res", (object)entity.Resultado ?? DBNull.Value),
-                new SqlParameter("@Horario", entity.Horario)
+                new SqlParameter("@IdCanchaHorario", entity.CanchaHorario.IdCanchaHorario)
             );
 
-            // Sincroniza la tabla hija
+            //Tabla hija
             SyncEquipos(entity);
         }
 
@@ -63,9 +63,12 @@ namespace DAL.Implementations.SqlServer
                     object[] values = new object[reader.FieldCount];
                     reader.GetValues(values);
                     var fixture = FixtureAdapter.Current.Get(values);
-                    PopulateEquipos(fixture); 
                     list.Add(fixture);
                 }
+            }
+            foreach (var fixture in list)
+            {
+                PopulateEquipos(fixture);
             }
             return list;
         }
@@ -82,10 +85,13 @@ namespace DAL.Implementations.SqlServer
                     object[] values = new object[reader.FieldCount];
                     reader.GetValues(values);
                     var fixture = FixtureAdapter.Current.Get(values);
-                    PopulateEquipos(fixture);
-                    
                     list.Add(fixture);
                 }
+                
+            }
+            foreach (var fixture in list)
+            {
+                PopulateEquipos(fixture);
             }
             return list;
         }
@@ -102,8 +108,12 @@ namespace DAL.Implementations.SqlServer
                     object[] values = new object[reader.FieldCount];
                     reader.GetValues(values);
                     fixture = FixtureAdapter.Current.Get(values);
-                    PopulateEquipos(fixture);
+                    
                 }
+            }
+            if (fixture != null)
+            {
+                PopulateEquipos(fixture);
             }
             return fixture;
         }
@@ -136,14 +146,14 @@ namespace DAL.Implementations.SqlServer
                             IdCompeticion = @IdC,
                             IdEstadoFixture = @IdE,
                             Resultado = @Res,
-                            Horario = @Horario
+                            IdCanchaHorario = @IdCanchaHorario
                            WHERE IdFixture = @IdF";
 
             base.ExecuteNonQuery(sql, CommandType.Text,
                 new SqlParameter("@IdC", entity.IdCompeticion),
                 new SqlParameter("@IdE", estadoId),
                 new SqlParameter("@Res", (object)entity.Resultado ?? DBNull.Value),
-                new SqlParameter("@Horario", entity.Horario),
+                new SqlParameter("@IdCanchaHorario", entity.CanchaHorario.IdCanchaHorario),
                 new SqlParameter("@IdF", entity.IdFixture)
             );
 
@@ -153,12 +163,7 @@ namespace DAL.Implementations.SqlServer
 
         public void UpdateFecha(Fixture fixture)
         {
-            // Este método es para el servicio "postergar"
-            string sql = "UPDATE DbFixture SET Horario = @Horario WHERE IdFixture = @IdF";
-            base.ExecuteNonQuery(sql, CommandType.Text,
-                new SqlParameter("@Horario", fixture.Horario),
-                new SqlParameter("@IdF", fixture.IdFixture)
-            );
+            return;
         }
 
 
@@ -189,11 +194,9 @@ namespace DAL.Implementations.SqlServer
 
         private void SyncEquipos(Fixture fixture)
         {
-            // 1. Borra los equipos viejos
             string sqlDelete = "DELETE FROM DbFixtureEquipo WHERE IdFixture = @IdFixture";
             base.ExecuteNonQuery(sqlDelete,CommandType.Text, new SqlParameter("@IdFixture", fixture.IdFixture));
 
-            // 2. Inserta los nuevos (asume 2 equipos)
             string sqlInsert = "INSERT INTO DbFixtureEquipo (IdFixture, IdEquipo) VALUES (@IdF, @IdE)";
             foreach (var equipo in fixture.Equipos)
             {
@@ -207,6 +210,40 @@ namespace DAL.Implementations.SqlServer
         public void Delete(Guid id)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<Fixture> GetByCompeticionPendientes(Guid idCompeticion)
+        {
+            string sql = $"{_sqlSelect} " +
+           "INNER JOIN [DbCancha Horario] ch ON f.IdCanchaHorario = ch.[IdCancha-Horario] " +
+           "WHERE f.IdCompeticion = @IdCompeticion " +
+           "AND ch.Horario > GETDATE() " +
+           "AND f.IdEstadoFixture = @EstadoPendiente " +
+           "ORDER BY ch.Horario ASC";
+
+            Guid idEstadoPendiente = GetEstadoFixtureId(EstadoFixture.Pendiente);
+            var lista = new List<Fixture>();
+
+            using (var reader = base.ExecuteReader(sql, CommandType.Text,
+                new SqlParameter("@IdCompeticion", idCompeticion),
+                new SqlParameter("@EstadoPendiente", idEstadoPendiente)
+            ))
+            {
+                while (reader.Read())
+                {
+                    object[] values = new object[reader.FieldCount];
+                    reader.GetValues(values);
+                    var fixture = FixtureAdapter.Current.Get(values);
+                    lista.Add(fixture);
+                }
+            } 
+
+            foreach (var fixture in lista)
+            {
+                PopulateEquipos(fixture);
+            }
+
+            return lista;
         }
     }
 }

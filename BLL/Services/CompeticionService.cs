@@ -90,129 +90,263 @@ namespace BLL.Services
 
         // EN: BLL/Services/CompeticionService.cs
 
+        //public List<string> CrearFixture(Competicion competicion)
+        //{
+        //    List<string> conflictos = new List<string>(); // Lista para guardar errores
+        //    List<Action> operacionesPendientes = new List<Action>(); // Para guardar cambios si todo OK
+
+        //    using (var context = FactoryDao.UnitOfWork.Create())
+        //    {
+        //        try
+        //        {
+        //            // --- Validaciones Previas (igual que antes) ---
+        //            var comp = context.Repositories.CompeticionRepository.GetById(competicion.IdCompeticion);
+        //            if (comp == null)
+        //                throw new KeyNotFoundException("La competición no fue encontrada.");
+
+        //            if (comp.Estado != EstadoCompeticion.SinFixture)
+        //                throw new InvalidOperationException("El fixture para esta competición ya fue creado o está en curso.");
+
+        //            if (comp.ListaEquipos.Count < comp.CuposMinimos)
+        //                throw new InvalidOperationException($"No se alcanzan los cupos mínimos ({comp.CuposMinimos}). Equipos inscriptos: {comp.ListaEquipos.Count}.");
+
+        //            if (comp.ListaEquipos.Count < 2)
+        //                throw new InvalidOperationException("Se necesitan al menos 2 equipos para crear un fixture.");
+
+        //            if (comp.canchaAsignada == null)
+        //                throw new InvalidOperationException("La competición no tiene una cancha asignada.");
+
+        //            var canchaCompleta = context.Repositories.CanchaRepository.GetById(comp.canchaAsignada.IdCancha);
+        //            if (canchaCompleta == null)
+        //                throw new KeyNotFoundException("La cancha asignada a la competición no fue encontrada.");
+
+        //            comp.canchaAsignada = canchaCompleta;
+        //            var partidosGenerados = GenerarPartidosRoundRobin(comp, comp.ListaEquipos);
+
+        //            // --- Bucle de Verificación y Preparación ---
+        //            foreach (var partido in partidosGenerados)
+        //            {
+        //                var horarioExistente = context.Repositories.CanchaHorarioRepository.GetByCanchaYHora(
+        //                    comp.canchaAsignada.IdCancha, partido.Horario);
+
+        //                if (horarioExistente != null)
+        //                {
+        //                    // Si existe pero NO está libre, REGISTRAR CONFLICTO
+        //                    if (horarioExistente.Estado != EstadoReserva.Libre)
+        //                    {
+        //                        conflictos.Add($"El horario {partido.Horario:g} ya está '{horarioExistente.Estado}'.");
+        //                        continue; // Pasar al siguiente partido, no se puede usar este slot
+        //                    }
+        //                    // Si existe Y está libre, PREPARAR la actualización
+        //                    operacionesPendientes.Add(() =>
+        //                    {
+        //                        var newSlot = new CanchaHorario
+        //                        {
+        //                            IdCanchaHorario = Guid.NewGuid(),
+        //                            Cancha = comp.canchaAsignada, 
+        //                            FechaHorario = partido.Horario,
+        //                            Estado = EstadoReserva.OcupadoPorTorneo,
+        //                            ReservadaPor = null, 
+        //                            Abonada = false,
+        //                            FueCambiada = false
+        //                        };
+        //                        context.Repositories.CanchaHorarioRepository.Update(horarioExistente);
+        //                        context.Repositories.FixtureRepository.Add(partido);
+        //                    });
+        //                }
+        //                else // El horario no existe
+        //                {
+        //                    // Validar si la hora es válida según la plantilla
+        //                    bool esValido = BLLFacade.Current.CanchaService.EsHorarioValido(comp.canchaAsignada.IdCancha, partido.Horario);
+        //                    if (!esValido)
+        //                    {
+        //                        // Registrar conflicto si la hora es inválida
+        //                        conflictos.Add($"El horario {partido.Horario:g} cae fuera de la disponibilidad de la cancha.");
+        //                        continue; // Pasar al siguiente partido
+        //                    }
+        //                    // Si es válido pero no existe, PREPARAR la creación
+        //                    operacionesPendientes.Add(() =>
+        //                    {
+        //                        var newSlot = new CanchaHorario
+        //                        {
+        //                            IdCanchaHorario = Guid.NewGuid(),
+        //                            Cancha = comp.canchaAsignada,      
+        //                            FechaHorario = partido.Horario,  
+        //                            Estado = EstadoReserva.OcupadoPorTorneo,
+        //                            ReservadaPor = null, 
+        //                            Abonada = false,
+        //                            FueCambiada = false
+        //                        };
+        //                        context.Repositories.CanchaHorarioRepository.Add(newSlot);
+        //                        context.Repositories.FixtureRepository.Add(partido);
+        //                    });
+        //                }
+        //            } // Fin del foreach
+
+
+        //            if (conflictos.Any())
+        //            {
+        //                // No llamamos a SaveChanges, el UoW hará Rollback al salir del using
+        //                return conflictos;
+        //            }
+
+        //            // Si NO hay conflictos, ejecutar todas las operaciones preparadas
+        //            foreach (var operacion in operacionesPendientes)
+        //            {
+        //                operacion.Invoke(); // Ejecuta el Update/Add
+        //            }
+
+        //            // Actualizar estado de la competición
+        //            comp.Estado = EstadoCompeticion.ConFixture;
+        //            context.Repositories.CompeticionRepository.Update(comp);
+
+        //            // Guardar TODO
+        //            context.SaveChanges();
+
+        //            return null; // O return new List<string>(); para indicar éxito
+        //        }
+        //        catch (InvalidOperationException opEx)
+        //        {
+        //            // Devolvemos el mensaje de error como un conflicto
+        //            return new List<string> { $"Error de configuración: {opEx.Message}" };
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            throw; 
+        //        }
+        //    }
+        //}
+
         public List<string> CrearFixture(Competicion competicion)
         {
-            List<string> conflictos = new List<string>(); // Lista para guardar errores
-            List<Action> operacionesPendientes = new List<Action>(); // Para guardar cambios si todo OK
+            List<string> conflictos = new List<string>();
+            List<Action> operacionesPendientes = new List<Action>();
 
             using (var context = FactoryDao.UnitOfWork.Create())
             {
                 try
                 {
-                    // --- Validaciones Previas (igual que antes) ---
+                    //validar
                     var comp = context.Repositories.CompeticionRepository.GetById(competicion.IdCompeticion);
                     if (comp == null)
                         throw new KeyNotFoundException("La competición no fue encontrada.");
-
                     if (comp.Estado != EstadoCompeticion.SinFixture)
-                        throw new InvalidOperationException("El fixture para esta competición ya fue creado o está en curso.");
-
+                        throw new InvalidOperationException("El fixture para esta competición ya fue creado.");
                     if (comp.ListaEquipos.Count < comp.CuposMinimos)
-                        throw new InvalidOperationException($"No se alcanzan los cupos mínimos ({comp.CuposMinimos}). Equipos inscriptos: {comp.ListaEquipos.Count}.");
-
+                        throw new InvalidOperationException($"No se alcanzan los cupos mínimos ({comp.CuposMinimos}).");
                     if (comp.ListaEquipos.Count < 2)
-                        throw new InvalidOperationException("Se necesitan al menos 2 equipos para crear un fixture.");
-
+                        throw new InvalidOperationException("Se necesitan al menos 2 equipos.");
                     if (comp.canchaAsignada == null)
                         throw new InvalidOperationException("La competición no tiene una cancha asignada.");
-                    
+
                     var canchaCompleta = context.Repositories.CanchaRepository.GetById(comp.canchaAsignada.IdCancha);
                     if (canchaCompleta == null)
-                        throw new KeyNotFoundException("La cancha asignada a la competición no fue encontrada.");
+                        throw new KeyNotFoundException("La cancha asignada no fue encontrada.");
 
                     comp.canchaAsignada = canchaCompleta;
-                    var partidosGenerados = GenerarPartidosRoundRobin(comp, comp.ListaEquipos);
+                    var partidosPlaneados = GenerarPartidosRoundRobin(comp, comp.ListaEquipos);
 
-                    // --- Bucle de Verificación y Preparación ---
-                    foreach (var partido in partidosGenerados)
+                    foreach (var partidoPlaneado in partidosPlaneados)
                     {
-                        var horarioExistente = context.Repositories.CanchaHorarioRepository.GetByCanchaYHora(
-                            comp.canchaAsignada.IdCancha, partido.Horario);
+                        //busco slot disponible
+                        var slotRequerido = context.Repositories.CanchaHorarioRepository.GetByCanchaYHora(
+                            comp.canchaAsignada.IdCancha,
+                            partidoPlaneado.HorarioRequerido);
 
-                        if (horarioExistente != null)
+                        if (slotRequerido != null)
                         {
-                            // Si existe pero NO está libre, REGISTRAR CONFLICTO
-                            if (horarioExistente.Estado != EstadoReserva.Libre)
+                            //valido q este libre
+                            if (slotRequerido.Estado != EstadoReserva.Libre)
                             {
-                                conflictos.Add($"El horario {partido.Horario:g} ya está '{horarioExistente.Estado}'.");
-                                continue; // Pasar al siguiente partido, no se puede usar este slot
+                                conflictos.Add($"El horario {partidoPlaneado.HorarioRequerido:g} ya está '{slotRequerido.Estado}'.");
+                                continue;
                             }
-                            // Si existe Y está libre, PREPARAR la actualización
-                            operacionesPendientes.Add(() =>
+                            else
                             {
-                                var newSlot = new CanchaHorario
+                                operacionesPendientes.Add(() =>
                                 {
-                                    IdCanchaHorario = Guid.NewGuid(),
-                                    Cancha = comp.canchaAsignada, 
-                                    FechaHorario = partido.Horario,
-                                    Estado = EstadoReserva.OcupadoPorTorneo,
-                                    ReservadaPor = null, 
-                                    Abonada = false,
-                                    FueCambiada = false
-                                };
-                                context.Repositories.CanchaHorarioRepository.Update(horarioExistente);
-                                context.Repositories.FixtureRepository.Add(partido);
-                            });
+                                    slotRequerido.Estado = EstadoReserva.OcupadoPorTorneo;
+                                    context.Repositories.CanchaHorarioRepository.Update(slotRequerido);
+                                    //creo fixture
+                                    var partido = new Fixture
+                                    {
+                                        IdFixture = Guid.NewGuid(),
+                                        IdCompeticion = comp.IdCompeticion,
+                                        Estado = EstadoFixture.Pendiente,
+                                        Resultado = null,
+                                        Equipos = new List<Equipo> { partidoPlaneado.EquipoLocal, partidoPlaneado.EquipoVisitante },
+                                        CanchaHorario = slotRequerido // ¡Enlace correcto!
+                                    };
+                                    context.Repositories.FixtureRepository.Add(partido);
+                                });
+                            }
                         }
-                        else // El horario no existe
+                        else
                         {
-                            // Validar si la hora es válida según la plantilla
-                            bool esValido = BLLFacade.Current.CanchaService.EsHorarioValido(comp.canchaAsignada.IdCancha, partido.Horario);
+                            bool esValido = BLLFacade.Current.CanchaService.EsHorarioValido(comp.canchaAsignada.IdCancha, partidoPlaneado.HorarioRequerido);
                             if (!esValido)
                             {
-                                // Registrar conflicto si la hora es inválida
-                                conflictos.Add($"El horario {partido.Horario:g} cae fuera de la disponibilidad de la cancha.");
-                                continue; // Pasar al siguiente partido
+                                // CONFLICTO: El horario cae fuera de la disponibilidad
+                                conflictos.Add($"El horario {partidoPlaneado.HorarioRequerido:g} cae fuera de la disponibilidad de la cancha.");
+                                continue;
                             }
-                            // Si es válido pero no existe, PREPARAR la creación
-                            operacionesPendientes.Add(() =>
+                            else
                             {
-                                var newSlot = new CanchaHorario
+                                // ÉXITO: El horario es válido.
+                                operacionesPendientes.Add(() =>
                                 {
-                                    IdCanchaHorario = Guid.NewGuid(),
-                                    Cancha = comp.canchaAsignada,      
-                                    FechaHorario = partido.Horario,  
-                                    Estado = EstadoReserva.OcupadoPorTorneo,
-                                    ReservadaPor = null, 
-                                    Abonada = false,
-                                    FueCambiada = false
-                                };
-                                context.Repositories.CanchaHorarioRepository.Add(newSlot);
-                                context.Repositories.FixtureRepository.Add(partido);
-                            });
-                        }
-                    } // Fin del foreach
+                                    // 1. Crear el nuevo slot (CanchaHorario)
+                                    var newSlot = new CanchaHorario
+                                    {
+                                        IdCanchaHorario = Guid.NewGuid(),
+                                        Cancha = comp.canchaAsignada,
+                                        FechaHorario = partidoPlaneado.HorarioRequerido,
+                                        Estado = EstadoReserva.OcupadoPorTorneo,
+                                        ReservadaPor = null,
+                                        Abonada = false,
+                                        FueCambiada = false
+                                    };
+                                    context.Repositories.CanchaHorarioRepository.Add(newSlot);
 
+                                    // 2. Crear el Fixture y enlazarlo al slot
+                                    var partido = new Fixture
+                                    {
+                                        IdFixture = Guid.NewGuid(),
+                                        IdCompeticion = comp.IdCompeticion,
+                                        Estado = EstadoFixture.Pendiente,
+                                        Resultado = null,
+                                        Equipos = new List<Equipo> { partidoPlaneado.EquipoLocal, partidoPlaneado.EquipoVisitante },
+                                        CanchaHorario = newSlot
+                                    };
+                                    context.Repositories.FixtureRepository.Add(partido);
+                                });
+                            }
+                        }
+                    } 
 
                     if (conflictos.Any())
                     {
-                        // No llamamos a SaveChanges, el UoW hará Rollback al salir del using
                         return conflictos;
                     }
-
-                    // Si NO hay conflictos, ejecutar todas las operaciones preparadas
+                    // Si NO hay conflictos, ejecutar todo
                     foreach (var operacion in operacionesPendientes)
                     {
-                        operacion.Invoke(); // Ejecuta el Update/Add
+                        operacion.Invoke();
                     }
 
-                    // Actualizar estado de la competición
                     comp.Estado = EstadoCompeticion.ConFixture;
                     context.Repositories.CompeticionRepository.Update(comp);
 
-                    // Guardar TODO
                     context.SaveChanges();
-
-                    return null; // O return new List<string>(); para indicar éxito
+                    return null;
                 }
                 catch (InvalidOperationException opEx)
                 {
-                    // Devolvemos el mensaje de error como un conflicto
                     return new List<string> { $"Error de configuración: {opEx.Message}" };
                 }
                 catch (Exception ex)
                 {
-                    throw; 
+                    throw;
                 }
             }
         }
@@ -303,10 +437,10 @@ namespace BLL.Services
                 catch (Exception) { throw; }
             }
         }
-
-        private List<Fixture> GenerarPartidosRoundRobin(Competicion comp, List<Equipo> equiposParaFixture)
+      
+        private List<PartidoGenerado> GenerarPartidosRoundRobin(Competicion comp, List<Equipo> equiposParaFixture)
         {
-            var partidos = new List<Fixture>();
+            var partidosPlaneados = new List<PartidoGenerado>();
             var equipos = new List<Equipo>(equiposParaFixture);
 
             if (equipos.Count % 2 != 0)
@@ -317,97 +451,70 @@ namespace BLL.Services
             int numEquipos = equipos.Count;
             int numRondas = numEquipos - 1;
             int partidosPorRonda = numEquipos / 2;
-
             DateTime fechaPartido = comp.FechaInicio;
 
-            // --- INICIO DE LA CORRECCIÓN ---
             string[] franja = comp.FranjaHoraria.Split('-');
             if (franja.Length < 2)
-                throw new InvalidOperationException($"La franja horaria '{comp.FranjaHoraria}' no tiene el formato HH-HH (ej: 10-12).");
+                throw new InvalidOperationException($"La franja horaria '{comp.FranjaHoraria}' no tiene el formato HH-HH.");
 
             TimeSpan horaInicioRonda = TimeSpan.Parse(franja[0] + ":00");
-            // HoraFinRonda es la hora LÍMITE (el partido debe terminar ANTES de esta hora)
             TimeSpan horaFinRonda = TimeSpan.Parse(franja[1] + ":00");
-            // --- FIN DE LA CORRECCIÓN ---
-
             int duracionMinutos = comp.canchaAsignada.DuracionXPartidoMin;
             if (duracionMinutos <= 0)
                 throw new InvalidOperationException("La duración del partido (DuracionXPartidoMin) debe ser mayor a 0.");
 
             for (int r = 0; r < numRondas; r++)
             {
-                TimeSpan horaPartidoActual = horaInicioRonda; // Resetea la hora para cada nueva fecha
-                int partidosAgendadosEnRonda = 0; // Contador de partidos reales agendados
+                TimeSpan horaPartidoActual = horaInicioRonda;
+                int partidosAgendadosEnRonda = 0;
+                int partidosRequeridosEnRonda = 0;
 
+                // 1. Contamos cuántos partidos reales (no descansos) hay en esta ronda
+                for (int i = 0; i < partidosPorRonda; i++)
+                {
+                    if (equipos[i].IdEquipo != Guid.Empty && equipos[numEquipos - 1 - i].IdEquipo != Guid.Empty)
+                        partidosRequeridosEnRonda++;
+                }
+
+                // 2. Agendamos los partidos
                 for (int i = 0; i < partidosPorRonda; i++)
                 {
                     Equipo local = equipos[i];
                     Equipo visitante = equipos[numEquipos - 1 - i];
 
-                    // Si ninguno es el equipo "DESCANSA", se crea el partido
                     if (local.IdEquipo != Guid.Empty && visitante.IdEquipo != Guid.Empty)
                     {
-                        // --- INICIO DE LA CORRECCIÓN ---
-                        // Verificamos si el partido (con su duración) cabe en la franja
                         TimeSpan horaFinPartido = horaPartidoActual.Add(TimeSpan.FromMinutes(duracionMinutos));
 
-                        // Si la hora de FIN del partido es MAYOR que la hora FIN de la franja, no se agenda
-                        // Ej: Franja 10-12 (horaFinRonda = 12:00)
-                        // - Partido 11:00 (dura 60min) -> termina 12:00. (12:00 > 12:00 es FALSO). OK.
-                        // - Partido 12:00 (dura 60min) -> termina 13:00. (13:00 > 12:00 es VERDADERO). ERROR.
                         if (horaFinPartido > horaFinRonda)
                         {
-                            // No hay más espacio en esta jornada (franja)
-                            break; // Rompe el bucle 'for (int i...'
+                            // ¡ERROR! No entraron todos los partidos en la franja.
+                            throw new InvalidOperationException($"La franja horaria '{comp.FranjaHoraria}' no es suficiente para '{partidosRequeridosEnRonda}' partidos de {duracionMinutos} min c/u. Solo entraron {partidosAgendadosEnRonda} partidos en esa franja.");
                         }
-                        // --- FIN DE LA CORRECCIÓN ---
 
-                        var partido = new Fixture
+                        var plan = new PartidoGenerado
                         {
-                            IdFixture = Guid.NewGuid(),
-                            IdCompeticion = comp.IdCompeticion,
-                            Estado = EstadoFixture.Pendiente,
-                            Resultado = null,
-                            Horario = fechaPartido.Date.Add(horaPartidoActual),
-                            Equipos = new List<Equipo> { local, visitante }
+                            EquipoLocal = local,
+                            EquipoVisitante = visitante,
+                            HorarioRequerido = fechaPartido.Date.Add(horaPartidoActual)
                         };
-                        partidos.Add(partido);
-                        partidosAgendadosEnRonda++; // Incrementa contador
+                        partidosPlaneados.Add(plan);
 
-                        // Avanza la hora para el siguiente partido
-                        horaPartidoActual = horaFinPartido; // El sig. partido empieza cuando termina este
+
+                        partidosAgendadosEnRonda++;
+                        horaPartidoActual = horaFinPartido;
                     }
                 }
 
-                // --- INICIO DE LA CORRECCIÓN ---
-                // Contamos cuántos partidos DEBERÍAN haberse agendado (sin contar descansos)
-                int partidosRequeridos = 0;
-                for (int i = 0; i < partidosPorRonda; i++)
-                {
-                    if (equipos[i].IdEquipo != Guid.Empty && equipos[numEquipos - 1 - i].IdEquipo != Guid.Empty)
-                        partidosRequeridos++;
-                }
-
-                // Verificamos si todos los partidos de la ronda entraron en la franja
-                if (partidosAgendadosEnRonda < partidosRequeridos)
-                {
-                    // ¡ERROR! No entraron todos los partidos en la franja.
-                    // Lanzamos una excepción que será capturada por CrearFixture
-                    throw new InvalidOperationException($"La franja horaria '{comp.FranjaHoraria}' no es suficiente para '{partidosRequeridos}' partidos de {duracionMinutos} min c/u. Solo entraron {partidosAgendadosEnRonda} partidos en esa franja.");
-                }
-                // --- FIN DE LA CORRECCIÓN ---
-
-
-                // Rotar los equipos (dejando el primero fijo)
+                // Rotar los equipos
                 var equipoRotativo = equipos[1];
                 equipos.RemoveAt(1);
                 equipos.Add(equipoRotativo);
 
-                // Avanzar la fecha para la siguiente ronda
                 fechaPartido = fechaPartido.AddDays(comp.Frecuencia);
             }
 
-            return partidos;
+            return partidosPlaneados;
         }
     }
 }

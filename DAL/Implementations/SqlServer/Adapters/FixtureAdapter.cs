@@ -33,7 +33,7 @@ namespace DAL.Implementations.SqlServer.Adapters
                 IdCompeticion = (Guid)values[1],
                 Estado = estado,
                 Resultado = values[3]?.ToString(),
-                Horario = values[4] == DBNull.Value ? DateTime.MinValue : (DateTime)values[4],
+                CanchaHorario = new CanchaHorario { IdCanchaHorario = (Guid)values[4] },
                 Equipos = new List<Equipo>() 
             };
         }

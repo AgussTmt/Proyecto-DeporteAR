@@ -10,8 +10,6 @@ namespace DomainModel
     {
         public Guid IdFixture { get; set; }
 
-        public DateTime Horario { get; set; }
-
         public string  Resultado { get; set; }
 
         public EstadoFixture Estado { get; set; }
@@ -19,6 +17,8 @@ namespace DomainModel
         public Guid IdCompeticion { get; set; }
 
         public List<Equipo> Equipos { get; set; }
+
+        public CanchaHorario CanchaHorario { get; set; }
 
         public Fixture()
         {
