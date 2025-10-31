@@ -39,8 +39,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.flowPartidos = new System.Windows.Forms.FlowLayoutPanel();
             this.panelFiltrosPartidos = new System.Windows.Forms.Panel();
-            this.dtpFechaPartidos = new System.Windows.Forms.DateTimePicker();
-            this.label3 = new System.Windows.Forms.Label();
             this.cmbCompeticion = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.scMain)).BeginInit();
@@ -183,8 +181,6 @@
             // panelFiltrosPartidos
             // 
             this.panelFiltrosPartidos.BackColor = System.Drawing.Color.White;
-            this.panelFiltrosPartidos.Controls.Add(this.dtpFechaPartidos);
-            this.panelFiltrosPartidos.Controls.Add(this.label3);
             this.panelFiltrosPartidos.Controls.Add(this.cmbCompeticion);
             this.panelFiltrosPartidos.Controls.Add(this.label2);
             this.panelFiltrosPartidos.Dock = System.Windows.Forms.DockStyle.Top;
@@ -192,23 +188,6 @@
             this.panelFiltrosPartidos.Name = "panelFiltrosPartidos";
             this.panelFiltrosPartidos.Size = new System.Drawing.Size(1125, 50);
             this.panelFiltrosPartidos.TabIndex = 0;
-            // 
-            // dtpFechaPartidos
-            // 
-            this.dtpFechaPartidos.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFechaPartidos.Location = new System.Drawing.Point(372, 14);
-            this.dtpFechaPartidos.Name = "dtpFechaPartidos";
-            this.dtpFechaPartidos.Size = new System.Drawing.Size(100, 22);
-            this.dtpFechaPartidos.TabIndex = 5;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(318, 18);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(46, 13);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Ver Día:";
             // 
             // cmbCompeticion
             // 
@@ -218,6 +197,7 @@
             this.cmbCompeticion.Name = "cmbCompeticion";
             this.cmbCompeticion.Size = new System.Drawing.Size(200, 21);
             this.cmbCompeticion.TabIndex = 3;
+            this.cmbCompeticion.SelectedIndexChanged += new System.EventHandler(this.cmbCompeticion_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -262,8 +242,6 @@
         private System.Windows.Forms.Button btnSemanaAnterior;
         private System.Windows.Forms.Button btnGenerarHorarios;
         private System.Windows.Forms.FlowLayoutPanel flowPartidos;
-        private System.Windows.Forms.DateTimePicker dtpFechaPartidos;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox cmbCompeticion;
         private System.Windows.Forms.Label label2;
     }

@@ -34,6 +34,11 @@ namespace WinUI.WinForms.Gestiones
             this.btnSemanaAnterior.Click += new System.EventHandler(this.btnSemanaAnterior_Click);
             this.btnSemanaSiguiente.Click += new System.EventHandler(this.btnSemanaSiguiente_Click);
             this.cmbCancha.SelectedIndexChanged += new System.EventHandler(this.cmbCancha_SelectedIndexChanged);
+
+            this.cmbCompeticion.SelectedIndexChanged += new System.EventHandler(this.cmbCompeticion_SelectedIndexChanged);
+            RefrescarVistaSemanal();
+            //RefrescarVistaPartidos();
+
         }
 
         private void CargarComboBoxes()
@@ -41,14 +46,12 @@ namespace WinUI.WinForms.Gestiones
             try
             {
                 _listaCanchas = BLLFacade.Current.CanchaService.GetAll().ToList();
-
                 cmbCancha.DataSource = _listaCanchas;
                 cmbCancha.DisplayMember = "Nombre";
                 cmbCancha.ValueMember = "IdCancha";
 
 
                 _listaCompeticiones = BLLFacade.Current.CompeticionService.GetAll().ToList();
-
                 cmbCompeticion.DataSource = _listaCompeticiones;
                 cmbCompeticion.DisplayMember = "Nombre";
                 cmbCompeticion.ValueMember = "IdCompeticion";
@@ -59,6 +62,8 @@ namespace WinUI.WinForms.Gestiones
                 MessageBox.Show($"Error al cargar filtros: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        #region Panel superior reservas
 
         private void btnSemanaSiguiente_Click(object sender, EventArgs e)
         {
@@ -176,75 +181,102 @@ namespace WinUI.WinForms.Gestiones
                 Margin = new Padding(3)
             };
 
-            // --- Hora (Ej: 09:00 - 10:00) ---
-            // ¡Usa la duración hidratada desde la Cancha!
-            var lblHora = new Label
+            if (slot.Estado == EstadoReserva.OcupadoPorTorneo)
             {
-                Text = $"{slot.FechaHorario:HH:mm} - {slot.FechaHorario.AddMinutes(slot.Cancha.DuracionXPartidoMin):HH:mm}",
-                Dock = DockStyle.Top,
-                Font = new Font(this.Font, FontStyle.Bold),
-                TextAlign = ContentAlignment.MiddleCenter
-            };
-            panelSlot.Controls.Add(lblHora);
+                // --- Panel "OCUPADO POR TORNEO" (Deshabilitado) ---
+                panelSlot.BackColor = Color.LightGray; // Grisado
 
-            // --- Estado (Ej: LIBRE / RESERVADA) ---
-            string estado = slot.Estado.ToString().ToUpper();
-            var lblEstado = new Label
-            {
-                Text = estado,
-                Dock = DockStyle.Top,
-                TextAlign = ContentAlignment.MiddleCenter,
-                ForeColor = (estado == "LIBRE") ? Color.DarkGreen : Color.DarkRed,
-                Font = new Font(this.Font, FontStyle.Bold)
-            };
-            panelSlot.Controls.Add(lblEstado);
-
-            // --- Cliente (si está reservado) ---
-            // ¡Usa el Cliente hidratado!
-            if (slot.Estado == EstadoReserva.Reservada && slot.ReservadaPor != null)
-            {
-                var lblCliente = new Label
+                var lblHora = new Label
                 {
-                    Text = $"Cliente: {slot.ReservadaPor.Nombre ?? "..."}",
+                    Text = $"{slot.FechaHorario:HH:mm} - {slot.FechaHorario.AddMinutes(slot.Cancha.DuracionXPartidoMin):HH:mm}",
                     Dock = DockStyle.Top,
-                    TextAlign = ContentAlignment.MiddleCenter,
-                    AutoSize = false,
-                    Height = 15
+                    Font = new Font(this.Font, FontStyle.Bold),
+                    TextAlign = ContentAlignment.MiddleCenter
                 };
-                panelSlot.Controls.Add(lblCliente);
+                panelSlot.Controls.Add(lblHora);
 
-                // --- Estado de Pago ---
-                var lblPago = new Label
+                var lblEstado = new Label
                 {
-                    Text = slot.Abonada ? "PAGADO" : "NO PAGO",
+                    Text = "OCUPADO POR TORNEO",
+                    Dock = DockStyle.Fill, // Ocupa todo el espacio
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    Font = new Font(this.Font, FontStyle.Bold),
+                    ForeColor = Color.DarkSlateGray
+                };
+                panelSlot.Controls.Add(lblEstado);
+            }
+            else
+            {
+                var lblHora = new Label
+                {
+                    Text = $"{slot.FechaHorario:HH:mm} - {slot.FechaHorario.AddMinutes(slot.Cancha.DuracionXPartidoMin):HH:mm}",
+                    Dock = DockStyle.Top,
+                    Font = new Font(this.Font, FontStyle.Bold),
+                    TextAlign = ContentAlignment.MiddleCenter
+                };
+                panelSlot.Controls.Add(lblHora);
+
+                // --- Estado (Ej: LIBRE / RESERVADA) ---
+                string estado = slot.Estado.ToString().ToUpper();
+                var lblEstado = new Label
+                {
+                    Text = estado,
                     Dock = DockStyle.Top,
                     TextAlign = ContentAlignment.MiddleCenter,
-                    ForeColor = slot.Abonada ? Color.Blue : Color.OrangeRed,
+                    ForeColor = (estado == "LIBRE") ? Color.DarkGreen : Color.DarkRed,
                     Font = new Font(this.Font, FontStyle.Bold)
                 };
-                panelSlot.Controls.Add(lblPago);
+                panelSlot.Controls.Add(lblEstado);
+
+                // --- Cliente (si está reservado) ---
+                // ¡Usa el Cliente hidratado!
+                if (slot.Estado == EstadoReserva.Reservada && slot.ReservadaPor != null)
+                {
+                    var lblCliente = new Label
+                    {
+                        Text = $"Cliente: {slot.ReservadaPor.Nombre ?? "..."}",
+                        Dock = DockStyle.Top,
+                        TextAlign = ContentAlignment.MiddleCenter,
+                        AutoSize = false,
+                        Height = 15
+                    };
+                    panelSlot.Controls.Add(lblCliente);
+
+                    // --- Estado de Pago ---
+                    var lblPago = new Label
+                    {
+                        Text = slot.Abonada ? "PAGADO" : "NO PAGO",
+                        Dock = DockStyle.Top,
+                        TextAlign = ContentAlignment.MiddleCenter,
+                        ForeColor = slot.Abonada ? Color.Blue : Color.OrangeRed,
+                        Font = new Font(this.Font, FontStyle.Bold)
+                    };
+                    panelSlot.Controls.Add(lblPago);
+                }
+
+                // --- Botón Editar ---
+                var btnEditar = new Button
+                {
+                    Text = "Editar",
+                    Dock = DockStyle.Bottom,
+                    Tag = slot
+                };
+                btnEditar.Click += BtnEditarReserva_Click; // Conectamos el evento
+                panelSlot.Controls.Add(btnEditar);
+
+                // Asignar color de fondo
+                if (estado == "LIBRE")
+                    panelSlot.BackColor = Color.FromArgb(230, 255, 230); // Verde claro
+                else if (estado == "RESERVADA")
+                    panelSlot.BackColor = Color.FromArgb(255, 230, 230); // Rojo claro
+                else
+                    panelSlot.BackColor = Color.LightYellow; // Otro estado (ej: Mantenimiento)
+
+
+                
             }
-
-            // --- Botón Editar ---
-            var btnEditar = new Button
-            {
-                Text = "Editar",
-                Dock = DockStyle.Bottom,
-                Tag = slot
-            };
-            btnEditar.Click += BtnEditarReserva_Click; // Conectamos el evento
-            panelSlot.Controls.Add(btnEditar);
-
-            // Asignar color de fondo
-            if (estado == "LIBRE")
-                panelSlot.BackColor = Color.FromArgb(230, 255, 230); // Verde claro
-            else if (estado == "RESERVADA")
-                panelSlot.BackColor = Color.FromArgb(255, 230, 230); // Rojo claro
-            else
-                panelSlot.BackColor = Color.LightYellow; // Otro estado (ej: Mantenimiento)
-
-
             return panelSlot;
+
         }
 
         private void BtnEditarReserva_Click(object sender, EventArgs e)
@@ -268,6 +300,14 @@ namespace WinUI.WinForms.Gestiones
                 MessageBox.Show($"Error al abrir detalle de reserva: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        #endregion 
+
+        private void cmbCompeticion_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //RefrescarVistaPartidos();
+        }
+
 
     }
 }
