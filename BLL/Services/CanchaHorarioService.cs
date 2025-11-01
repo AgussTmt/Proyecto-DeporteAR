@@ -11,95 +11,6 @@ namespace BLL.Services
 {
     internal class CanchaHorarioService : ICanchaHorarioService
     {
-
-
-        public void AsignarCliente(Cliente cliente, CanchaHorario canchaHorario)
-        {
-            using (var context = FactoryDao.UnitOfWork.Create())
-            {
-                try
-                {
-
-                    var horarioActual = context.Repositories.CanchaHorarioRepository.GetById(canchaHorario.IdCanchaHorario);
-
-                    if (horarioActual == null)
-                        throw new KeyNotFoundException("El horario seleccionado no existe.");
-                    string estadoAnterior = horarioActual.Estado.ToString();
-
-                    if (horarioActual.Estado != EstadoReserva.Libre)
-                        throw new InvalidOperationException("Solo se puede asignar un cliente a un horario que esté 'Libre'.");
-
-                    context.Repositories.CanchaHorarioRepository.AssignCliente(cliente, horarioActual);
-
-                    var historial = new ReservaHistorial
-                    {
-                        IdHistorial = Guid.NewGuid(),
-                        IdCanchaHorario = horarioActual.IdCanchaHorario,
-                        IdCliente = cliente.IdCliente, // El cliente que reserva
-                        FechaHoraEvento = DateTime.Now,
-                        EstadoAnterior = estadoAnterior,
-                        EstadoNuevo = EstadoReserva.Reservada.ToString(), // El estado al que cambió
-                        Detalle = $"Reservado por cliente {cliente.Nombre}"
-                    };
-                    context.Repositories.ReservaHistorialRepository.Add(historial);
-
-
-                    context.SaveChanges();
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-            }
-        }
-
-        public void AsignarEstado(CanchaHorario canchaHorario, EstadoReserva estado)
-        {
-            using (var context = FactoryDao.UnitOfWork.Create())
-            {
-                try
-                {
-
-                    var horarioActual = context.Repositories.CanchaHorarioRepository.GetById(canchaHorario.IdCanchaHorario);
-
-                    if (horarioActual == null)
-                        throw new KeyNotFoundException("El horario seleccionado no existe.");
-
-                    string estadoAnterior = horarioActual.Estado.ToString();
-                    horarioActual.Estado = estado;
-                    Guid? idClienteActual = horarioActual.ReservadaPor?.IdCliente;
-
-
-                    if (estado == EstadoReserva.Cancelada)
-                    {
-                        horarioActual.ReservadaPor = null;
-                        horarioActual.Abonada = false;
-                    }
-
-                    context.Repositories.CanchaHorarioRepository.Update(horarioActual);
-
-                    var historial = new ReservaHistorial
-                    {
-                        IdHistorial = Guid.NewGuid(),
-                        IdCanchaHorario = horarioActual.IdCanchaHorario,
-                        IdCliente = idClienteActual,
-                        FechaHoraEvento = DateTime.Now,
-                        EstadoAnterior = estadoAnterior,
-                        EstadoNuevo = estado.ToString(),
-                        Detalle = $"Estado cambiado a {estado}"
-                    };
-                    context.Repositories.ReservaHistorialRepository.Add(historial);
-
-
-                    context.SaveChanges();
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-            }
-        }
-
         public void Crear(CanchaHorario canchaHorario)
         {
             using (var context = FactoryDao.UnitOfWork.Create())
@@ -356,6 +267,85 @@ namespace BLL.Services
                     throw;
                 }
             }
+        }
+
+        public int GenerarHorariosParaCancha(Guid idCancha, int diasHorizonte)
+        {
+            var slotsParaCrear = new List<CanchaHorario>();
+
+            using (var context = FactoryDao.UnitOfWork.Create())
+            {
+                try
+                {
+                    var cancha = context.Repositories.CanchaRepository.GetById(idCancha);
+                    if (cancha == null)
+                        throw new KeyNotFoundException("La cancha seleccionada no fue encontrada.");
+
+                    if (cancha.DuracionXPartidoMin <= 0)
+                        throw new InvalidOperationException($"La 'DuracionXPartidoMin' de la cancha '{cancha.Nombre}' debe ser mayor a 0.");
+
+                    var disponibilidadList = context.Repositories.CanchaDisponibilidadRepository.GetByCancha(idCancha);
+                    if (disponibilidadList == null || !disponibilidadList.Any())
+                        throw new InvalidOperationException("Esta cancha no tiene una disponibilidad semanal definida.");
+
+                    var disponibilidadDict = disponibilidadList.ToDictionary(d => d.DiaSemana, d => d);
+
+                    DateTime fechaMaximaExistente = context.Repositories.CanchaHorarioRepository.GetMaximaFechaHorario(idCancha);
+                    DateTime fechaInicioGeneracion = (fechaMaximaExistente == DateTime.MinValue)
+                        ? DateTime.Today.AddDays(1)
+                        : fechaMaximaExistente.Date.AddDays(1);
+
+                    DateTime fechaFinGeneracion = DateTime.Today.AddDays(diasHorizonte);
+                    int duracionMinutos = cancha.DuracionXPartidoMin;
+
+                    //genero en memoria
+                    for (DateTime diaActual = fechaInicioGeneracion; diaActual <= fechaFinGeneracion; diaActual = diaActual.AddDays(1))
+                    {
+
+                        if (disponibilidadDict.TryGetValue(diaActual.DayOfWeek, out var franja))
+                        {
+                            TimeSpan horaActual = franja.HoraInicio;
+                            TimeSpan horaFinFranja = franja.HoraFin;
+
+                            while (horaActual.Add(TimeSpan.FromMinutes(duracionMinutos)) <= horaFinFranja)
+                            {
+                                slotsParaCrear.Add(new CanchaHorario
+                                {
+                                    IdCanchaHorario = Guid.NewGuid(),
+                                    Cancha = new Cancha { IdCancha = cancha.IdCancha },
+                                    FechaHorario = diaActual.Date.Add(horaActual),
+                                    Estado = EstadoReserva.Libre,
+                                    Abonada = false,
+                                    FueCambiada = false,
+                                    ReservadaPor = null
+                                });
+                                horaActual = horaActual.Add(TimeSpan.FromMinutes(duracionMinutos));
+                            }
+                        }
+                    }
+
+                    if (!slotsParaCrear.Any()) return 0;
+
+                    int countGenerados = 0;
+                    foreach (var newSlot in slotsParaCrear)
+                    {
+                        bool yaExiste = context.Repositories.CanchaHorarioRepository.ExisteHorario(cancha.IdCancha, newSlot.FechaHorario);
+                        if (!yaExiste)
+                        {
+                            context.Repositories.CanchaHorarioRepository.Add(newSlot);
+                            countGenerados++;
+                        }
+                    }
+
+                    context.SaveChanges();
+                    return countGenerados;
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+
         }
     }
 }

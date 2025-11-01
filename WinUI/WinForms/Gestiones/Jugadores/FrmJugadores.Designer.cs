@@ -120,6 +120,7 @@
             this.dgvJugadores.Size = new System.Drawing.Size(1024, 459);
             this.dgvJugadores.TabIndex = 0;
             this.dgvJugadores.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvJugadores_CellFormatting);
+            this.dgvJugadores.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvJugadores_DataBindingComplete);
             // 
             // panel3
             // 

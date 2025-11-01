@@ -11,7 +11,7 @@ namespace BLL.Interfaces
     public interface IFixtureService : IGenericService <Fixture>
     {
 
-        void CargarResul(Fixture fixture, List<Jugador> jugadoresActualizados);
+        void CargarResul(Fixture fixture, List<Jugador> jugadoresActualizados, bool localAusente, bool visitanteAusente);
 
         List<Fixture> ListarPorRangoTiempo(DateTime dateTime);
 

@@ -247,13 +247,18 @@ namespace DAL.Implementations.SqlServer
 
         public DateTime GetMaximaFechaHorario(Guid idCancha)
         {
-            string sql = "SELECT MAX(Horario) FROM [DbCancha Horario] WHERE IdCancha = @IdCancha";
+            Guid idEstadoTorneo = GetEstadoReservaId(EstadoReserva.OcupadoPorTorneo);
+            string sql = @"SELECT MAX(Horario) 
+                   FROM [DbCancha Horario] 
+                   WHERE IdCancha = @IdCancha 
+                   AND IdEstadoReserva != @IdEstadoTorneo";
 
-            
+
             object result = base.ExecuteScalar(sql, CommandType.Text,
-                new SqlParameter("@IdCancha", idCancha));
+                new SqlParameter("@IdCancha", idCancha),
+                new SqlParameter("@IdEstadoTorneo", idEstadoTorneo));
 
-            
+
             if (result == null || result == DBNull.Value)
             {
                 return DateTime.MinValue;

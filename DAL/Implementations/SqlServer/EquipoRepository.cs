@@ -210,6 +210,10 @@ namespace DAL.Implementations.SqlServer
                     list.Add(EquipoAdapter.Current.Get(values));
                 }
             }
+            foreach (var equipo in list)
+            {
+                PopulateJugadores(equipo);
+            }
             return list;
         }
     }

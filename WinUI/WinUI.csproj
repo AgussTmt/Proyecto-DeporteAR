@@ -110,6 +110,12 @@
     <Compile Include="WinForms\Gestiones\Clientes\FrmSeleccionarCliente.Designer.cs">
       <DependentUpon>FrmSeleccionarCliente.cs</DependentUpon>
     </Compile>
+    <Compile Include="WinForms\Gestiones\Competiciones\FrmClasificacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\Competiciones\FrmClasificacion.Designer.cs">
+      <DependentUpon>FrmClasificacion.cs</DependentUpon>
+    </Compile>
     <Compile Include="WinForms\Gestiones\Competiciones\FrmCompeticion.cs">
       <SubType>Form</SubType>
     </Compile>

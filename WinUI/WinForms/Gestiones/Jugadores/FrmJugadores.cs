@@ -78,35 +78,7 @@ namespace WinUI.WinForms.Gestiones.Jugadores
             {
                 dgvJugadores.Columns["NombreEquipo"].HeaderText = "Equipo";
             }
-
-            PintarFilasDeshabilitadas();
         }
-
-        private void PintarFilasDeshabilitadas()
-        {
-            foreach (DataGridViewRow row in dgvJugadores.Rows)
-            {
-                var jugador = (Jugador)row.DataBoundItem;
-                if (jugador != null && !jugador.Habilitado)
-                {
-                    row.DefaultCellStyle.BackColor = Color.LightGray;
-                    row.DefaultCellStyle.ForeColor = Color.DarkGray;
-                    row.DefaultCellStyle.SelectionBackColor = Color.Gray;
-                    string toolTip = "Este jugador está deshabilitado.";
-                    foreach (DataGridViewCell cell in row.Cells)
-                    {
-                        cell.ToolTipText = toolTip;
-                    }
-                }
-                else if (jugador != null)
-                {
-                    row.DefaultCellStyle.BackColor = SystemColors.Window;
-                    row.DefaultCellStyle.ForeColor = SystemColors.ControlText;
-                    row.DefaultCellStyle.SelectionBackColor = SystemColors.Highlight;
-                }
-            }
-        }
-
         private void txtBuscar_TextChanged(object sender, EventArgs e)
         {
             RefrescarGrid();
@@ -217,6 +189,32 @@ namespace WinUI.WinForms.Gestiones.Jugadores
                 {
                     e.Value = "(Error de tipo)";
                     e.FormattingApplied = true;
+                }
+            }
+        }
+
+        private void dgvJugadores_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            foreach (DataGridViewRow row in dgvJugadores.Rows)
+            {
+                var jugador = (Jugador)row.DataBoundItem;
+                if (jugador != null && !jugador.Habilitado)
+                {
+                    row.DefaultCellStyle.BackColor = Color.LightGray;
+                    row.DefaultCellStyle.ForeColor = Color.DarkGray;
+                    row.DefaultCellStyle.SelectionBackColor = Color.Gray;
+                    string toolTip = "Este jugador está deshabilitado.";
+                    foreach (DataGridViewCell cell in row.Cells)
+                    {
+                        cell.ToolTipText = toolTip;
+                    }
+                }
+                else if (jugador != null)
+                {
+                    // Resetear a valores por defecto (por si la fila se recicla)
+                    row.DefaultCellStyle.BackColor = SystemColors.Window;
+                    row.DefaultCellStyle.ForeColor = SystemColors.ControlText;
+                    row.DefaultCellStyle.SelectionBackColor = SystemColors.Highlight;
                 }
             }
         }

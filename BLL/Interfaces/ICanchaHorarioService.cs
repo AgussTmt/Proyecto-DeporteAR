@@ -15,10 +15,6 @@ namespace BLL.Interfaces
 
         List<CanchaHorario> ListarPorRangoTiempo(DateTime date);
 
-        void AsignarCliente(Cliente cliente, CanchaHorario canchaHorario);
-
-        void AsignarEstado(CanchaHorario canchaHorario, EstadoReserva estado);
-
         List<CanchaHorario> ListarPorCliente(Cliente cliente);
 
         List<CanchaHorario> ListarPorDemanda();
@@ -33,6 +29,8 @@ namespace BLL.Interfaces
         IEnumerable<CanchaHorario> GetHorariosRango(Guid idCancha, DateTime fechaDesde, DateTime fechaHasta);
 
         void ActualizarReserva(Guid idCanchaHorario, EstadoReserva nuevoEstado, Cliente cliente, bool abonada);
+
+        int GenerarHorariosParaCancha(Guid idCancha, int diasHorizonte);
 
     }
 }

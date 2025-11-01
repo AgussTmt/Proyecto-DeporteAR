@@ -37,6 +37,7 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.txtBuscar = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.lklbAgregarCliente = new System.Windows.Forms.LinkLabel();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -109,6 +110,7 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.lklbAgregarCliente);
             this.panel3.Controls.Add(this.txtBuscar);
             this.panel3.Controls.Add(this.label1);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
@@ -135,6 +137,17 @@
             this.label1.Size = new System.Drawing.Size(96, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Buscar por nombre";
+            // 
+            // lklbAgregarCliente
+            // 
+            this.lklbAgregarCliente.AutoSize = true;
+            this.lklbAgregarCliente.Location = new System.Drawing.Point(948, 83);
+            this.lklbAgregarCliente.Name = "lklbAgregarCliente";
+            this.lklbAgregarCliente.Size = new System.Drawing.Size(76, 13);
+            this.lklbAgregarCliente.TabIndex = 2;
+            this.lklbAgregarCliente.TabStop = true;
+            this.lklbAgregarCliente.Text = "AgregarCliente";
+            this.lklbAgregarCliente.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // FrmSeleccionarCliente
             // 
@@ -166,5 +179,6 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.TextBox txtBuscar;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.LinkLabel lklbAgregarCliente;
     }
 }

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using BLL.Facade;
 using DomainModel;
 using WinUI.WinForms.Gestiones.Calendario;
+using WinUI.WinForms.Gestiones.Competiciones;
 using WinUI.WinForms.Gestiones.Reservas;
 
 namespace WinUI.WinForms.Gestiones
@@ -335,8 +336,66 @@ namespace WinUI.WinForms.Gestiones
             BtnJornadaAnterior.Enabled = _jornadaActualIndex > 0;
             BtnJornadaSiguiente.Enabled = _jornadaActualIndex < _jornadasCompeticion.Count - 1;
         }
+
         #endregion
 
-        
+        private void btnGenerarHorarios_Click(object sender, EventArgs e)
+        {
+            if (cmbCancha.SelectedItem == null)
+            {
+                MessageBox.Show("Por favor, seleccione una cancha primero.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            const int DIAS_HORIZONTE = 15;
+            var cancha = (Cancha)cmbCancha.SelectedItem;
+            this.Cursor = Cursors.WaitCursor;
+
+            try
+            {
+                int generados = BLLFacade.Current.CanchaHorarioService.GenerarHorariosParaCancha(cancha.IdCancha, DIAS_HORIZONTE);
+                if (generados > 0)
+                {
+                    MessageBox.Show($"¡Se generaron {generados} nuevos horarios para la cancha '{cancha.Nombre}'!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("No se encontraron nuevos horarios para generar (probablemente ya existían).", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                RefrescarVistaSemanal();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al generar horarios: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                this.Cursor = Cursors.Default;
+            }
+        }
+
+        private void btnVerClasificacion_Click(object sender, EventArgs e)
+        {
+            if (cmbCompeticion.SelectedItem == null || !(cmbCompeticion.SelectedItem is Competicion))
+            {
+                MessageBox.Show("Por favor, seleccione una competición del combo.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var competicion = (Competicion)cmbCompeticion.SelectedItem;
+
+            try
+            {
+                // Abrimos el nuevo formulario y le pasamos los datos
+                using (var frm = new FrmClasificacion(competicion.IdCompeticion, competicion.Nombre))
+                {
+                    frm.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al abrir la clasificación: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

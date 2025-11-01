@@ -39,11 +39,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.flowPartidos = new System.Windows.Forms.FlowLayoutPanel();
             this.panelFiltrosPartidos = new System.Windows.Forms.Panel();
+            this.BtnJornadaSiguiente = new System.Windows.Forms.Button();
+            this.lblJornadaInfo = new System.Windows.Forms.Label();
+            this.BtnJornadaAnterior = new System.Windows.Forms.Button();
             this.cmbCompeticion = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.BtnJornadaAnterior = new System.Windows.Forms.Button();
-            this.lblJornadaInfo = new System.Windows.Forms.Label();
-            this.BtnJornadaSiguiente = new System.Windows.Forms.Button();
+            this.btnVerClasificacion = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.scMain)).BeginInit();
             this.scMain.Panel1.SuspendLayout();
             this.scMain.Panel2.SuspendLayout();
@@ -117,6 +118,7 @@
             this.btnGenerarHorarios.TabIndex = 5;
             this.btnGenerarHorarios.Text = "Generar Próximos 15 Días";
             this.btnGenerarHorarios.UseVisualStyleBackColor = true;
+            this.btnGenerarHorarios.Click += new System.EventHandler(this.btnGenerarHorarios_Click);
             // 
             // btnSemanaSiguiente
             // 
@@ -184,6 +186,7 @@
             // panelFiltrosPartidos
             // 
             this.panelFiltrosPartidos.BackColor = System.Drawing.Color.White;
+            this.panelFiltrosPartidos.Controls.Add(this.btnVerClasificacion);
             this.panelFiltrosPartidos.Controls.Add(this.BtnJornadaSiguiente);
             this.panelFiltrosPartidos.Controls.Add(this.lblJornadaInfo);
             this.panelFiltrosPartidos.Controls.Add(this.BtnJornadaAnterior);
@@ -194,6 +197,38 @@
             this.panelFiltrosPartidos.Name = "panelFiltrosPartidos";
             this.panelFiltrosPartidos.Size = new System.Drawing.Size(1125, 50);
             this.panelFiltrosPartidos.TabIndex = 0;
+            // 
+            // BtnJornadaSiguiente
+            // 
+            this.BtnJornadaSiguiente.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnJornadaSiguiente.Location = new System.Drawing.Point(537, 14);
+            this.BtnJornadaSiguiente.Name = "BtnJornadaSiguiente";
+            this.BtnJornadaSiguiente.Size = new System.Drawing.Size(30, 25);
+            this.BtnJornadaSiguiente.TabIndex = 6;
+            this.BtnJornadaSiguiente.Text = ">";
+            this.BtnJornadaSiguiente.UseVisualStyleBackColor = true;
+            this.BtnJornadaSiguiente.Click += new System.EventHandler(this.BtnJornadaSiguiente_Click);
+            // 
+            // lblJornadaInfo
+            // 
+            this.lblJornadaInfo.AutoSize = true;
+            this.lblJornadaInfo.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblJornadaInfo.Location = new System.Drawing.Point(377, 18);
+            this.lblJornadaInfo.Name = "lblJornadaInfo";
+            this.lblJornadaInfo.Size = new System.Drawing.Size(129, 17);
+            this.lblJornadaInfo.TabIndex = 6;
+            this.lblJornadaInfo.Text = "28/10/2024 al 03/11";
+            // 
+            // BtnJornadaAnterior
+            // 
+            this.BtnJornadaAnterior.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnJornadaAnterior.Location = new System.Drawing.Point(341, 14);
+            this.BtnJornadaAnterior.Name = "BtnJornadaAnterior";
+            this.BtnJornadaAnterior.Size = new System.Drawing.Size(30, 25);
+            this.BtnJornadaAnterior.TabIndex = 6;
+            this.BtnJornadaAnterior.Text = "<";
+            this.BtnJornadaAnterior.UseVisualStyleBackColor = true;
+            this.BtnJornadaAnterior.Click += new System.EventHandler(this.BtnJornadaAnterior_Click);
             // 
             // cmbCompeticion
             // 
@@ -214,37 +249,16 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Competición:";
             // 
-            // BtnJornadaAnterior
+            // btnVerClasificacion
             // 
-            this.BtnJornadaAnterior.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnJornadaAnterior.Location = new System.Drawing.Point(341, 14);
-            this.BtnJornadaAnterior.Name = "BtnJornadaAnterior";
-            this.BtnJornadaAnterior.Size = new System.Drawing.Size(30, 25);
-            this.BtnJornadaAnterior.TabIndex = 6;
-            this.BtnJornadaAnterior.Text = "<";
-            this.BtnJornadaAnterior.UseVisualStyleBackColor = true;
-            this.BtnJornadaAnterior.Click += new System.EventHandler(this.BtnJornadaAnterior_Click);
-            // 
-            // lblJornadaInfo
-            // 
-            this.lblJornadaInfo.AutoSize = true;
-            this.lblJornadaInfo.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblJornadaInfo.Location = new System.Drawing.Point(377, 18);
-            this.lblJornadaInfo.Name = "lblJornadaInfo";
-            this.lblJornadaInfo.Size = new System.Drawing.Size(129, 17);
-            this.lblJornadaInfo.TabIndex = 6;
-            this.lblJornadaInfo.Text = "28/10/2024 al 03/11";
-            // 
-            // BtnJornadaSiguiente
-            // 
-            this.BtnJornadaSiguiente.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BtnJornadaSiguiente.Location = new System.Drawing.Point(507, 14);
-            this.BtnJornadaSiguiente.Name = "BtnJornadaSiguiente";
-            this.BtnJornadaSiguiente.Size = new System.Drawing.Size(30, 25);
-            this.BtnJornadaSiguiente.TabIndex = 6;
-            this.BtnJornadaSiguiente.Text = ">";
-            this.BtnJornadaSiguiente.UseVisualStyleBackColor = true;
-            this.BtnJornadaSiguiente.Click += new System.EventHandler(this.BtnJornadaSiguiente_Click);
+            this.btnVerClasificacion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnVerClasificacion.Location = new System.Drawing.Point(953, 17);
+            this.btnVerClasificacion.Name = "btnVerClasificacion";
+            this.btnVerClasificacion.Size = new System.Drawing.Size(160, 25);
+            this.btnVerClasificacion.TabIndex = 6;
+            this.btnVerClasificacion.Text = "Ver Clasificacion";
+            this.btnVerClasificacion.UseVisualStyleBackColor = true;
+            this.btnVerClasificacion.Click += new System.EventHandler(this.btnVerClasificacion_Click);
             // 
             // FrmCalendario
             // 
@@ -285,5 +299,6 @@
         private System.Windows.Forms.Button BtnJornadaSiguiente;
         private System.Windows.Forms.Label lblJornadaInfo;
         private System.Windows.Forms.Button BtnJornadaAnterior;
+        private System.Windows.Forms.Button btnVerClasificacion;
     }
 }

@@ -253,6 +253,12 @@ namespace DAL.Implementations.SqlServer
                     jugadores.Add(JugadorAdapter.Current.Get(values));
                 }
             }
+
+            foreach (var jugador in jugadores)
+            {
+                PopulatePuntuacion(jugador);
+                PopulateSanciones(jugador);
+            }
             return jugadores;
         }
     }

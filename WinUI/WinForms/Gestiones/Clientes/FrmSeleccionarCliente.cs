@@ -45,8 +45,6 @@ namespace WinUI.WinForms.Gestiones.Clientes
         private void ConfigurarGrilla()
         {
             if (dgvClientes.Columns.Contains("IdCliente")) dgvClientes.Columns["IdCliente"].Visible = false;
-            if (dgvClientes.Columns.Contains("Telefono")) dgvClientes.Columns["Telefono"].Visible = false;
-            //if (dgvClientes.Columns.Contains("Mail")) dgvClientes.Columns["Mail"].Visible = false; quiza le añado email dsp para avisar de partido de competiciones
             if (dgvClientes.Columns.Contains("Nombre")) dgvClientes.Columns["Nombre"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
         }
 
@@ -70,6 +68,7 @@ namespace WinUI.WinForms.Gestiones.Clientes
                 dgvClientes.DataSource = null;
                 dgvClientes.DataSource = listaFiltrada;
             }
+            ConfigurarGrilla();
         }
 
         private void btnSeleccionar_Click(object sender, EventArgs e)
@@ -103,6 +102,15 @@ namespace WinUI.WinForms.Gestiones.Clientes
             else
             {
                 MessageBox.Show("Por favor, seleccione un cliente de la lista.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            using (var frmCrearCliente = new FrmClientesDetalle())
+            {
+                frmCrearCliente.ShowDialog();   
+                CargarGrilla();
             }
         }
     }

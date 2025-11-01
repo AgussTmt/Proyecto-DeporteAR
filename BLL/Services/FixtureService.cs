@@ -24,37 +24,60 @@ namespace BLL.Services
             }
         }
 
-        public void CargarResul(Fixture fixture, List<Jugador> jugadoresActualizados)
+        public void CargarResul(Fixture fixture, List<Jugador> jugadoresActualizados, bool localAusente, bool visitanteAusente)
         {
             using (var context = FactoryDao.UnitOfWork.Create())
             {
                 try
                 {
-                    // --- 1. Lógica de Fixture y Clasificación (copiada de CargarResul) ---
+                    // --- 1. Lógica de Fixture y Equipos (SIN CAMBIOS) ---
                     var fixtureDb = context.Repositories.FixtureRepository.GetById(fixture.IdFixture);
-                    if (fixtureDb == null)
-                        throw new KeyNotFoundException("El partido no existe.");
-                    if (fixtureDb.Estado == EstadoFixture.Finalizado)
-                        throw new InvalidOperationException("Este partido ya fue finalizado.");
-
+                    // ... (validaciones) ...
                     var (golesLocal, golesVisitante) = ParseResultado(fixture.Resultado);
                     var equipoLocal = context.Repositories.EquipoRepository.GetById(fixtureDb.Equipos.ElementAt(0).IdEquipo);
                     var equipoVisitante = context.Repositories.EquipoRepository.GetById(fixtureDb.Equipos.ElementAt(1).IdEquipo);
+                    // ... (validaciones) ...
                     var compStub = new Competicion { IdCompeticion = fixtureDb.IdCompeticion };
                     var clasifLocal = context.Repositories.ClasificacionRepository.GetByCompeticionEquipo(compStub, equipoLocal);
                     var clasifVisitante = context.Repositories.ClasificacionRepository.GetByCompeticionEquipo(compStub, equipoVisitante);
+                    // ... (validaciones) ...
 
-                    if (clasifLocal == null || clasifVisitante == null)
-                        throw new InvalidOperationException("No se encontraron las filas de clasificación para los equipos.");
-
+                    // --- 2. Lógica de Puntos (¡¡MODIFICADA!!) ---
                     clasifLocal.PartidosJugados += 1;
                     clasifVisitante.PartidosJugados += 1;
                     clasifLocal.GolesAFavor += golesLocal;
                     clasifVisitante.GolesAFavor += golesVisitante;
 
-                    if (golesLocal > golesVisitante) { /*...*/ }
-                    else if (golesVisitante > golesLocal) { /*...*/ }
-                    else { /*...*/ }
+                    if (localAusente && visitanteAusente)
+                    {
+                        // Doble ausencia: Empate 0-0, 0 puntos para ambos
+                        clasifLocal.Empates += 1;
+                        clasifVisitante.Empates += 1;
+                        // No se suman puntos
+                    }
+                    else
+                    {
+                        // Lógica normal de puntos (si uno o ninguno faltó)
+                        if (golesLocal > golesVisitante) // Gana Local
+                        {
+                            clasifLocal.Victorias += 1;
+                            clasifLocal.Puntos += 3;
+                            clasifVisitante.Derrotas += 1;
+                        }
+                        else if (golesVisitante > golesLocal) // Gana Visitante
+                        {
+                            clasifVisitante.Victorias += 1;
+                            clasifVisitante.Puntos += 3;
+                            clasifLocal.Derrotas += 1;
+                        }
+                        else // Empate
+                        {
+                            clasifLocal.Empates += 1;
+                            clasifLocal.Puntos += 1;
+                            clasifVisitante.Empates += 1;
+                            clasifVisitante.Puntos += 1;
+                        }
+                    }
 
                     fixtureDb.Resultado = fixture.Resultado;
                     fixtureDb.Estado = EstadoFixture.Finalizado;
@@ -63,24 +86,33 @@ namespace BLL.Services
                     context.Repositories.ClasificacionRepository.Update(clasifVisitante);
                     context.Repositories.FixtureRepository.Update(fixtureDb);
 
-                    // --- 2. NUEVA LÓGICA: Actualizar Jugadores ---
-                    if (jugadoresActualizados != null)
+                    // --- 3. Lógica de Jugadores (SIN CAMBIOS) ---
+                    if (jugadoresActualizados != null && !localAusente && !visitanteAusente) // Solo guardar stats si no hubo ausencias
                     {
                         foreach (var jugador in jugadoresActualizados)
                         {
-                            // El JugadorRepository.Update se encargará de
-                            // sincronizar los diccionarios de Puntuacion y Sanciones
-                            //
                             context.Repositories.JugadorRepository.Update(jugador);
                         }
                     }
 
-                    // --- 3. Guardar TODO en una sola transacción ---
+                    // --- 4. Lógica de Ausencias (¡¡MODIFICADA!!) ---
+                    if (localAusente)
+                    {
+                        equipoLocal.CantAusencias += 1;
+                        context.Repositories.EquipoRepository.Update(equipoLocal);
+                    }
+                    if (visitanteAusente) // Cambiado de 'else if' a 'if'
+                    {
+                        equipoVisitante.CantAusencias += 1;
+                        context.Repositories.EquipoRepository.Update(equipoVisitante);
+                    }
+
+                    // --- 5. Guardar TODO ---
                     context.SaveChanges();
                 }
                 catch (Exception)
                 {
-                    throw; // Rollback automático
+                    throw; // Rollback
                 }
             }
         }

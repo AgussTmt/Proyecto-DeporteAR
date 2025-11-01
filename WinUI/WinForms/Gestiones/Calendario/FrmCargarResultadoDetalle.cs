@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using BLL.Facade;
-using WinUI.WinForms.Gestiones.Equipos; // <-- Este using es nuevo
+using WinUI.WinForms.Gestiones.Equipos;
 
 namespace WinUI.WinForms.Gestiones
 {
@@ -24,7 +24,6 @@ namespace WinUI.WinForms.Gestiones
 
         private void FrmCargarResultadoDetalle_Load(object sender, EventArgs e)
         {
-            // Mostramos nombres de equipos y resultado (si ya existe)
             lblLocal.Text = _equipoLocal.Nombre;
             lblVisitante.Text = _equipoVisitante.Nombre;
 
@@ -34,21 +33,18 @@ namespace WinUI.WinForms.Gestiones
                 txtResVisitante.Text = _partido.Resultado.Split('-')[1];
             }
 
-            // Llamamos al nuevo método de carga/refresco
+            // Cargar las grillas
             CargarYRefrescarGrilla(ref _equipoLocal, dgvLocal, "colLocal");
             CargarYRefrescarGrilla(ref _equipoVisitante, dgvVisitante, "colVisitante");
         }
 
         /// <summary>
-        /// (NUEVO MÉTODO REUTILIZABLE)
         /// Trae el equipo de la BLL, lo bindea a la grilla y rellena las estadísticas.
         /// </summary>
         private void CargarYRefrescarGrilla(ref Equipo equipo, DataGridView dgv, string colPrefix)
         {
             try
             {
-                // 1. Traer el equipo FRESCO de la BLL (con su lista de jugadores)
-                //
                 equipo = BLLFacade.Current.EquipoService.TraerPorId(equipo);
             }
             catch (Exception ex)
@@ -57,11 +53,9 @@ namespace WinUI.WinForms.Gestiones
                 return;
             }
 
-            // 2. Re-bindear el DataSource
-            dgv.DataSource = null; // Limpiar bindeo anterior
+            dgv.DataSource = null;
             dgv.DataSource = equipo.Jugadores;
 
-            // 3. Rellenar celdas de estadísticas
             foreach (DataGridViewRow row in dgv.Rows)
             {
                 if (row.DataBoundItem is Jugador j)
@@ -75,25 +69,19 @@ namespace WinUI.WinForms.Gestiones
         }
 
         /// <summary>
-        /// (NUEVO EVENTO)
         /// Se dispara al hacer clic en "(+ Editar)" para Local o Visitante
         /// </summary>
         private void linkLblEditar_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            // 1. Determinar qué equipo editar
             bool esLocal = (sender == linkLblEditarLocal);
             Equipo equipoParaEditar = esLocal ? _equipoLocal : _equipoVisitante;
             DataGridView dgvParaRefrescar = esLocal ? dgvLocal : dgvVisitante;
             string colPrefix = esLocal ? "colLocal" : "colVisitante";
 
-            // 2. Abrir el FrmEquipoDetalle que ya tenías
-            //
             using (var frmEquipo = new FrmEquipoDetalle(equipoParaEditar))
             {
-                // 3. Si el usuario guardó (ej. añadió un jugador)...
                 if (frmEquipo.ShowDialog() == DialogResult.OK)
                 {
-                    // 4. ...recargamos ESA grilla.
                     if (esLocal)
                     {
                         CargarYRefrescarGrilla(ref _equipoLocal, dgvParaRefrescar, colPrefix);
@@ -108,7 +96,6 @@ namespace WinUI.WinForms.Gestiones
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            // 1. Validar y obtener el resultado final (ej: "2-1")
             if (!int.TryParse(txtResLocal.Text, out int resLocal) || !int.TryParse(txtResVisitante.Text, out int resVisitante))
             {
                 MessageBox.Show("El resultado final debe ser numérico.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -118,10 +105,9 @@ namespace WinUI.WinForms.Gestiones
 
             try
             {
-                // 2. Recolectar todas las estadísticas de los jugadores
                 var jugadoresActualizados = new List<Jugador>();
 
-                // --- Lectura Grilla LOCAL ---
+                // Lee la grilla local
                 foreach (DataGridViewRow row in dgvLocal.Rows)
                 {
                     if (row.DataBoundItem is Jugador j)
@@ -135,7 +121,7 @@ namespace WinUI.WinForms.Gestiones
                     }
                 }
 
-                // --- Lectura Grilla VISITANTE ---
+                // Lee la grilla visitante
                 foreach (DataGridViewRow row in dgvVisitante.Rows)
                 {
                     if (row.DataBoundItem is Jugador j)
@@ -149,15 +135,23 @@ namespace WinUI.WinForms.Gestiones
                     }
                 }
 
-                // 3. Crear el stub del Fixture
                 Fixture fixtureStub = new Fixture
                 {
                     IdFixture = _partido.IdFixture,
                     Resultado = resultadoString
                 };
 
-                // 4. Llamar al nuevo método de BLL
-                BLLFacade.Current.FixtureService.CargarResul(fixtureStub, jugadoresActualizados);
+                // Leemos el estado de los CheckBox en el momento de guardar
+                bool localAusente = chkLocalAusente.Checked;
+                bool visitanteAusente = chkVisitanteAusente.Checked;
+
+                // Llamamos a la BLL con los 4 parámetros
+                BLLFacade.Current.FixtureService.CargarResul(
+                    fixtureStub,
+                    jugadoresActualizados,
+                    localAusente,
+                    visitanteAusente
+                );
 
                 MessageBox.Show("Resultado detallado guardado con éxito.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.DialogResult = DialogResult.OK; // Esto le avisa al PartidoControl

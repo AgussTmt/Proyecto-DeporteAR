@@ -78,6 +78,11 @@ namespace WinUI.WinForms.Gestiones.Equipos
                 dgvEquipos.Columns["EstadoProxPartido"].HeaderText = "Estado";
             }
 
+            if (dgvEquipos.Columns.Contains("CantidadJugadores"))
+            {
+                dgvEquipos.Columns["CantidadJugadores"].HeaderText = "N° Jugadores";
+            }
+
 
             PintarFilasDeshabilitadas();
         }

@@ -48,6 +48,8 @@
             this.btnGuardar = new System.Windows.Forms.Button();
             this.linkLblEditarLocal = new System.Windows.Forms.LinkLabel();
             this.linkLblEditarVisitante = new System.Windows.Forms.LinkLabel();
+            this.chkLocalAusente = new System.Windows.Forms.CheckBox();
+            this.chkVisitanteAusente = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLocal)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvVisitante)).BeginInit();
             this.SuspendLayout();
@@ -86,7 +88,6 @@
             this.colLocalRojas});
             this.dgvLocal.Location = new System.Drawing.Point(16, 84);
             this.dgvLocal.Name = "dgvLocal";
-            this.dgvLocal.ReadOnly = true;
             this.dgvLocal.Size = new System.Drawing.Size(450, 300);
             this.dgvLocal.TabIndex = 2;
             // 
@@ -140,7 +141,6 @@
             this.colVisitanteRojas});
             this.dgvVisitante.Location = new System.Drawing.Point(484, 84);
             this.dgvVisitante.Name = "dgvVisitante";
-            this.dgvVisitante.ReadOnly = true;
             this.dgvVisitante.Size = new System.Drawing.Size(450, 300);
             this.dgvVisitante.TabIndex = 3;
             // 
@@ -241,11 +241,35 @@
             this.linkLblEditarVisitante.Text = "(+ Editar)";
             this.linkLblEditarVisitante.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLblEditar_LinkClicked);
             // 
+            // chkLocalAusente
+            // 
+            this.chkLocalAusente.AutoSize = true;
+            this.chkLocalAusente.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkLocalAusente.Location = new System.Drawing.Point(344, 64);
+            this.chkLocalAusente.Name = "chkLocalAusente";
+            this.chkLocalAusente.Size = new System.Drawing.Size(69, 19);
+            this.chkLocalAusente.TabIndex = 10;
+            this.chkLocalAusente.Text = "Ausente";
+            this.chkLocalAusente.UseVisualStyleBackColor = true;
+            // 
+            // chkVisitanteAusente
+            // 
+            this.chkVisitanteAusente.AutoSize = true;
+            this.chkVisitanteAusente.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.chkVisitanteAusente.Location = new System.Drawing.Point(812, 64);
+            this.chkVisitanteAusente.Name = "chkVisitanteAusente";
+            this.chkVisitanteAusente.Size = new System.Drawing.Size(69, 19);
+            this.chkVisitanteAusente.TabIndex = 11;
+            this.chkVisitanteAusente.Text = "Ausente";
+            this.chkVisitanteAusente.UseVisualStyleBackColor = true;
+            // 
             // FrmCargarResultadoDetalle
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(946, 442);
+            this.Controls.Add(this.chkVisitanteAusente);
+            this.Controls.Add(this.chkLocalAusente);
             this.Controls.Add(this.linkLblEditarVisitante);
             this.Controls.Add(this.linkLblEditarLocal);
             this.Controls.Add(this.btnGuardar);
@@ -292,5 +316,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colVisitanteRojas;
         private System.Windows.Forms.LinkLabel linkLblEditarLocal;
         private System.Windows.Forms.LinkLabel linkLblEditarVisitante;
+        private System.Windows.Forms.CheckBox chkLocalAusente;
+        private System.Windows.Forms.CheckBox chkVisitanteAusente;
     }
 }
