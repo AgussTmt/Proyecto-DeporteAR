@@ -75,9 +75,47 @@ namespace BLL.Services
             {
                 try
                 {
+                    //busco cancha
+                    var cancha = context.Repositories.CanchaRepository.GetById(id);
+                    if (cancha == null)
+                        throw new KeyNotFoundException("La cancha no fue encontrada.");
 
-                    context.Repositories.CanchaRepository.CambiarHabilitado(id);
-                    context.SaveChanges();
+                    bool estaActualmenteHabilitada = cancha.Estado;
+
+
+                    if (estaActualmenteHabilitada)
+                    {    //deshabilitar
+
+                        //es usada por competiciones?
+                        var competicionesAsignadas = context.Repositories.CompeticionRepository.GetByCancha(id);
+
+                        bool tieneCompeticionActiva = competicionesAsignadas.Any(c =>
+                            c.Estado == EstadoCompeticion.SinFixture ||
+                            c.Estado == EstadoCompeticion.ConFixture);
+
+                        if (tieneCompeticionActiva)
+                        {
+                            throw new InvalidOperationException("No se puede deshabilitar. Esta cancha está asignada a una o más competiciones activas.");
+                        }
+
+                        //algun fulano ya la reservo?
+                        int slotsOcupadosFuturos = context.Repositories.CanchaHorarioRepository.CountSlotsOcupadosFuturos(id);
+
+                        if (slotsOcupadosFuturos > 0)
+                        {
+                            throw new InvalidOperationException($"No se puede deshabilitar. Esta cancha tiene {slotsOcupadosFuturos} reservas o partidos programados a futuro.");
+                        }
+
+                        //todo ok
+                        context.Repositories.CanchaRepository.CambiarHabilitado(id);
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        //habilitar todo ok
+                        context.Repositories.CanchaRepository.CambiarHabilitado(id);
+                        context.SaveChanges();
+                    }
                 }
                 catch (Exception)
                 {

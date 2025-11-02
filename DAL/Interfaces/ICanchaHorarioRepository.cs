@@ -24,5 +24,7 @@ namespace DAL.Interfaces
         bool ExisteHorario(Guid idCancha, DateTime fechaHora);
 
         IEnumerable<CanchaHorario> GetHorariosRango(Guid idCancha, DateTime fechaDesde, DateTime fechaHasta);
+
+        int CountSlotsOcupadosFuturos(Guid idCancha);
     }
 }

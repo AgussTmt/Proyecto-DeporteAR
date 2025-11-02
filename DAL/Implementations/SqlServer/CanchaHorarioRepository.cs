@@ -293,6 +293,33 @@ namespace DAL.Implementations.SqlServer
 
 
         }
+
+        public int CountSlotsOcupadosFuturos(Guid idCancha)
+        {
+            // Obtenemos los IDs de los estados "no-libres"
+            Guid idEstadoReservada = GetEstadoReservaId(EstadoReserva.Reservada);
+            Guid idEstadoEspera = GetEstadoReservaId(EstadoReserva.Espera);
+            Guid idEstadoTorneo = GetEstadoReservaId(EstadoReserva.OcupadoPorTorneo);
+
+            string sql = @"SELECT COUNT(*) 
+                   FROM [DbCancha Horario] 
+                   WHERE IdCancha = @IdCancha 
+                   AND Horario >= GETDATE()
+                   AND IdEstadoReserva IN (@Reservada, @Espera, @Torneo)";
+
+            object result = base.ExecuteScalar(sql, CommandType.Text,
+                new SqlParameter("@IdCancha", idCancha),
+                new SqlParameter("@Reservada", idEstadoReservada),
+                new SqlParameter("@Espera", idEstadoEspera),
+                new SqlParameter("@Torneo", idEstadoTorneo)
+            );
+
+            if (result != null && result != DBNull.Value)
+            {
+                return (int)result;
+            }
+            return 0;
+        }
     }
     
 }

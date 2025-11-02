@@ -82,30 +82,33 @@ namespace WinUI.WinForms.Gestiones.Canchas
         {
             if (dgvCanchas.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Por favor, seleccione una cancha para borrar.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Por favor, seleccione una cancha.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            
-            var canchaSeleccionada = (Cancha)dgvCanchas.SelectedRows[0].DataBoundItem;
+            var cancha = (Cancha)dgvCanchas.SelectedRows[0].DataBoundItem;
+            if (cancha == null) return;
 
-            
-            var confirmacion = MessageBox.Show($"¿Está seguro de que desea borrar la cancha '{canchaSeleccionada.Nombre}'?", "Confirmar Borrado", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            bool estaActualmenteHabilitada = cancha.Estado;
+            string accion = estaActualmenteHabilitada ? "deshabilitar" : "habilitar";
+            string titulo = estaActualmenteHabilitada ? "Confirmar Deshabilitación" : "Confirmar Habilitación";
+
+            var confirmacion = MessageBox.Show($"¿Está seguro de que desea {accion} la cancha '{cancha.Nombre}'?", titulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (confirmacion == DialogResult.Yes)
             {
                 try
                 {
-                    
-                    BLLFacade.Current.CanchaService.CambiarHabilitado(canchaSeleccionada.IdCancha);
-
-                    
+                    BLLFacade.Current.CanchaService.CambiarHabilitado(cancha.IdCancha);
                     RefrescarGrid();
+                }
+                catch (InvalidOperationException opEx) 
+                {
+                    MessageBox.Show(opEx.Message, "Acción Bloqueada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 catch (Exception ex)
                 {
-                   
-                    MessageBox.Show($"Error al borrar la cancha: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error al {accion} la cancha: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

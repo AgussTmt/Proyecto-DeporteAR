@@ -298,5 +298,25 @@ namespace DAL.Implementations.SqlServer
                 new SqlParameter("@IdComp", idCompeticion)
             );
         }
+
+        public List<Competicion> GetByCancha(Guid idCancha)
+        {
+            var lista = new List<Competicion>();
+            // Usamos el _sqlSelect
+            string sql = $"{_sqlSelect} WHERE c.IdCancha = @IdCancha";
+
+            using (var reader = base.ExecuteReader(sql, CommandType.Text, new SqlParameter("@IdCancha", idCancha)))
+            {
+                while (reader.Read())
+                {
+                    object[] values = new object[reader.FieldCount];
+                    reader.GetValues(values);
+                    // Usamos tu adapter
+                    lista.Add(CompeticionAdapter.Current.Get(values));
+                }
+            }
+            // No necesitamos PopulateEquipos, solo los estados
+            return lista;
+        }
     }
 }
