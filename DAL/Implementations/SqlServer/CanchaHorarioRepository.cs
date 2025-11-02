@@ -320,6 +320,24 @@ namespace DAL.Implementations.SqlServer
             }
             return 0;
         }
+
+        public int CountReservasActivasByCliente(Guid idCliente)
+        {
+            Guid idEstadoReservada = GetEstadoReservaId(EstadoReserva.Reservada);
+
+            string sql = @"SELECT COUNT(*) 
+                   FROM [DbCancha Horario] 
+                   WHERE IdCliente = @IdCliente 
+                   AND Horario >= GETDATE()
+                   AND IdEstadoReserva = @Reservada";
+
+            object result = base.ExecuteScalar(sql, CommandType.Text,
+                new SqlParameter("@IdCliente", idCliente),
+                new SqlParameter("@Reservada", idEstadoReservada)
+            );
+
+            return (int)(result ?? 0);
+        }
     }
     
 }

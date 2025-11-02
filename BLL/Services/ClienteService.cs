@@ -43,7 +43,35 @@ namespace BLL.Services
 
         public void Delete(Guid id)
         {
-            throw new NotImplementedException();
+            using (var context = FactoryDao.UnitOfWork.Create())
+            {
+                try
+                {
+                    //es capitan de algun equipo?
+                    var equiposDelCliente = context.Repositories.EquipoRepository.GetByCapitan(id);
+
+                    if (equiposDelCliente.Any())
+                    {
+                        string nombresEquipos = string.Join(", ", equiposDelCliente.Select(e => e.Nombre));
+                        throw new InvalidOperationException($"No se puede borrar este cliente porque es capitán de lo(s) siguiente(s) equipo(s): {nombresEquipos}. Primero debe cambiar el capitán de esos equipos.");
+                    }
+
+                    //tiene reservas activas?
+                    int reservasActivas = context.Repositories.CanchaHorarioRepository.CountReservasActivasByCliente(id);
+                    if (reservasActivas > 0)
+                    {
+                        throw new InvalidOperationException($"No se puede borrar. Este cliente tiene {reservasActivas} reserva(s) a futuro.");
+                    }
+
+
+                    context.Repositories.ClienteRepository.Delete(id); 
+                    context.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
         }
 
         public IEnumerable<Cliente> GetAll()

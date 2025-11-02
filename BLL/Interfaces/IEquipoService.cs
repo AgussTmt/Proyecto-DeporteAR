@@ -29,5 +29,6 @@ namespace BLL.Interfaces
         void Update(Equipo equipoActualizado);
 
 
+
     }
 }

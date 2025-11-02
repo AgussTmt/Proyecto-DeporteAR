@@ -106,5 +106,11 @@ namespace DAL.Implementations.SqlServer
                 new SqlParameter("@IdCliente", entity.IdCliente)
             );
         }
+
+        public void Delete(Guid id)
+        {
+            string sql = "DELETE FROM DbCliente WHERE IdCliente = @IdCliente";
+            base.ExecuteNonQuery(sql, CommandType.Text, new SqlParameter("@IdCliente", id));
+        }
     }
 }

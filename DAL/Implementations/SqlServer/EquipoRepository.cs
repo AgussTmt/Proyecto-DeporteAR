@@ -216,5 +216,22 @@ namespace DAL.Implementations.SqlServer
             }
             return list;
         }
+
+        public List<Equipo> GetByCapitan(Guid idCliente)
+        {
+            var list = new List<Equipo>();
+            string sql = $"{_sqlSelect} WHERE e.IdCliente = @IdCliente AND e.Habilitado = 1";
+
+            using (var reader = base.ExecuteReader(sql, CommandType.Text, new SqlParameter("@IdCliente", idCliente)))
+            {
+                while (reader.Read())
+                {
+                    object[] values = new object[reader.FieldCount];
+                    reader.GetValues(values);
+                    list.Add(EquipoAdapter.Current.Get(values));
+                }
+            }
+            return list;
+        }
     }
 }

@@ -105,11 +105,6 @@ namespace WinUI.WinForms.Gestiones.Clientes
 
         private void btnBorrar_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("El borrado de clientes debe implementarse en la BLL.\n\nAsegúrese de que el borrado controle que el cliente no sea capitán de un equipo activo.", "Función No Implementada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-            /*
-            // --- EJEMPLO DE CÓDIGO CUANDO TENGAS EL DELETE ---
-            
             if (dgvClientes.CurrentRow == null)
             {
                 MessageBox.Show("Seleccione un cliente para borrar.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -117,23 +112,26 @@ namespace WinUI.WinForms.Gestiones.Clientes
             }
 
             var clienteSeleccionado = (Cliente)dgvClientes.CurrentRow.DataBoundItem;
-            
-            var confirmacion = MessageBox.Show($"¿Está seguro de borrar al cliente '{clienteSeleccionado.Nombre}'?\n\n¡ADVERTENCIA: Si el cliente es capitán, podría causar errores!", "Confirmar Borrado", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            
+
+            var confirmacion = MessageBox.Show($"¿Está seguro de borrar al cliente '{clienteSeleccionado.Nombre}'?\n\nEsta acción no se puede deshacer.", "Confirmar Borrado", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
             if (confirmacion == DialogResult.Yes)
             {
                 try
                 {
-                    // Necesitarás implementar ClienteService.Delete(Guid id) en BLL y DAL
+                    
                     BLLFacade.Current.ClienteService.Delete(clienteSeleccionado.IdCliente);
                     CargarGrid();
                 }
-                catch (Exception ex)
+                catch (InvalidOperationException opEx) 
+                {
+                    MessageBox.Show(opEx.Message, "Acción Bloqueada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                catch (Exception ex) 
                 {
                     MessageBox.Show($"Error al borrar cliente: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            */
         }
     }
 }
