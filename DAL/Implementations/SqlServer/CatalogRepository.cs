@@ -27,36 +27,36 @@ namespace DAL.Implementations.SqlServer
             var items = new List<CatalogItem>();
             string sql = "SELECT IdDeporte, Descripcion FROM dbo.DbDeporte ORDER BY Descripcion";
 
-            
-            using (SqlDataReader reader = base.ExecuteReader(sql, CommandType.Text)) 
+
+            using (SqlDataReader reader = base.ExecuteReader(sql, CommandType.Text))
             {
                 while (reader.Read())
                 {
                     object[] data = new object[reader.FieldCount];
                     reader.GetValues(data);
 
-                    
-                    CatalogItem item = DbDeporteAdapter.Current.Get(data); 
+
+                    CatalogItem item = DbDeporteAdapter.Current.Get(data);
                     items.Add(item);
                 }
             }
             return items;
         }
-        
+
 
         public IEnumerable<CatalogItem> GetEstadosFixture()
         {
             var items = new List<CatalogItem>();
             string sql = "SELECT IdEstadoFixture, Descripcion FROM dbo.DbEstadoFixture ORDER BY Descripcion";
 
-            using (SqlDataReader reader = base.ExecuteReader(sql, CommandType.Text)) 
+            using (SqlDataReader reader = base.ExecuteReader(sql, CommandType.Text))
             {
                 while (reader.Read())
                 {
                     object[] data = new object[reader.FieldCount];
                     reader.GetValues(data);
 
-                    CatalogItem item = DbEstadoFixtureAdapter.Current.Get(data); 
+                    CatalogItem item = DbEstadoFixtureAdapter.Current.Get(data);
                     items.Add(item);
                 }
             }
@@ -68,14 +68,14 @@ namespace DAL.Implementations.SqlServer
             var items = new List<CatalogItem>();
             string sql = "SELECT IdFormato, Descripcion FROM dbo.DbFormato ORDER BY Descripcion";
 
-            using (SqlDataReader reader = base.ExecuteReader(sql, CommandType.Text)) 
+            using (SqlDataReader reader = base.ExecuteReader(sql, CommandType.Text))
             {
                 while (reader.Read())
                 {
                     object[] data = new object[reader.FieldCount];
                     reader.GetValues(data);
 
-                    CatalogItem item = DbFormatoAdapter.Current.Get(data); 
+                    CatalogItem item = DbFormatoAdapter.Current.Get(data);
                 }
             }
             return items;
@@ -83,4 +83,3 @@ namespace DAL.Implementations.SqlServer
     }
 
 }
-

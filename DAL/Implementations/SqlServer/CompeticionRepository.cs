@@ -267,5 +267,36 @@ namespace DAL.Implementations.SqlServer
                 }
             }
         }
+
+        public List<Competicion> GetByEquipo(Guid idEquipo)
+        {
+            var lista = new List<Competicion>();
+            string sql = $"{_sqlSelect} " +
+                         "JOIN DbEquipoCompeticion ec ON c.IdCompeticion = ec.IdCompeticion " +
+                         "WHERE ec.IdEquipo = @IdEquipo";
+
+            using (var reader = base.ExecuteReader(sql, CommandType.Text, new SqlParameter("@IdEquipo", idEquipo)))
+            {
+                while (reader.Read())
+                {
+                    object[] values = new object[reader.FieldCount];
+                    reader.GetValues(values);
+                    lista.Add(CompeticionAdapter.Current.Get(values));
+                }
+            }
+            foreach (var c in lista)
+            {
+                PopulateEquipos(c);
+            }
+            return lista;
+        }
+
+        public void RemoveAllEquipos(Guid idCompeticion)
+        {
+            string sql = "DELETE FROM DbEquipoCompeticion WHERE IdCompeticion = @IdComp";
+            base.ExecuteNonQuery(sql, CommandType.Text,
+                new SqlParameter("@IdComp", idCompeticion)
+            );
+        }
     }
 }

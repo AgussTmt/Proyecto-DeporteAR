@@ -27,14 +27,6 @@ namespace BLL.Services
             }
         }
 
-        public List<CanchaHorario> ListarPorCliente(Cliente cliente)
-        {
-            using (var context = FactoryDao.UnitOfWork.Create())
-            {
-
-                return context.Repositories.CanchaHorarioRepository.GetByCliente(cliente);
-            }
-        }
 
         public List<CanchaHorario> ListarPorDemanda()
         {
@@ -60,62 +52,6 @@ namespace BLL.Services
             }
         }
 
-        public void AbonarReserva(Guid idCanchaHorario)
-        {
-            using (var context = FactoryDao.UnitOfWork.Create())
-            {
-                try
-                {
-                    var horarioActual = context.Repositories.CanchaHorarioRepository.GetById(idCanchaHorario);
-
-                    //Validaciones
-                    if (horarioActual == null)
-                    {
-                        throw new KeyNotFoundException("La reserva especificada no existe.");
-                    }
-                    if (horarioActual.Estado != EstadoReserva.Reservada)
-                    {
-
-                        throw new InvalidOperationException($"Solo se pueden abonar reservas en estado 'Reservada'. Estado actual: '{horarioActual.Estado}'.");
-                    }
-                    if (horarioActual.Abonada)
-                    {
-                        throw new InvalidOperationException("Esta reserva ya se encuentra abonada.");
-                    }
-                    if (horarioActual.ReservadaPor == null)
-                    {
-                        throw new InvalidOperationException("Esta reserva no tiene un cliente asignado para abonar.");
-                    }
-
-                    string estadoAnterior = horarioActual.Estado.ToString();
-
-
-                    horarioActual.Abonada = true;
-                    context.Repositories.CanchaHorarioRepository.Update(horarioActual);
-
-
-                    var historial = new ReservaHistorial
-                    {
-                        IdHistorial = Guid.NewGuid(),
-                        IdCanchaHorario = horarioActual.IdCanchaHorario,
-                        IdCliente = horarioActual.ReservadaPor.IdCliente,
-                        FechaHoraEvento = DateTime.Now,
-                        EstadoAnterior = estadoAnterior,
-                        EstadoNuevo = "Pagada",
-                        Detalle = "Reserva marcada como abonada."
-                    };
-
-
-                    context.Repositories.ReservaHistorialRepository.Add(historial);
-                    context.SaveChanges();
-                }
-                catch (Exception)
-                {
-                    // Rollback automático si SaveChanges no se llamó o falló
-                    throw;
-                }
-            }
-        }
 
         public DateTime GetMaximaFechaHorario(Guid idCancha)
         {

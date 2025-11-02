@@ -18,5 +18,7 @@ namespace DAL.Interfaces
         void Delete(Guid id);
 
         IEnumerable<Fixture> GetByCompeticionPendientes(Guid idCompeticion);
+
+        int CountPartidosPendientes(Guid idCompeticion);
     }
 }

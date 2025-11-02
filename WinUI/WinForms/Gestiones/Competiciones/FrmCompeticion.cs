@@ -88,23 +88,28 @@ namespace WinUI.WinForms.Gestiones.Competiciones
         {
             if (dgvCompeticiones.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Seleccione una competición para borrar.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Seleccione una competición para inactivar (cancelar o archivar).", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            var competicionSeleccionada = (Competicion)dgvCompeticiones.SelectedRows[0].DataBoundItem;
+            var comp = (Competicion)dgvCompeticiones.SelectedRows[0].DataBoundItem;
+            if (comp == null) return;
 
-            var confirmacion = MessageBox.Show($"¿Está seguro de borrar la competición '{competicionSeleccionada.Nombre}'? Esto borrará también sus equipos inscriptos, fixture y clasificación.", "Confirmar Borrado", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            var confirmacion = MessageBox.Show($"¿Está seguro de inactivar la competición '{comp.Nombre}'?\n\n(Si no tiene fixture se 'Cancelará', si ya terminó se 'Archivará').", "Confirmar Inactivación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (confirmacion == DialogResult.Yes)
             {
                 try
                 {
-                    BLLFacade.Current.CompeticionService.Delete(competicionSeleccionada.IdCompeticion);
+
+                    BLLFacade.Current.CompeticionService.ActivarODesactivar(comp.IdCompeticion);
+
+                    MessageBox.Show($"¡Competición desactivada correctamente!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     RefrescarGrid();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error al borrar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    MessageBox.Show(ex.Message, "Error en la operación", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

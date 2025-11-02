@@ -19,7 +19,8 @@ namespace DAL.Interfaces
         List<Competicion> GetByClient(Cliente cliente);
 
         void RemoveEquipo(Guid idCompeticion, Guid idEquipo);
-
+        List<Competicion> GetByEquipo(Guid idEquipo);
+        void RemoveAllEquipos(Guid idCompeticion);
 
     }
 }

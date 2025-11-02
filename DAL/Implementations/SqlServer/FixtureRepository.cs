@@ -245,5 +245,24 @@ namespace DAL.Implementations.SqlServer
 
             return lista;
         }
+
+        public int CountPartidosPendientes(Guid idCompeticion)
+        {
+            Guid idEstadoPendiente = GetEstadoFixtureId(EstadoFixture.Pendiente);
+            string sql = @"SELECT COUNT(*) 
+                   FROM DbFixture 
+                   WHERE IdCompeticion = @IdComp 
+                   AND IdEstadoFixture = @IdEstadoPendiente";
+
+            object result = base.ExecuteScalar(sql, CommandType.Text,
+                new SqlParameter("@IdComp", idCompeticion),
+                new SqlParameter("@IdEstadoPendiente", idEstadoPendiente));
+
+            if (result != null && result != DBNull.Value)
+            {
+                return (int)result;
+            }
+            return 0;
+        }
     }
 }

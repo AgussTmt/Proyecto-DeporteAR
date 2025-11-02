@@ -69,8 +69,7 @@ namespace BLL.Services
             {
                 try
                 {
-                    // --- LÓGICA DE NEGOCIO (BLL) ---
-                    // Validamos que el teléfono no pertenezca a OTRO cliente
+                    
                     var existente = context.Repositories.ClienteRepository.GetByNumero(entity.Telefono);
                     if (existente != null && existente.IdCliente != entity.IdCliente)
                     {

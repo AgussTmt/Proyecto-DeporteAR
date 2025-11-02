@@ -140,17 +140,55 @@ namespace BLL.Services
 
         public void CambiarHabilitado(Guid idEquipo, bool habilitado)
         {
-            using (var context = FactoryDao.UnitOfWork.Create())
+            // Solo valido al deshabilitar
+            if (habilitado == false)
             {
-                try
+                using (var context = FactoryDao.UnitOfWork.Create())
                 {
-                    
-                    context.Repositories.EquipoRepository.CambiarHabilitado(idEquipo, habilitado);
+                    //hidrato el equipo
+                    var equipoCompleto = context.Repositories.EquipoRepository.GetById(idEquipo);
+                    if (equipoCompleto == null)
+                    {
+                        
+                        return;
+                    }
+                    //está en un torneo activo?
+                    var competicionesDelEquipo = context.Repositories.CompeticionRepository.GetByEquipo(idEquipo);
+
+                    bool estaEnTorneoActivo = competicionesDelEquipo.Any(c =>
+                        c.Estado == EstadoCompeticion.ConFixture);
+
+                    if (estaEnTorneoActivo)
+                    {
+                        throw new InvalidOperationException("Este equipo no se puede deshabilitar porque está participando en una competición activa. Primero debe ser eliminado de la competición.");
+                    }
+
+                    // si esta en sin fixture no hay problema
+                    var competicionesSinEmpezar = competicionesDelEquipo
+                        .Where(c => c.Estado == EstadoCompeticion.SinFixture)
+                        .ToList();
+
+                    foreach (var comp in competicionesSinEmpezar)
+                    { 
+ 
+                        context.Repositories.CompeticionRepository.RemoveEquipo(comp.IdCompeticion, idEquipo);
+                        var clasif = context.Repositories.ClasificacionRepository.GetByCompeticionEquipo(comp, new Equipo { IdEquipo = idEquipo });
+                        if (clasif != null)
+                            context.Repositories.ClasificacionRepository.Delete(clasif.IdClasificacion);
+                    }
+
+                    //todo ok
+                    context.Repositories.EquipoRepository.CambiarHabilitado(idEquipo, false);
                     context.SaveChanges();
                 }
-                catch (Exception)
+            }
+            else
+            {
+                //para habilitar no valido
+                using (var context = FactoryDao.UnitOfWork.Create())
                 {
-                    throw;
+                    context.Repositories.EquipoRepository.CambiarHabilitado(idEquipo, true);
+                    context.SaveChanges();
                 }
             }
         }

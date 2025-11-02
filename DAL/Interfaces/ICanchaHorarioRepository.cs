@@ -14,8 +14,6 @@ namespace DAL.Interfaces
 
         List<CanchaHorario> GetByCliente(Cliente cliente);
 
-        void AssignCliente(Cliente cliente, CanchaHorario canchaHorario);
-
         List<CanchaHorario> GetOrderByDemand();
 
         List<CanchaHorario> GetByEstadoReserva(EstadoReserva estadoReserva);

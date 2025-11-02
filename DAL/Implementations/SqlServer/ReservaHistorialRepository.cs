@@ -27,7 +27,6 @@ namespace DAL.Implementations.SqlServer
             base.ExecuteNonQuery(sql, CommandType.Text,
                 new SqlParameter("@IdH", entity.IdHistorial),
                 new SqlParameter("@IdCH", entity.IdCanchaHorario),
-                // Manejar posible Guid? nulo para IdCliente
                 new SqlParameter("@IdCli", (object)entity.IdCliente ?? DBNull.Value),
                 new SqlParameter("@Fecha", entity.FechaHoraEvento),
                 new SqlParameter("@EstadoAnt", (object)entity.EstadoAnterior ?? DBNull.Value),

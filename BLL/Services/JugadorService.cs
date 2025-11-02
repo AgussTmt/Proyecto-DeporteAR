@@ -35,14 +35,44 @@ namespace BLL.Services
             using (var context = FactoryDao.UnitOfWork.Create())
             {
                 try
-                {
-                    
-                    context.Repositories.JugadorRepository.CambiarHabilitado(idJugador);
-                    context.SaveChanges();
+                {   //busco el jugador
+                    var jugador = context.Repositories.JugadorRepository.GetById(idJugador);
+                    if (jugador == null)
+                    {
+                        // Si ya no existe, o si GetById falló (ej. ya estaba deshabilitado)
+                        // intentamos buscarlo incluyendo deshabilitados.
+                        jugador = context.Repositories.JugadorRepository.GetAllIncludingDisabled()
+                                        .FirstOrDefault(j => j.Idjugador == idJugador);
+
+                        if (jugador == null)
+                            throw new KeyNotFoundException("El jugador no fue encontrado.");
+                    }
+
+                    bool estaActualmenteHabilitado = jugador.Habilitado;
+
+                    if (estaActualmenteHabilitado)
+                    {
+                        //deshabilitar
+                        // tiene equipo?
+                        if (jugador.IdEquipo != null)
+                        {
+                            throw new InvalidOperationException("Este jugador no se puede deshabilitar porque está asignado a un equipo. Primero debe quitarlo del plantel en la pantalla de 'Gestión de Equipos'.");
+                        }
+
+                        //todo ok
+                        context.Repositories.JugadorRepository.CambiarHabilitado(idJugador);
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        //habilitar todo ok
+                        context.Repositories.JugadorRepository.CambiarHabilitado(idJugador);
+                        context.SaveChanges();
+                    }
                 }
                 catch (Exception)
                 {
-                    throw; 
+                    throw;
                 }
             }
         }

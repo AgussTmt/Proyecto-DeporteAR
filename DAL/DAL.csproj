@@ -58,8 +58,8 @@
     <Compile Include="Implementations\SqlServer\Adapters\ClasificacionAdapter.cs" />
     <Compile Include="Implementations\SqlServer\Adapters\ClienteAdapter.cs" />
     <Compile Include="Implementations\SqlServer\Adapters\CompeticionAdapter.cs" />
-    <Compile Include="Implementations\SqlServer\Adapters\DbEstadoFixtureAdapter.cs" />
     <Compile Include="Implementations\SqlServer\Adapters\DbDeporteAdapter.cs" />
+    <Compile Include="Implementations\SqlServer\Adapters\DbEstadoFixtureAdapter.cs" />
     <Compile Include="Implementations\SqlServer\Adapters\DbFormatoAdapter.cs" />
     <Compile Include="Implementations\SqlServer\Adapters\EquipoAdapter.cs" />
     <Compile Include="Implementations\SqlServer\Adapters\FixtureAdapter.cs" />

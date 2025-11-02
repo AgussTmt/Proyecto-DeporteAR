@@ -32,7 +32,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.btnVerJugadores = new System.Windows.Forms.Button();
-            this.btnVerDeshabilitados = new System.Windows.Forms.Button();
             this.btnBorrar = new System.Windows.Forms.Button();
             this.btnEditar = new System.Windows.Forms.Button();
             this.BtnNuevo = new System.Windows.Forms.Button();
@@ -70,7 +69,6 @@
             // panel4
             // 
             this.panel4.Controls.Add(this.btnVerJugadores);
-            this.panel4.Controls.Add(this.btnVerDeshabilitados);
             this.panel4.Controls.Add(this.btnBorrar);
             this.panel4.Controls.Add(this.btnEditar);
             this.panel4.Controls.Add(this.BtnNuevo);
@@ -83,23 +81,13 @@
             // btnVerJugadores
             // 
             this.btnVerJugadores.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnVerJugadores.Location = new System.Drawing.Point(0, 240);
+            this.btnVerJugadores.Location = new System.Drawing.Point(0, 180);
             this.btnVerJugadores.Name = "btnVerJugadores";
             this.btnVerJugadores.Size = new System.Drawing.Size(197, 60);
             this.btnVerJugadores.TabIndex = 4;
             this.btnVerJugadores.Text = "Ver jugadores";
             this.btnVerJugadores.UseVisualStyleBackColor = true;
             this.btnVerJugadores.Click += new System.EventHandler(this.btnVerJugadores_Click);
-            // 
-            // btnVerDeshabilitados
-            // 
-            this.btnVerDeshabilitados.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnVerDeshabilitados.Location = new System.Drawing.Point(0, 180);
-            this.btnVerDeshabilitados.Name = "btnVerDeshabilitados";
-            this.btnVerDeshabilitados.Size = new System.Drawing.Size(197, 60);
-            this.btnVerDeshabilitados.TabIndex = 3;
-            this.btnVerDeshabilitados.Text = "Ver deshabilitados";
-            this.btnVerDeshabilitados.UseVisualStyleBackColor = true;
             // 
             // btnBorrar
             // 
@@ -205,7 +193,6 @@
         private System.Windows.Forms.Button BtnNuevo;
         private System.Windows.Forms.DataGridView dgvEquipos;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Button btnVerDeshabilitados;
         private System.Windows.Forms.TextBox txtBuscar;
         private System.Windows.Forms.Label lblBuscar;
         private System.Windows.Forms.Button btnVerJugadores;

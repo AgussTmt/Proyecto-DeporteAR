@@ -9,41 +9,40 @@ using DomainModel.CatalogItems;
 
 namespace BLL.Services
 {
-    
-        internal class CatalogService : ICatalogService
+
+    internal class CatalogService : ICatalogService
+    {
+
+
+        public CatalogService()
         {
-            
-
-            public CatalogService()
-            {
-            }
-
-            
-            public IEnumerable<CatalogItem> GetDeportes()
-            {
-                using (var context = FactoryDao.UnitOfWork.Create())
-                {
-                    
-                    return context.Repositories.CatalogRepository.GetDeportes();
-                }
-            }
-
-            public IEnumerable<CatalogItem> GetFormatos()
-            {
-                using (var context = FactoryDao.UnitOfWork.Create())
-                {
-                    return context.Repositories.CatalogRepository.GetFormatos();
-                }
-            }
-
-            public IEnumerable<CatalogItem> GetEstadosFixture()
-            {
-                using (var context = FactoryDao.UnitOfWork.Create())
-                {
-                    return context.Repositories.CatalogRepository.GetEstadosFixture();
-                }
-            }
-            
         }
-}
 
+
+        public IEnumerable<CatalogItem> GetDeportes()
+        {
+            using (var context = FactoryDao.UnitOfWork.Create())
+            {
+
+                return context.Repositories.CatalogRepository.GetDeportes();
+            }
+        }
+
+        public IEnumerable<CatalogItem> GetFormatos()
+        {
+            using (var context = FactoryDao.UnitOfWork.Create())
+            {
+                return context.Repositories.CatalogRepository.GetFormatos();
+            }
+        }
+
+        public IEnumerable<CatalogItem> GetEstadosFixture()
+        {
+            using (var context = FactoryDao.UnitOfWork.Create())
+            {
+                return context.Repositories.CatalogRepository.GetEstadosFixture();
+            }
+        }
+
+    }
+}

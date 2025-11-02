@@ -15,8 +15,6 @@ namespace BLL.Interfaces
 
         List<Fixture> ListarPorRangoTiempo(DateTime dateTime);
 
-        IEnumerable<Fixture> GetPartidosPendientes(Guid idCompeticion);
-
         IEnumerable<Fixture> GetByCompeticion(Guid idCompeticion);
     }
 }

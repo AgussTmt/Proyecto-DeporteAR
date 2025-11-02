@@ -41,8 +41,9 @@ namespace DomainModel
     {
         SinFixture,
         ConFixture,
-        Activo,
-        Deshabilitado
+        Finalizado, 
+        Cancelado,      
+        Archivado
     }
 
     public enum FormatoEnum

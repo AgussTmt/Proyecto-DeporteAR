@@ -37,7 +37,16 @@ namespace WinUI.WinForms.Gestiones.Competiciones
                 var canchas = BLLFacade.Current.CanchaService.GetAll().ToList();
                 cmbCanchaAsignada.DataSource = canchas;
                 cmbCanchaAsignada.DisplayMember = "Nombre"; 
-                cmbCanchaAsignada.ValueMember = "IdCancha";    
+                cmbCanchaAsignada.ValueMember = "IdCancha";
+
+                var opcionesFrecuencia = new Dictionary<string, int>();
+                opcionesFrecuencia.Add("Semanal (7 días)", 7);
+                opcionesFrecuencia.Add("Quincenal (14 días)", 14);
+
+                // Bindeamos el Diccionario al ComboBox
+                cmbFrecuencia.DataSource = new BindingSource(opcionesFrecuencia, null);
+                cmbFrecuencia.DisplayMember = "Key";
+                cmbFrecuencia.ValueMember = "Value";
             }
             catch (Exception ex)
             {
@@ -54,7 +63,7 @@ namespace WinUI.WinForms.Gestiones.Competiciones
                 numCuposMinimos.Value = _competicionAEditar.CuposMinimos;
                 dtpFechaInicio.Value = _competicionAEditar.FechaInicio;
                 txtFranjaHoraria.Text = _competicionAEditar.FranjaHoraria;
-                numFrecuencia.Value = _competicionAEditar.Frecuencia;
+                cmbFrecuencia.SelectedValue = _competicionAEditar.Frecuencia;
                 txtPrecio.Text = _competicionAEditar.Precio.ToString();
                 cmbFormato.SelectedItem = _competicionAEditar.Formato;
                 cmbCanchaAsignada.SelectedValue = _competicionAEditar.canchaAsignada?.IdCancha ?? Guid.Empty;
@@ -63,7 +72,7 @@ namespace WinUI.WinForms.Gestiones.Competiciones
             {
                 this.Text = "New Competition";
                 cmbCanchaAsignada.SelectedIndex = -1;
-                
+                cmbFrecuencia.SelectedValue = 7;
                 dtpFechaInicio.Value = DateTime.Today.AddDays(1);
             }
             cmbCanchaAsignada_SelectedIndexChanged(sender, e);
@@ -105,7 +114,7 @@ namespace WinUI.WinForms.Gestiones.Competiciones
                         Cupos = (int)numCupos.Value,
                         CuposMinimos = (int)numCuposMinimos.Value,
                         FranjaHoraria = txtFranjaHoraria.Text,
-                        Frecuencia = (int)numFrecuencia.Value, 
+                        Frecuencia = (int)cmbFrecuencia.SelectedValue, 
                         Precio = precio, 
                         canchaAsignada = new Cancha { IdCancha = (Guid)cmbCanchaAsignada.SelectedValue },
                         ListaEquipos = new List<Equipo>()
@@ -124,7 +133,7 @@ namespace WinUI.WinForms.Gestiones.Competiciones
                 compToSave.CuposMinimos = (int)numCuposMinimos.Value;
                 compToSave.FechaInicio = dtpFechaInicio.Value;
                 compToSave.FranjaHoraria = txtFranjaHoraria.Text;
-                compToSave.Frecuencia = (int)numFrecuencia.Value;
+                compToSave.Frecuencia = (int)cmbFrecuencia.SelectedValue;
                 compToSave.Precio = precio;
                 compToSave.Formato = (FormatoEnum)cmbFormato.SelectedItem;
                 compToSave.canchaAsignada = new Cancha { IdCancha = (Guid)cmbCanchaAsignada.SelectedValue };

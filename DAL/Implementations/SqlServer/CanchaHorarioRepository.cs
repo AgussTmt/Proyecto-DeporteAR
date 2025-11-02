@@ -50,24 +50,6 @@ namespace DAL.Implementations.SqlServer
             );
         }
 
-        public void AssignCliente(Cliente cliente, CanchaHorario canchaHorario)
-        {
-            
-            Guid idEstadoReservada = GetEstadoReservaId(EstadoReserva.Reservada);
-
-            string sql = @"UPDATE [DbCancha Horario] SET
-                            IdCliente = @IdCliente,
-                            IdEstadoReserva = @IdEstadoReserva,
-                            CantReservas = CantReservas + 1 
-                           WHERE [IdCancha-Horario] = @IdCanchaHorario";
-
-            base.ExecuteNonQuery(sql, CommandType.Text,
-                new SqlParameter("@IdCliente", cliente.IdCliente),
-                new SqlParameter("@IdEstadoReserva", idEstadoReservada),
-                new SqlParameter("@IdCanchaHorario", canchaHorario.IdCanchaHorario)
-            );
-        }
-
         public void CambiarHabilitado(Guid id)
         {
             string sql = @"UPDATE [DbCancha Horario] 

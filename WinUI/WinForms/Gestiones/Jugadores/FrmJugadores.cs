@@ -118,30 +118,40 @@ namespace WinUI.WinForms.Gestiones.Jugadores
         {
             if (dgvJugadores.CurrentRow == null)
             {
-                MessageBox.Show("Seleccione un jugador para deshabilitar.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Seleccione un jugador.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             var jugadorSeleccionado = (Jugador)dgvJugadores.CurrentRow.DataBoundItem;
+            if (jugadorSeleccionado == null) return;
 
-            if (!jugadorSeleccionado.Habilitado)
-            {
-                MessageBox.Show($"El jugador '{jugadorSeleccionado.NombreCompleto}' ya está deshabilitado.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
+            bool estaActualmenteHabilitado = jugadorSeleccionado.Habilitado;
+            string accion = estaActualmenteHabilitado ? "deshabilitar" : "habilitar";
+            string titulo = estaActualmenteHabilitado ? "Confirmar Deshabilitación" : "Confirmar Habilitación";
 
-            var confirmacion = MessageBox.Show($"¿Está seguro de deshabilitar al jugador '{jugadorSeleccionado.NombreCompleto}'?", "Confirmar Deshabilitación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var confirmacion = MessageBox.Show($"¿Está seguro de {accion} al jugador '{jugadorSeleccionado.NombreCompleto}'?", titulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (confirmacion == DialogResult.Yes)
             {
                 try
                 {
+                    if (estaActualmenteHabilitado && jugadorSeleccionado.IdEquipo != null)
+                    {
+
+                        throw new InvalidOperationException("Este jugador no se puede deshabilitar porque está asignado a un equipo. Primero debe quitarlo del plantel en la pantalla de 'Gestión de Equipos'.");
+                    }
+
                     BLLFacade.Current.JugadorService.CambiarHabilitado(jugadorSeleccionado.Idjugador);
+
                     CargarGrid();
+                }
+                catch (InvalidOperationException opEx) 
+                {
+                    MessageBox.Show(opEx.Message, "Regla de Negocio", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error al deshabilitar jugador: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error al {accion} jugador: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

@@ -19,5 +19,7 @@ namespace BLL.Interfaces
         void QuitarEquipo(Competicion competicion, Equipo equipo);
 
         void AñadirEquipo(Competicion competicion, Equipo equipo);
+
+        void ActivarODesactivar(Guid idCompeticion);
     }
 }

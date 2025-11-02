@@ -11,6 +11,7 @@ namespace BLL.Services
 {
     internal class ClasificacionService : IClasificacionService
     {
+
         public void Actualizar(Clasificacion clasificacion)
         {
             using (var context = FactoryDao.UnitOfWork.Create())
@@ -22,7 +23,7 @@ namespace BLL.Services
                 }
                 catch (Exception)
                 {
-                    // El Rollback es automático al salir del 'using' si no se llamó a SaveChanges()
+                   
                     throw;
                 }
             }
@@ -41,11 +42,11 @@ namespace BLL.Services
 
                     if (existente != null)
                     {
-                        // Si ya existe, lanzamos un error de negocio claro.
+                        
                         throw new InvalidOperationException($"El equipo '{clasificacion.Equipo}' ya está en la tabla de clasificación de esta competición.");
                     }
 
-                    // Si no existe, lo creamos.
+                    
                     context.Repositories.ClasificacionRepository.Add(clasificacion);
                     context.SaveChanges();
                 }

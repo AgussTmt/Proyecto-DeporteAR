@@ -33,6 +33,7 @@ namespace WinUI.WinForms.Gestiones.Competiciones
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.btnGenerarFixture = new System.Windows.Forms.Button();
+            this.btnDesinscribirEquipo = new System.Windows.Forms.Button();
             this.btnInscribirEquipo = new System.Windows.Forms.Button();
             this.btnBorrar = new System.Windows.Forms.Button();
             this.btnEditar = new System.Windows.Forms.Button();
@@ -52,7 +53,6 @@ namespace WinUI.WinForms.Gestiones.Competiciones
             this.colFranjaHoraria = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colFrecuencia = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.btnDesinscribirEquipo = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -104,6 +104,17 @@ namespace WinUI.WinForms.Gestiones.Competiciones
             this.btnGenerarFixture.UseVisualStyleBackColor = true;
             this.btnGenerarFixture.Click += new System.EventHandler(this.btnGenerarFixture_Click);
             // 
+            // btnDesinscribirEquipo
+            // 
+            this.btnDesinscribirEquipo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnDesinscribirEquipo.Location = new System.Drawing.Point(0, 240);
+            this.btnDesinscribirEquipo.Name = "btnDesinscribirEquipo";
+            this.btnDesinscribirEquipo.Size = new System.Drawing.Size(197, 60);
+            this.btnDesinscribirEquipo.TabIndex = 5;
+            this.btnDesinscribirEquipo.Text = "Desinscribir equipo";
+            this.btnDesinscribirEquipo.UseVisualStyleBackColor = true;
+            this.btnDesinscribirEquipo.Click += new System.EventHandler(this.btnDesinscribirEquipo_Click);
+            // 
             // btnInscribirEquipo
             // 
             this.btnInscribirEquipo.Dock = System.Windows.Forms.DockStyle.Top;
@@ -122,7 +133,7 @@ namespace WinUI.WinForms.Gestiones.Competiciones
             this.btnBorrar.Name = "btnBorrar";
             this.btnBorrar.Size = new System.Drawing.Size(197, 60);
             this.btnBorrar.TabIndex = 2;
-            this.btnBorrar.Text = "Eliminar";
+            this.btnBorrar.Text = "Deshabilitar";
             this.btnBorrar.UseVisualStyleBackColor = true;
             this.btnBorrar.Click += new System.EventHandler(this.btnBorrar_Click);
             // 
@@ -272,17 +283,6 @@ namespace WinUI.WinForms.Gestiones.Competiciones
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1330, 99);
             this.panel3.TabIndex = 0;
-            // 
-            // btnDesinscribirEquipo
-            // 
-            this.btnDesinscribirEquipo.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnDesinscribirEquipo.Location = new System.Drawing.Point(0, 240);
-            this.btnDesinscribirEquipo.Name = "btnDesinscribirEquipo";
-            this.btnDesinscribirEquipo.Size = new System.Drawing.Size(197, 60);
-            this.btnDesinscribirEquipo.TabIndex = 5;
-            this.btnDesinscribirEquipo.Text = "Desinscribir equipo";
-            this.btnDesinscribirEquipo.UseVisualStyleBackColor = true;
-            this.btnDesinscribirEquipo.Click += new System.EventHandler(this.btnDesinscribirEquipo_Click);
             // 
             // FrmCompeticion
             // 

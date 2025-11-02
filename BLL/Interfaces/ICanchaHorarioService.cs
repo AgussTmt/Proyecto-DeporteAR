@@ -15,13 +15,11 @@ namespace BLL.Interfaces
 
         List<CanchaHorario> ListarPorRangoTiempo(DateTime date);
 
-        List<CanchaHorario> ListarPorCliente(Cliente cliente);
 
         List<CanchaHorario> ListarPorDemanda();
 
         List<CanchaHorario> ListarPorEstadoReserva(EstadoReserva estado);
 
-        public void AbonarReserva(Guid idCanchaHorario);
 
         DateTime GetMaximaFechaHorario(Guid idCancha);
         bool ExisteHorario(Guid idCancha, DateTime fechaHora);
