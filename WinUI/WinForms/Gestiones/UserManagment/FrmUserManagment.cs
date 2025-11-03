@@ -27,6 +27,7 @@ namespace WinUI.WinForms.Gestiones.UserManagment
 
         private void FrmUserManagment_Load(object sender, EventArgs e)
         {
+            this.Text = "Gestion de permisos";
             usuarios = UserManagmentService.TraerUsuarios();
 
             if (usuarios is not null && usuarios.Count > 0)

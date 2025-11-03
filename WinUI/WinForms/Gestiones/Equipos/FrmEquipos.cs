@@ -26,6 +26,7 @@ namespace WinUI.WinForms.Gestiones.Equipos
         private void FrmEquipos_Load(object sender, EventArgs e)
         {
             CargarGrid();
+            this.Text = "Gestión de Equipos";
         }
 
         private void CargarGrid()

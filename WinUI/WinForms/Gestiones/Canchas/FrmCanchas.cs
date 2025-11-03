@@ -30,6 +30,7 @@ namespace WinUI.WinForms.Gestiones.Canchas
         {
             dgvCanchas.AutoGenerateColumns = false;
             RefrescarGrid();
+            this.Text = "Gestión de Canchas";
         }
 
         private void RefrescarGrid()

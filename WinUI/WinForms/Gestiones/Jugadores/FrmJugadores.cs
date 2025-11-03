@@ -26,6 +26,7 @@ namespace WinUI.WinForms.Gestiones.Jugadores
         private void FrmJugadores_Load(object sender, EventArgs e)
         {
             CargarGrid();
+            this.Text = "Gestión de jugadores";
         }
 
         private void CargarGrid()

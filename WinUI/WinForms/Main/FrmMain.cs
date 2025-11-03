@@ -107,7 +107,7 @@ namespace WinUI.WinForms
                 this.panelDesktopPane.Tag = childForm;
                 childForm.BringToFront();
                 childForm.Show();
-                LblTitle.Text = childForm.Text.Substring(3);
+                LblTitle.Text = childForm.Text;
             }
 
            
