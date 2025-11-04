@@ -28,5 +28,9 @@ namespace DAL.Interfaces
         int CountSlotsOcupadosFuturos(Guid idCancha);
 
         int CountReservasActivasByCliente(Guid idCliente);
+
+        IEnumerable<CanchaHorario> GetDeudores(DateTime fechaLimite);
+
+        IEnumerable<CanchaHorario> GetHorariosAbonadosRango(DateTime desde, DateTime hasta, Guid? idCancha);
     }
 }

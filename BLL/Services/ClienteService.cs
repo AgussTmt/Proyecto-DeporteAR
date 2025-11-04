@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BLL.Interfaces;
+using BLL.Services.Dto;
 using DAL.Factory;
 using DomainModel;
 
@@ -111,6 +112,56 @@ namespace BLL.Services
                 {
                     throw;
                 }
+            }
+        }
+
+        public List<RankingClienteDTO> GetRankingClientes(int topN)
+        {
+            using (var context = FactoryDao.UnitOfWork.Create())
+            {
+                // 1. Traemos todos los clientes a un diccionario para lookup rápido.
+                var todosLosClientes = context.Repositories.ClienteRepository.GetAll()
+                    .ToDictionary(c => c.IdCliente, c => c);
+
+                // 2. Traemos todos los horarios.
+                var todosLosHorarios = context.Repositories.CanchaHorarioRepository.GetAll();
+
+                // 3. Magia de LINQ
+                var ranking = todosLosHorarios
+                    // Solo las reservadas y que tengan cliente
+                    .Where(h => h.ReservadaPor != null && h.Estado == EstadoReserva.Reservada)
+                    // Agrupamos por ID de cliente
+                    .GroupBy(h => h.ReservadaPor.IdCliente)
+                    // Proyectamos a un objeto anónimo con el Conteo
+                    .Select(g => new
+                    {
+                        IdCliente = g.Key,
+                        CantidadReservas = g.Count()
+                    })
+                    // Ordenamos
+                    .OrderByDescending(x => x.CantidadReservas)
+                    // Tomamos el Top N
+                    .Take(topN)
+                    // Ahora, unimos con el diccionario de clientes para obtener los nombres
+                    .Select(r =>
+                    {
+                        // Buscamos el cliente completo
+                        // Usamos TryGetValue por si el cliente fue borrado pero sus reservas quedaron
+                        var cliente = todosLosClientes.TryGetValue(r.IdCliente, out var cli)
+                            ? cli
+                            : new Cliente { Nombre = "(Cliente Eliminado)", Telefono = "N/A" };
+
+                        // Mapeamos al DTO
+                        return new RankingClienteDTO
+                        {
+                            Nombre = cliente.Nombre,
+                            Telefono = cliente.Telefono,
+                            CantidadReservas = r.CantidadReservas
+                        };
+                    })
+                    .ToList();
+
+                return ranking;
             }
         }
     }

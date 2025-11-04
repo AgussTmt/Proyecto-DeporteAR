@@ -21,6 +21,7 @@ using WinUI.WinForms.Gestiones.Equipos;
 using WinUI.WinForms.Gestiones.Clientes;
 using BLL.Facade;
 using Services__ArqBase_.Bll;
+using WinUI.WinForms.Gestiones.Reportes;
 
 
 namespace WinUI.WinForms

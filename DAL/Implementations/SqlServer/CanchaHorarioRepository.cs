@@ -338,6 +338,60 @@ namespace DAL.Implementations.SqlServer
 
             return (int)(result ?? 0);
         }
+
+        public IEnumerable<CanchaHorario> GetDeudores(DateTime fechaLimite)
+        {
+
+            string sql = $"{_sqlSelect} " +
+                         "WHERE ch.Horario < @FechaLimite " +
+                         "AND ch.Abonada = 0 " +
+                         "AND ch.IdEstadoReserva = @IdEstadoReservada";
+
+            Guid idEstadoReservada = GetEstadoReservaId(EstadoReserva.Reservada);
+            var horarios = new List<CanchaHorario>();
+
+            using (var reader = base.ExecuteReader(sql, CommandType.Text,
+                new SqlParameter("@FechaLimite", fechaLimite),
+                new SqlParameter("@IdEstadoReservada", idEstadoReservada)))
+            {
+                while (reader.Read())
+                {
+                    object[] values = new object[reader.FieldCount];
+                    reader.GetValues(values);
+                  
+                    horarios.Add(CanchaHorarioAdapter.Current.Get(values));
+                }
+            }
+            return horarios;
+        }
+
+        public IEnumerable<CanchaHorario> GetHorariosAbonadosRango(DateTime desde, DateTime hasta, Guid? idCancha)
+        {
+            
+            string sql = $"{_sqlSelect} " +
+                         "WHERE ch.Horario >= @Desde " +
+                         "AND ch.Horario <= @Hasta " +
+                         "AND ch.Abonada = 1 " + 
+                         "AND (@IdCancha IS NULL OR ch.IdCancha = @IdCancha)"; 
+
+            var horarios = new List<CanchaHorario>();
+
+            using (var reader = base.ExecuteReader(sql, CommandType.Text,
+                new SqlParameter("@Desde", desde),
+                new SqlParameter("@Hasta", hasta),
+                new SqlParameter("@IdCancha", (object)idCancha ?? DBNull.Value)
+            ))
+            {
+                while (reader.Read())
+                {
+                    object[] values = new object[reader.FieldCount];
+                    reader.GetValues(values);
+                    horarios.Add(CanchaHorarioAdapter.Current.Get(values));
+                }
+            }
+            return horarios;
+        }
     }
-    
 }
+    
+

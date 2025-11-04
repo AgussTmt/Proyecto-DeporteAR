@@ -64,6 +64,7 @@
     <Compile Include="Services\ClasificacionService.cs" />
     <Compile Include="Services\ClienteService.cs" />
     <Compile Include="Services\CompeticionService.cs" />
+    <Compile Include="Services\Dto\RankingClienteDTO.cs" />
     <Compile Include="Services\EquipoService.cs" />
     <Compile Include="Services\FixtureService.cs" />
     <Compile Include="Services\JugadorService.cs" />

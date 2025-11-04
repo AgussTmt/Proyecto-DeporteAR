@@ -152,10 +152,16 @@
     <Compile Include="WinForms\Gestiones\Canchas\FrmCanchas.Designer.cs">
       <DependentUpon>FrmCanchas.cs</DependentUpon>
     </Compile>
-    <Compile Include="WinForms\Gestiones\FrmReportes.cs">
+    <Compile Include="WinForms\Gestiones\Reportes\FrmRankingClientes.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="WinForms\Gestiones\FrmReportes.Designer.cs">
+    <Compile Include="WinForms\Gestiones\Reportes\FrmRankingClientes.Designer.cs">
+      <DependentUpon>FrmRankingClientes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\Reportes\FrmReportes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\Gestiones\Reportes\FrmReportes.Designer.cs">
       <DependentUpon>FrmReportes.cs</DependentUpon>
     </Compile>
     <Compile Include="WinForms\Gestiones\Jugadores\FrmJugadorDetalle.cs">
@@ -285,7 +291,7 @@
     <EmbeddedResource Include="WinForms\Gestiones\Competiciones\FrmCompeticion.resx">
       <DependentUpon>FrmCompeticion.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="WinForms\Gestiones\FrmReportes.resx">
+    <EmbeddedResource Include="WinForms\Gestiones\Reportes\FrmReportes.resx">
       <DependentUpon>FrmReportes.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WinForms\Gestiones\Jugadores\FrmJugadorDetalle.resx">

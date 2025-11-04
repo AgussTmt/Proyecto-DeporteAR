@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bll.Interfaces;
+using BLL.Services.Dto;
 using DomainModel;
 
 namespace BLL.Interfaces
 {
     public interface IClienteService : IGenericService <Cliente>
     {
-
+        List<RankingClienteDTO> GetRankingClientes(int topN);
     }
 }

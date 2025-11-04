@@ -30,5 +30,10 @@ namespace BLL.Interfaces
 
         int GenerarHorariosParaCancha(Guid idCancha, int diasHorizonte);
 
+        List<CanchaHorario> GetReporteDeudores();
+
+        List<CanchaHorario> GetReporteFacturacion(DateTime desde, DateTime hasta, Guid? idCancha);
+
+
     }
 }

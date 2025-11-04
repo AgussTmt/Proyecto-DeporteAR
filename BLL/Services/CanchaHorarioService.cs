@@ -283,5 +283,110 @@ namespace BLL.Services
             }
 
         }
+        public List<CanchaHorario> GetReporteDeudores()
+        {
+            using (var context = FactoryDao.UnitOfWork.Create())
+            {
+                var deudores = context.Repositories.CanchaHorarioRepository
+                                  .GetDeudores(DateTime.Now)
+                                  .ToList();
+
+                if (!deudores.Any())
+                {
+                    return deudores; 
+                }
+
+                var idsClientes = deudores
+                    .Where(h => h.ReservadaPor != null)
+                    .Select(h => h.ReservadaPor.IdCliente)
+                    .Distinct()
+                    .ToList();
+
+                var idsCanchas = deudores
+                    .Select(h => h.Cancha.IdCancha)
+                    .Distinct()
+                    .ToList();
+
+                var clientesCompletos = context.Repositories.ClienteRepository.GetAll()
+                    .Where(c => idsClientes.Contains(c.IdCliente))
+                    .ToDictionary(c => c.IdCliente);
+
+                var canchasCompletas = context.Repositories.CanchaRepository.GetAll()
+                    .Where(c => idsCanchas.Contains(c.IdCancha))
+                    .ToDictionary(c => c.IdCancha);
+
+                foreach (var horario in deudores)
+                {
+                    if (horario.ReservadaPor != null && clientesCompletos.TryGetValue(horario.ReservadaPor.IdCliente, out var cliente))
+                    {
+                        horario.ReservadaPor = cliente; 
+                    }
+
+                    if (canchasCompletas.TryGetValue(horario.Cancha.IdCancha, out var cancha))
+                    {
+                        horario.Cancha = cancha;
+                    }
+                }
+
+                return deudores;
+            }
+        }
+
+        public List<CanchaHorario> GetReporteFacturacion(DateTime desde, DateTime hasta, Guid? idCancha)
+        {
+            using (var context = FactoryDao.UnitOfWork.Create())
+            {
+                // 1. Llamamos al nuevo método del repositorio.
+                var horarios = context.Repositories.CanchaHorarioRepository
+                                  .GetHorariosAbonadosRango(desde, hasta, idCancha)
+                                  .ToList();
+
+                if (!horarios.Any())
+                {
+                    return horarios; // Lista vacía, no hay nada que hidratar.
+                }
+
+                // 2. Patrón de Optimización (N+1 avoidance)
+                //    Obtenemos todos los IDs únicos que necesitamos hidratar.
+                var idsClientes = horarios
+                    .Where(h => h.ReservadaPor != null)
+                    .Select(h => h.ReservadaPor.IdCliente)
+                    .Distinct()
+                    .ToList();
+
+                var idsCanchas = horarios
+                    .Select(h => h.Cancha.IdCancha)
+                    .Distinct()
+                    .ToList();
+
+                // 3. Traemos todos los objetos completos de una vez.
+                var clientesCompletos = context.Repositories.ClienteRepository.GetAll()
+                    .Where(c => idsClientes.Contains(c.IdCliente))
+                    .ToDictionary(c => c.IdCliente);
+
+                var canchasCompletas = context.Repositories.CanchaRepository.GetAll()
+                    .Where(c => idsCanchas.Contains(c.IdCancha))
+                    .ToDictionary(c => c.IdCancha);
+
+                // 4. Hidratamos la lista original.
+                foreach (var horario in horarios)
+                {
+                    // Hidrata el cliente
+                    if (horario.ReservadaPor != null && clientesCompletos.TryGetValue(horario.ReservadaPor.IdCliente, out var cliente))
+                    {
+                        horario.ReservadaPor = cliente; // Reemplaza el stub por el objeto completo
+                    }
+
+                    // Hidrata la cancha
+                    if (canchasCompletas.TryGetValue(horario.Cancha.IdCancha, out var cancha))
+                    {
+                        horario.Cancha = cancha; // Reemplaza el stub por el objeto completo
+                    }
+                }
+
+                return horarios;
+            }
+        }
     }
 }
+
