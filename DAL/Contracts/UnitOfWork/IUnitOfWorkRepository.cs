@@ -23,5 +23,6 @@ namespace Patrones_3parcial.UnitOfWork
         ICanchaDisponibilidadRepository CanchaDisponibilidadRepository { get; }
         IReservaHistorialRepository ReservaHistorialRepository { get; }
 
+
     }
 }

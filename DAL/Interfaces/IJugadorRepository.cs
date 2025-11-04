@@ -15,5 +15,7 @@ namespace DAL.Interfaces
         List<Jugador> GetSinEquipo();
 
         IEnumerable<Jugador> GetAllIncludingDisabled();
+        void CambiarHabilitado(Guid id);
+
     }
 }

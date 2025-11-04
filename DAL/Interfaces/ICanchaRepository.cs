@@ -12,5 +12,7 @@ namespace DAL.Interfaces
     public interface ICanchaRepository : IGenericRepository <Cancha>
     {
         IEnumerable<Cancha> GetAllIncludingDisabled();
+
+        void CambiarHabilitado(Guid id);
     }
 }

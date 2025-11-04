@@ -12,8 +12,6 @@ namespace DAL.Interfaces
     {
         List<CanchaHorario> GetByTimeRange(DateTime dateTime);
 
-        List<CanchaHorario> GetByCliente(Cliente cliente);
-
         List<CanchaHorario> GetOrderByDemand();
 
         List<CanchaHorario> GetByEstadoReserva(EstadoReserva estadoReserva);

@@ -68,21 +68,6 @@ namespace DAL.Implementations.SqlServer
         }
 
         /// <summary>
-        /// Invierte (toggle) el estado de 'Abonada' (pagada) de una reserva.
-        /// </summary>
-        /// <param name="id">El ID (<c>IdCancha-Horario</c>) de la reserva a modificar.</param>
-        public void CambiarHabilitado(Guid id)
-        {
-            string sql = @"UPDATE [DbCancha Horario] 
-                           SET Abonada = ~Abonada 
-                           WHERE [IdCancha-Horario] = @IdCanchaHorario";
-
-            base.ExecuteNonQuery(sql, CommandType.Text,
-                new SqlParameter("@IdCanchaHorario", id)
-            );
-        }
-
-        /// <summary>
         /// Obtiene todos los registros de <see cref="CanchaHorario"/> de la base de datos.
         /// </summary>
         /// <returns>Una colección de <see cref="CanchaHorario"/>.</returns>
@@ -90,28 +75,6 @@ namespace DAL.Implementations.SqlServer
         {
             var horarios = new List<CanchaHorario>();
             using (var reader = base.ExecuteReader(_sqlSelect, CommandType.Text))
-            {
-                while (reader.Read())
-                {
-                    object[] values = new object[reader.FieldCount];
-                    reader.GetValues(values);
-                    horarios.Add(CanchaHorarioAdapter.Current.Get(values));
-                }
-            }
-            return horarios;
-        }
-
-        /// <summary>
-        /// Obtiene todos los horarios reservados por un cliente específico.
-        /// </summary>
-        /// <param name="cliente">El <see cref="Cliente"/> a consultar.</param>
-        /// <returns>Una lista de <see cref="CanchaHorario"/>.</returns>
-        public List<CanchaHorario> GetByCliente(Cliente cliente)
-        {
-            string sql = $"{_sqlSelect} WHERE ch.IdCliente = @IdCliente";
-            var horarios = new List<CanchaHorario>();
-
-            using (var reader = base.ExecuteReader(sql, CommandType.Text,new SqlParameter("@IdCliente", cliente.IdCliente)))
             {
                 while (reader.Read())
                 {
@@ -516,6 +479,11 @@ namespace DAL.Implementations.SqlServer
                 }
             }
             return horarios;
+        }
+
+        public void CambiarHabilitado(Guid id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
