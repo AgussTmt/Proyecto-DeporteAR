@@ -87,22 +87,6 @@ namespace DAL.Implementations.SqlServer
         }
 
         /// <summary>
-        /// (No implementado) Cambia el estado de habilitación de una competición.
-        /// </summary>
-        public void CambiarHabilitado(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// (No implementado) Elimina una competición.
-        /// </summary>
-        public void Delete(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
         /// Obtiene una lista de todas las competiciones.
         /// </summary>
         /// <returns>Una colección de <see cref="Competicion"/>.</returns>
@@ -186,33 +170,6 @@ namespace DAL.Implementations.SqlServer
             return competicion;
         }
 
-        /// <summary>
-        /// Obtiene competiciones que colisionan en la misma cancha y franja horaria.
-        /// </summary>
-        /// <param name="competicion">La competición (con Cancha y Franja) a verificar.</param>
-        /// <returns>Una lista de <see cref="Competicion"/> que colisionan.</returns>
-        public List<Competicion> GetByTimeAndCancha(Competicion competicion)
-        {
-            string sql = $"{_sqlSelect} WHERE c.IdCancha = @IdCancha AND c.FranjaHoraria = @Franja";
-            var list = new List<Competicion>();
-
-            using (var reader = base.ExecuteReader(sql, CommandType.Text,
-                new SqlParameter("@IdCancha", competicion.canchaAsignada.IdCancha),
-                new SqlParameter("@Franja", competicion.FranjaHoraria)))
-            {
-                while (reader.Read())
-                {
-                    object[] values = new object[reader.FieldCount];
-                    reader.GetValues(values);
-                    list.Add(CompeticionAdapter.Current.Get(values));
-                }
-            }
-            foreach (var c in list)
-            {
-                PopulateEquipos(c); // N+1 consultas
-            }
-            return list;
-        }
 
         /// <summary>
         /// Obtiene todas las competiciones que aún tienen cupos (vacantes) disponibles.

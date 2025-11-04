@@ -10,7 +10,6 @@ namespace DAL.Interfaces
 {
     public interface ICompeticionRepository : IGenericRepository <Competicion>
     {
-        List<Competicion> GetByTimeAndCancha(Competicion competicion);
 
         void AddEquipo(Guid idCompeticion, Guid idEquipo);
 
