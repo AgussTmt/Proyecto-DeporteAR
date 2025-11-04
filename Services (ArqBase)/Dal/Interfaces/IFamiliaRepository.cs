@@ -11,5 +11,7 @@ namespace Services.Dal.Implementations
         public List<Familia> GetAll();
 
         Familia Add(Familia familia);
+
+        List<string> VerificarIntegridadHash();
     }
 }

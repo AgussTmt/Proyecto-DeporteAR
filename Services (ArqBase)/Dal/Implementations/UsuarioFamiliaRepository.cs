@@ -13,6 +13,11 @@ namespace Services.Dal.Implementations
 {
     internal class UsuarioFamiliaRepository : IJoinRepository<Usuario, Familia>
     {
+        /// <summary>
+        /// Asigna una familia (grupo de roles) específica a un usuario en la base de datos (tabla UsuarioFamilia).
+        /// </summary>
+        /// <param name="obj">El usuario al cual se le asignará la familia.</param>
+        /// <param name="obj2">La familia que será asignada.</param>
         public void Add(Usuario obj, Familia obj2)
         {
             {
@@ -23,6 +28,11 @@ namespace Services.Dal.Implementations
             }
         }
 
+        /// <summary>
+        /// Obtiene la lista de todas las familias (grupos de roles) asociadas a un usuario específico.
+        /// </summary>
+        /// <param name="obj">El usuario cuyas familias se desean recuperar.</param>
+        /// <returns>Una lista de <see cref="Familia"/> asignadas al usuario, incluyendo su estado de habilitación.</returns>
         public List<Familia> GetByObject(Usuario obj)
         {
             List<Familia> familias = new List<Familia>();

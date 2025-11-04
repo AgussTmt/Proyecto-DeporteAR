@@ -22,6 +22,11 @@ namespace Services.Dal.Implementations
             get => "SELECT IdUsuario, Nombre, Email, Habilitado FROM [dbo].[Usuario]";
         }
         #endregion
+
+        /// <summary>
+        /// Registrar usuario numero, pidiendo nombre, password y email. le genera un id y le pone por default en habilitado
+        /// </summary>
+        /// <param name="usuario"></param>
         public void RegistrarUsuario(Usuario usuario)
         {
             usuario.IdUsuario = Guid.NewGuid(); // Generar un nuevo Id para el usuario
@@ -34,6 +39,12 @@ namespace Services.Dal.Implementations
             );
         }
 
+        /// <summary>
+        /// Metodo usado para loguear al usuario, pidiendo nombre de usuario y password
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public Usuario GetByCredentials(string user, string password)
         {
             
@@ -53,7 +64,10 @@ namespace Services.Dal.Implementations
                 return null;
             }
         }
-
+        /// <summary>
+        /// Metodo para obtener todos los usuarios del sistema
+        /// </summary>
+        /// <returns></returns>
         public List<Usuario> GetAll()
         {
             List<Usuario> ListUsuarios = new List<Usuario>();
@@ -75,6 +89,11 @@ namespace Services.Dal.Implementations
             return ListUsuarios;
         }
 
+        /// <summary>
+        /// Metodo para obtener por id a un usuario
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public Usuario GetById (Guid id)
         {
             string commandText = "SELECT * FROM Usuario WHERE IdUsuario = @Id";
@@ -94,6 +113,12 @@ namespace Services.Dal.Implementations
 
         }
 
+
+        /// <summary>
+        /// Metodo para obtener por email a un usario, usado en recuperacion de contraseña entre otros.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         public Usuario GetByEmail(string email)
         {
             string commandText = "SELECT * FROM Usuario WHERE Email = @Email";
@@ -112,6 +137,11 @@ namespace Services.Dal.Implementations
             }
         }
 
+        /// <summary>
+        /// Metodo para cambiar la contraseña del usuario al recuperar acceso por correo.
+        /// </summary>
+        /// <param name="usuario"></param>
+        /// <param name="passwordHasheada"></param>
         public void UpdatePassword(Usuario usuario, string passwordHasheada)
         {
             string commandText = "UPDATE Usuario SET Password = @Password WHERE IdUsuario = @IdUsuario";
@@ -122,6 +152,11 @@ namespace Services.Dal.Implementations
             );
         }
 
+
+        /// <summary>
+        /// Metodo para obtener limpiar el codigo de recuperacion del usuario despues de cambiar de contraseña
+        /// </summary>
+        /// <param name="usuario"></param>
         public void CleanRecoveryCode(Usuario usuario)
         {
             string commandText = "UPDATE Usuario SET CodigoRecuperacion = NULL, CodigoExpiracion = NULL WHERE IdUsuario = @IdUsuario";
@@ -131,6 +166,12 @@ namespace Services.Dal.Implementations
             );
         }
 
+        /// <summary>
+        /// Metodo para crear un codigo de recuperacion de contraseña para el usuario.
+        /// </summary>
+        /// <param name="usuario"></param>
+        /// <param name="codigo"></param>
+        /// <param name="expiracion"></param>
         public void SaveRecoveryCode(Usuario usuario, string codigo, DateTime expiracion)
         {
             string commandText = "UPDATE Usuario SET CodigoRecuperacion = @Codigo, CodigoExpiracion = @Expiracion WHERE IdUsuario = @IdUsuario";

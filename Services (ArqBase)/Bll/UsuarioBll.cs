@@ -13,6 +13,10 @@ using System.Threading.Tasks;
 
 namespace Services.Bll
 {
+    /// <summary>
+    /// Provee la lógica de negocio (BLL) estática para todas las operaciones
+    /// relacionadas con la entidad <see cref="Usuario"/>.
+    /// </summary>
     public static class UsuarioBll
     {
         private static IUsuarioRepository _usuarioRepository;
@@ -21,12 +25,24 @@ namespace Services.Bll
 
         private static ILogger _logger;
 
+        /// <summary>
+        /// Constructor estático para inicializar las dependencias estáticas (Logger y Repositorio)
+        /// una sola vez durante el ciclo de vida de la aplicación.
+        /// </summary>
         static UsuarioBll()
         {
             _logger = LoggerService.GetLogger();
             _usuarioRepository = new UsuarioRepository();
         }
 
+        /// <summary>
+        /// Valida las credenciales de un usuario para el inicio de sesión.
+        /// </summary>
+        /// <param name="user">El nombre de usuario (o email) a validar.</param>
+        /// <param name="password">La contraseña en **texto plano** a validar.</param>
+        /// <returns>El objeto <see cref="Usuario"/> si la validación es exitosa.</returns>
+        /// <exception cref="Exception">Lanza una excepción si el usuario/contraseña son incorrectos
+        /// o si el usuario no está habilitado.</exception>
         public static Usuario ValidarCredenciales(string user, string password)
         {
             password = CryptographyService.HashMd5(password);
@@ -48,6 +64,12 @@ namespace Services.Bll
             return usuario;
         }
 
+        /// <summary>
+        /// Registra un nuevo usuario en la base de datos.
+        /// </summary>
+        /// <param name="usuario">El objeto <see cref="Usuario"/> a registrar.</param>
+        /// <exception cref="ArgumentNullException">Si el usuario es nulo.</exception>
+        /// <exception cref="Exception">Si el repositorio no pudo registrar al usuario (ej: el ID sigue vacío).</exception>
         public static void RegistrarUsuario(Usuario usuario)
         {
             //Hacer validaciones previas antes de registrar el usuario
@@ -66,19 +88,39 @@ namespace Services.Bll
             }    
         }
 
+        /// <summary>
+        /// Obtiene una lista de todos los usuarios registrados en el sistema.
+        /// </summary>
+        /// <returns>Una <see cref="List{Usuario}"/>.</returns>
         public static List<Usuario> TraerUsuarios()
         {
             List<Usuario> usuarios = _usuarioRepository.GetAll();
             return usuarios;
         }
 
+        /// <summary>
+        /// Obtiene un usuario específico por su identificador único.
+        /// </summary>
+        /// <param name="id">El <see cref="Guid"/> del usuario.</param>
+        /// <returns>El <see cref="Usuario"/> encontrado o <c>null</c>.</returns>
         public static Usuario GetById(Guid id)
         {
             Usuario usuario = _usuarioRepository.GetById(id);
             return usuario;
         }
 
-
+        /// <summary>
+        /// Inicia el proceso de recuperación de contraseña para un email dado.
+        /// Genera un código, lo guarda en la BD y envía un email al usuario.
+        /// </summary>
+        /// <param name="email">El email del usuario que solicita la recuperación.</param>
+        /// <returns>Siempre <c>true</c> si el envío es exitoso (o si el usuario no existe),
+        /// <c>false</c> si el servicio de email falla.</returns>
+        /// <remarks>
+        /// Por seguridad (para evitar enumeración de usuarios), este método
+        /// devuelve <c>true</c> incluso si el email no se encuentra en la base de datos,
+        /// simulando un envío exitoso.
+        /// </remarks>
         public static bool SolicitarRecuperacion(string email)
         {
             Usuario usuario = _usuarioRepository.GetByEmail(email);
@@ -120,6 +162,14 @@ namespace Services.Bll
         }
 
 
+        /// <summary>
+        /// Completa el proceso de reseteo de contraseña.
+        /// </summary>
+        /// <param name="email">El email del usuario.</param>
+        /// <param name="codigo">El código de 6 dígitos enviado por correo.</param>
+        /// <param name="nuevoPassword">La nueva contraseña en **texto plano**.</param>
+        /// <returns><c>true</c> si el reseteo fue exitoso, <c>false</c> si el email
+        /// no existe, el código es incorrecto o el código ha expirado.</returns>
         public static bool ResetearPassword(string email, string codigo, string nuevoPassword)
         {
             Usuario usuario = _usuarioRepository.GetByEmail(email);

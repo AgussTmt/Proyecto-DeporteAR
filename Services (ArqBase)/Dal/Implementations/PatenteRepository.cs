@@ -28,7 +28,10 @@ namespace Services.Dal.Implementations
         }
         #endregion
 
-
+        /// <summary>
+        /// Obtiene una lista con todas las patentes (permisos) disponibles en el sistema.
+        /// </summary>
+        /// <returns>Una <see cref="List{Patente}"/> que contiene todas las patentes.</returns>
         public List<Patente> GetAll()
         {
             List<Patente> ListPatentes = new List<Patente>();
@@ -50,6 +53,11 @@ namespace Services.Dal.Implementations
             return ListPatentes;
         }
 
+        /// <summary>
+        /// Obtiene una patente específica mediante su identificador único.
+        /// </summary>
+        /// <param name="id">El <see cref="Guid"/> de la patente a buscar.</param>
+        /// <returns>El objeto <see cref="Patente"/> si se encuentra; de lo contrario, <c>null</c>.</returns>
         public Patente GetById(Guid id)
         {
 
@@ -66,7 +74,7 @@ namespace Services.Dal.Implementations
                 }
                 else
                 {
-                    return null; // or throw an exception if not found
+                    return null;
                 }
             }
         }

@@ -15,14 +15,39 @@ using System.Threading.Tasks;
 
 namespace Services__ArqBase_.Bll
 {
+    /// <summary>
+    /// Capa de Lógica de Negocio (BLL) para la gestión de Permisos,
+    /// incluyendo Roles (Familias) y Patentes.
+    /// Orquesta los diferentes repositorios de datos (DAL).
+    /// </summary>
     public class PermisosBll : IPermisosBll
     {
 
         private readonly ILogger _logger;
+
+        /// <summary>
+        /// Inicializa una nueva instancia de <see cref="PermisosBll"/>,
+        /// obteniendo una instancia del logger.
+        /// </summary>
         public PermisosBll()
         {
             _logger = LoggerService.GetLogger();
         }
+
+        /// <summary>
+        /// Asigna un permiso/rol (ObjSecu) a una entidad principal (ObjMain) de forma genérica.
+        /// Utiliza reflexión para instanciar el repositorio de 'Join' adecuado.
+        /// </summary>
+        /// <typeparam name="T1">El tipo de la entidad principal (ej: Usuario, Familia).</typeparam>
+        /// <typeparam name="T2">El tipo de la entidad secundaria (ej: Patente, Familia).</typeparam>
+        /// <param name="ObjMain">La instancia de la entidad principal.</param>
+        /// <param name="ObjSecu">La instancia de la entidad secundaria a asignar.</param>
+        /// <remarks>
+        /// ¡PRECAUCIÓN! Este método utiliza reflexión (Reflection) y es sensible a convenciones de nombres.
+        /// Asume que existe un repositorio en el ensamblado 'Services.Dal'
+        /// cuyo nombre es exactamente 'T1.Name + T2.Name + Repository'.
+        /// (ej: T1=Usuario, T2=Patente => 'UsuarioPatenteRepository').
+        /// </remarks>
         public void AsignarPermisos<T1, T2>(T1 ObjMain, T2 ObjSecu)
         {
             IJoinRepository<T1, T2> repository = null;
@@ -55,11 +80,23 @@ namespace Services__ArqBase_.Bll
 
         }
 
+        /// <summary>
+        /// Obtiene la lista de patentes (hojas) asignadas directamente a una familia (rama).
+        /// </summary>
+        /// <param name="familia">La familia (rol) a consultar.</param>
+        /// <returns>Una lista de <see cref="Patente"/>.</returns>
         public List<Patente> GetPatentesDeFamilia(Familia familia)
         {
             FamiliaPatenteRepository repo = new FamiliaPatenteRepository();
             return repo.GetByObject(familia);
         }
+
+        /// <summary>
+        /// Crea un nuevo Rol (Familia) en la base de datos, asignando un nuevo Guid
+        /// y calculando su hash de integridad.
+        /// </summary>
+        /// <param name="familia">El objeto <see cref="Familia"/> con (al menos) el Nombre poblado.</param>
+        /// <returns>La <see cref="Familia"/> persistida con su Id y Hash.</returns>
         public Familia CrearRol(Familia familia)
         {
             try
@@ -78,25 +115,54 @@ namespace Services__ArqBase_.Bll
             }
         }
 
+        /// <summary>
+        /// Invierte el estado 'Habilitado' (toggle) de una relación en una tabla de unión
+        /// (ej: deshabilitar una patente a un usuario).
+        /// </summary>
+        /// <typeparam name="T1">El tipo de la entidad principal (ej: Usuario).</typeparam>
+        /// <typeparam name="T2">El tipo de la entidad secundaria (ej: Patente).</typeparam>
+        /// <param name="ObjMain">La instancia de la entidad principal.</param>
+        /// <param name="ObjSecu">La instancia de la entidad secundaria.</param>
         public void CambiarHabilitado<T1, T2>(T1 ObjMain, T2 ObjSecu)
         {
             UpdateGenericRepository repository = new UpdateGenericRepository();
             repository.UpdateHabilitadoJoin(ObjMain, ObjSecu);
         }
 
-
+        /// <summary>
+        /// Obtiene todas las patentes (permisos) disponibles en el sistema.
+        /// </summary>
+        /// <returns>Lista de <see cref="Patente"/>.</returns>
         public List<Patente> GetPatentes()
         {
             PatenteRepository patenteRepository = new PatenteRepository();
             return patenteRepository.GetAll();
         }
 
+        /// <summary>
+        /// Obtiene todas las familias (roles) disponibles en el sistema.
+        /// </summary>
+        /// <returns>Lista de <see cref="Familia"/>.</returns>
         public List<Familia> GetFamilias()
         {
             FamiliaRepository familiaRepository = new FamiliaRepository();
             return familiaRepository.GetAll();
         }
 
+
+        /// <summary>
+        /// Sincroniza los privilegios (roles y patentes) de un usuario con una nueva lista.
+        /// Calcula la diferencia (delta) y aplica los cambios (añade, habilita, deshabilita).
+        /// </summary>
+        /// <param name="usuario">El <see cref="Usuario"/> a modificar.</param>
+        /// <param name="RolPatentes">La lista completa y actualizada de <see cref="Component"/>
+        /// (Roles y Patentes) que el usuario DEBE tener.</param>
+        /// <remarks>
+        /// Lógica de Sincronización:
+        /// 1. Añade nuevos permisos/roles (si Habilitado=true).
+        /// 2. Habilita/Deshabilita permisos/roles existentes si su estado cambió.
+        /// 3. Deshabilita permisos/roles que el usuario tenía pero que no están en la nueva lista.
+        /// </remarks>
         public void cambiarPermisosAUsuario(Usuario usuario, List<Component> RolPatentes)
         {
             var patentesActuales = usuario.Privilegios.OfType<Patente>().ToList();
@@ -179,6 +245,12 @@ namespace Services__ArqBase_.Bll
 
 
         }
+
+        /// <summary>
+        /// Sincroniza las patentes asignadas a una familia (rol).
+        /// </summary>
+        /// <param name="familia">La <see cref="Familia"/> a modificar.</param>
+        /// <param name="patentes">La lista de <see cref="Patente"/> que la familia DEBE tener.</param>
         public void CambiarPermisosFamilia(Familia familia, List<Patente> patentes)
         {
             FamiliaPatenteRepository repository = new FamiliaPatenteRepository();
@@ -213,12 +285,35 @@ namespace Services__ArqBase_.Bll
 
         }
 
-
+        /// <summary>
+        /// Método de ayuda privado para calcular el hash MD5 de una familia.
+        /// </summary>
+        /// <param name="familia">La instancia de <see cref="Familia"/>.</param>
+        /// <returns>Un string que representa el hash MD5 calculado.</returns>
         private string CalcularHash(Familia familia)
         {
             string datosConcatenados = $"{familia.Id}-{familia.Nombre}-{familia.Habilitado}";
 
             return CryptographyService.HashMd5(datosConcatenados);
+        }
+
+        /// <summary>
+        /// Verifica la integridad de todos los registros en la tabla [Familia]
+        /// comparando sus hashes.
+        /// </summary>
+        /// <returns>Una lista de strings que describe cada fila corrupta.</returns>
+        public List<string> VerificarIntegridadFamilias()
+        {
+            try
+            {
+                FamiliaRepository familiaRepository = new FamiliaRepository();
+                return familiaRepository.VerificarIntegridadHash();
+            }
+            catch (Exception ex)
+            {
+                // Si falla la conexión a la BD, lo reportamos como un error de integridad
+                return new List<string> { $"Error fatal al auditar la base de datos: {ex.Message}" };
+            }
         }
     }
 }

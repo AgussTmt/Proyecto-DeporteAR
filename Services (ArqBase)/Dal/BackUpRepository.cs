@@ -8,14 +8,33 @@ using System.Threading.Tasks;
 
 namespace Services__ArqBase_.Dal
 {
+
+    /// <summary>
+    /// Proporciona métodos asincrónicos para ejecutar operaciones de 
+    /// BACKUP y RESTORE en una base de datos SQL Server.
+    /// </summary>
     internal class BackUpRepository
     {
         private readonly string _connectionString;
+
+        /// <summary>
+        /// Inicializa una nueva instancia del repositorio de BackUp.
+        /// </summary>
+        /// <param name="BaseDedatos">El nombre de la clave (key) en el archivo de configuración 
+        /// (App.config/Web.config) que contiene el ConnectionString.</param>
         public BackUpRepository(string BaseDedatos)
         {
             _connectionString = ConfigurationManager.ConnectionStrings[BaseDedatos].ConnectionString;
         }
 
+
+        /// <summary>
+        /// Ejecuta un BACKUP completo de la base de datos especificada en el connection string
+        /// y lo guarda en la ruta de archivo proporcionada.
+        /// </summary>
+        /// <param name="rutaArchivo">La ruta física completa (en el servidor de base de datos) 
+        /// donde se guardará el archivo .bak.</param>
+        /// <returns>Una tarea (Task) que representa la operación asincrónica.</returns>
         internal async Task EjecutarBackupAsync(string rutaArchivo)
         {
             var builder = new SqlConnectionStringBuilder(_connectionString);
@@ -34,6 +53,15 @@ namespace Services__ArqBase_.Dal
             }
         }
 
+
+        /// <summary>
+        /// Ejecuta un RESTORE de la base de datos desde un archivo de backup.
+        /// La operación fuerza la base de datos a modo SINGLE_USER para tomar control exclusivo,
+        /// realiza la restauración y luego la devuelve a modo MULTI_USER.
+        /// </summary>
+        /// <param name="rutaArchivo">La ruta física completa (en el servidor de base de datos) 
+        /// desde donde se leerá el archivo .bak.</param>
+        /// <returns>Una tarea (Task) que representa la operación asincrónica.</returns>
         internal async Task EjecutarRestoreAsync(string rutaArchivo)
         {
             var builder = new SqlConnectionStringBuilder(_connectionString);

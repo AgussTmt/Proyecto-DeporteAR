@@ -19,6 +19,8 @@ using WinUI.WinForms.Gestiones.Canchas;
 using WinUI.WinForms.Gestiones.Competiciones;
 using WinUI.WinForms.Gestiones.Equipos;
 using WinUI.WinForms.Gestiones.Clientes;
+using BLL.Facade;
+using Services__ArqBase_.Bll;
 
 
 namespace WinUI.WinForms
@@ -31,12 +33,14 @@ namespace WinUI.WinForms
         private int tempIndex;
         private Form activeForm;
         private Usuario _user;
+        private PermisosBll permisosBll;
         public FrmMain(Usuario user)
         {
             
             InitializeComponent();
             random = new Random();
             _user = user;
+            permisosBll = new PermisosBll();
         }
 
         #region Interactividad abrir formularios
@@ -116,7 +120,27 @@ namespace WinUI.WinForms
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
-            IdiomaHelper.TraducirControles(this);
+            this.Cursor = Cursors.WaitCursor;
+
+            List<string> erroresDeIntegridad = permisosBll.VerificarIntegridadFamilias();
+
+            this.Cursor = Cursors.Default;
+            if (erroresDeIntegridad.Any())
+            {
+                string mensaje = "¡ERROR CRÍTICO DE SEGURIDAD!\n" +
+                                 "Se detectó manipulación en la base de datos. La aplicación se cerrará.\n\n" +
+                                 "Detalles:\n" +
+                                 string.Join("\n", erroresDeIntegridad);
+
+                MessageBox.Show(mensaje, "Error de Integridad de Datos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                
+                Application.Exit();
+            }
+            else
+            {
+                IdiomaHelper.TraducirControles(this);
+            }
         }
 
       

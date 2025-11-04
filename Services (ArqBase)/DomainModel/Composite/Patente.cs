@@ -15,35 +15,64 @@ using System.IO;
 
 namespace Services.DomainModel
 {
-	/// <summary>
-	/// This class (a) represents leaf objects in the composition, and (b) defines
-	/// behaviour for primitive objects in the composition.
-	/// </summary>
-	public class Patente : Component {
+    /// <summary>
+    /// Implementación 'Leaf' (la 'hoja') del patrón de diseño Composite.
+    /// Representa un permiso individual y primitivo, el cual no puede tener hijos.
+    /// </summary>
+    public class Patente : Component
+    {
 
-		public string DataKey { get; set; }
+        /// <summary>
+        /// Clave única (string) que identifica el permiso. A menudo se usa
+        /// para la internacionalización (i18n) o como clave programática.
+        /// </summary>
+        public string DataKey { get; set; }
 
-		public TipoAcceso TipoAcceso { get; set; }
+        /// <summary>
+        /// Define el tipo de acceso o recurso que esta patente está controlando.
+        /// </summary>
+        public TipoAcceso TipoAcceso { get; set; }
 
+        /// <summary>
+		/// Constructor por defecto.
+		/// </summary>
 		public Patente() { }
+
+        /// <summary>
+		/// Constructor para inicializar la patente con un ID específico.
+		/// </summary>
+		/// <param name="id">El Guid de la patente.</param>
 		public Patente(Guid id)
-		{
-			Id = id;
-		}
+        {
+            Id = id;
+        }
 
 
-		/// 
-		/// <param name="component"></param>
-		public override void Add(Component component){
-			throw new Exception("No se pueden agregar elementos en un hijo tipo hoja");
-		}
+        /// <summary>
+        /// Operación no soportada para una 'Hoja' (Leaf).
+        /// Lanza una <see cref="Exception"/> porque una Patente no puede tener hijos.
+        /// </summary>
+        /// <param name="component">El componente que se intentó agregar.</param>
+        public override void Add(Component component)
+        {
+            throw new Exception("No se pueden agregar elementos en un hijo tipo hoja");
+        }
 
-		/// 
-		/// <param name="component"></param>
-		public override void Remove(Component component){
-			throw new Exception("No se pueden eliminar elementos en un hijo tipo hoja");
-		}
+        /// <summary>
+        /// Operación no soportada para una 'Hoja' (Leaf).
+        /// Lanza una <see cref="Exception"/> porque una Patente no tiene hijos para eliminar.
+        /// </summary>
+        /// <param name="component">El componente que se intentó eliminar.</param>
+        public override void Remove(Component component)
+        {
+            throw new Exception("No se pueden eliminar elementos en un hijo tipo hoja");
+        }
 
+        /// <summary>
+        /// Convierte la patente en un objeto anónimo simple,
+        /// ideal para serialización (ej: a JSON).
+        /// </summary>
+        /// <returns>Un objeto anónimo representando la patente.</returns>
         public override object ToSerializable()
         {
             return new
@@ -55,9 +84,13 @@ namespace Services.DomainModel
             };
         }
 
-    }//end Patente
+    }
 
-	public enum TipoAcceso
+    /// <summary>
+    /// Enumera los diferentes tipos de recursos o accesos
+    /// que una <see cref="Patente"/> puede representar.
+    /// </summary>
+    public enum TipoAcceso
 	{
 		Pantalla,
 		CasoUso,

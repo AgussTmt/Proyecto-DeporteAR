@@ -11,8 +11,24 @@ using Services.Dal.Interfaces;
 
 namespace Services__ArqBase_.Dal.Implementations
 {
+    /// <summary>
+    /// Provee un repositorio (basado en reflexión) para operaciones de actualización
+    /// en tablas de unión (Join Tables).
+    /// </summary>
     public class UpdateGenericRepository
     {
+        /// <summary>
+        /// Invierte el estado 'Habilitado' (de 1 a 0, o de 0 a 1) para un registro específico
+        /// en una tabla de unión.
+        /// </summary>
+        /// <param name="Ent1">La primera entidad de la relación (ej: un Usuario).</param>
+        /// <param name="Ent2">La segunda entidad de la relación (ej: una Patente o Familia).</param>
+        /// <remarks>
+        /// ¡PRECAUCIÓN! Este método utiliza reflexión para construir dinámicamente la consulta SQL.
+        /// Asume que la tabla de unión se llama 'Ent1.Name + Ent2.Name' (ej: "UsuarioPatente")
+        /// y que las columnas de ID siguen la convención "Id + Ent.Name" (ej: "IdUsuario", "IdPatente").
+        /// Es sensible a cambios en los nombres de las clases o convenciones de la base de datos.
+        /// </remarks>
         public void UpdateHabilitadoJoin(object Ent1, object Ent2)
         {
             Type typeEnt1 = Ent1.GetType();

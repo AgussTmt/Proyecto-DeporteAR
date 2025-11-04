@@ -23,17 +23,28 @@ namespace WinUI.WinForms.Gestiones.Reservas
         {
             try
             {
-                // 1. Cargar datos (no editables)
+                // 1. Cargar datos
                 lblCancha.Text = _slotActual.Cancha.Nombre;
                 lblFecha.Text = _slotActual.FechaHorario.ToString("dd/MM/yyyy");
                 lblHora.Text = $"{_slotActual.FechaHorario:HH:mm} - {_slotActual.FechaHorario.AddMinutes(_slotActual.Cancha.DuracionXPartidoMin):HH:mm}";
 
                 // 2. Cargar ComboBox de Estados
-                // Asumo que tu Enum EstadoReserva tiene "Libre", "Reservada", "Mantenimiento"
                 cmbEstado.DataSource = Enum.GetValues(typeof(EstadoReserva));
                 cmbEstado.SelectedItem = _slotActual.Estado;
 
-                // 3. Cargar Cliente y Pago
+                if (_clienteSeleccionado != null && _clienteSeleccionado.IdCliente != Guid.Empty)
+                {
+                    var clienteCompleto = BLLFacade.Current.ClienteService.GetById(_clienteSeleccionado.IdCliente);
+                    if (clienteCompleto != null)
+                    {
+                        _clienteSeleccionado = clienteCompleto;
+                    }
+                    else
+                    {
+                        _clienteSeleccionado = null;
+                    }
+                }
+
                 MostrarClienteSeleccionado();
                 chkAbonada.Checked = _slotActual.Abonada;
 

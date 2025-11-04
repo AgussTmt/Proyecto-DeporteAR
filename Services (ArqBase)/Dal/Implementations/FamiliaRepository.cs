@@ -1,6 +1,7 @@
 ﻿using Dal.Tools;
 using Services.Dal.Implementations.Adapters;
 using Services.DomainModel;
+using Services.Facade;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -34,7 +35,11 @@ namespace Services.Dal.Implementations
 
         #endregion
 
-
+        /// <summary>
+        /// Agrega una nueva familia (grupo de roles) a la base de datos.
+        /// </summary>
+        /// <param name="familia">El objeto <see cref="Familia"/> a insertar.</param>
+        /// <returns>El mismo objeto <see cref="Familia"/> que se pasó como parámetro.</returns>
         public Familia Add(Familia familia)
         {
             SqlHelper.ExecuteNonQuery(AddStatement, CommandType.Text, new SqlParameter("@IdFamilia", familia.Id),
@@ -47,7 +52,10 @@ namespace Services.Dal.Implementations
 
         }
 
-
+        /// <summary>
+        /// Obtiene una lista con todas las familias (grupos de roles) disponibles en el sistema.
+        /// </summary>
+        /// <returns>Una <see cref="List{Familia}"/> que contiene todas las familias.</returns>
         public List<Familia> GetAll()
         {
             List<Familia> ListFamilias = new List<Familia>();
@@ -69,6 +77,11 @@ namespace Services.Dal.Implementations
             return ListFamilias;
         }
 
+        /// <summary>
+        /// Obtiene una familia (grupo de roles) específica mediante su identificador único.
+        /// </summary>
+        /// <param name="id">El <see cref="Guid"/> de la familia a buscar.</param>
+        /// <returns>El objeto <see cref="Familia"/> si se encuentra; de lo contrario, <c>null</c>.</returns>
         public Familia GetById(Guid id)
         {
             using (SqlDataReader reader = SqlHelper.ExecuteReader(SelectByIdStatement,
@@ -83,9 +96,41 @@ namespace Services.Dal.Implementations
                 }
                 else
                 {
-                    return null; // or throw an exception if not found
+                    return null;
                 }
             }
         }
+
+        /// <summary>
+        /// Verifica la integridad de todos los registros en la tabla [Familia] comparando
+        /// un hash calculado con el hash almacenado (VerificadorHash).
+        /// </summary>
+        /// <returns>Una lista de strings que describe cada fila donde se detectó una manipulación o corrupción de datos.</returns>
+        public List<string> VerificarIntegridadHash()
+        {
+            var errores = new List<string>();
+
+            using (SqlDataReader reader = SqlHelper.ExecuteReader(SelectAllStatement,
+                                                                    CommandType.Text,
+                                                                    new SqlParameter[] { }))
+            {
+                while (reader.Read())
+                {
+                    string id = reader["IdFamilia"].ToString();
+                    string nombre = reader["Nombre"].ToString();
+                    bool habilitado = Convert.ToBoolean(reader["Habilitado"]);
+                    string hashGuardado = reader["VerificadorHash"] == DBNull.Value ? null : reader["VerificadorHash"].ToString();
+                    string datosConcatenados = $"{id}-{nombre}-{habilitado}";
+                    string hashCalculado = CryptographyService.HashMd5(datosConcatenados);
+
+                    if (hashGuardado != hashCalculado)
+                    {
+                        errores.Add($"Error en Familia: Fila ID {id} (Nombre: '{nombre}') ha sido manipulada.");
+                    }
+                }
+            }
+            return errores;
+        }
     }
 }
+

@@ -8,8 +8,18 @@ using System.Threading.Tasks;
 
 namespace Services.Facade
 {
+    /// <summary>
+    /// Provee métodos de utilidad estáticos para operaciones criptográficas,
+    /// incluyendo hashing MD5 y encriptación/desencriptación simétrica AES.
+    /// </summary>
     public static class CryptographyService
     {
+
+        /// <summary>
+        /// Calcula el hash MD5 de un string de texto plano.
+        /// </summary>
+        /// <param name="textPlain">El string de entrada en texto plano.</param>
+        /// <returns>Un string de 32 caracteres que representa el hash MD5 en formato hexadecimal.</returns>
         public static string HashMd5(string textPlain)
         {
             StringBuilder sb = new StringBuilder();
@@ -26,6 +36,12 @@ namespace Services.Facade
         }
 
         private static string encryptionKey = "su_propia_clave";
+
+        /// <summary>
+        /// Encripta un string de texto plano usando AES.
+        /// </summary>
+        /// <param name="clearText">El string de texto plano a encriptar.</param>
+        /// <returns>Un string en formato Base64 representando los datos encriptados.</returns>
         public static string Encrypt(string clearText)
         {
             byte[] clearBytes = Encoding.Unicode.GetBytes(clearText);
@@ -47,6 +63,12 @@ namespace Services.Facade
             return clearText;
         }
 
+
+        /// <summary>
+        /// Desencripta un string (previamente encriptado con <see cref="Encrypt"/>) a texto plano.
+        /// </summary>
+        /// <param name="cipherText">El string encriptado, en formato Base64.</param>
+        /// <returns>El string de texto plano original.</returns>
         public static string Decrypt(string cipherText)
         {
             cipherText = cipherText.Replace(" ", "+");

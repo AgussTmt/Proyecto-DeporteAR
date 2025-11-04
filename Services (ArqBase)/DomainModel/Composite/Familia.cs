@@ -16,50 +16,92 @@ using System.Linq;
 
 namespace Services.DomainModel
 {
-	/// <summary>
-	/// This class (a) defines behaviour for components having children, (b) stores
-	/// child components, and (c) implements child-related operations in the Component
-	/// interface.
-	/// </summary>
-	/// 
+    /// <summary>
+    /// This class (a) defines behaviour for components having children, (b) stores
+    /// child components, and (c) implements child-related operations in the Component
+    /// interface.
+    /// </summary>
+    /// 
 
-	
-	public class Familia : Component {
+    /// <summary>
+    /// Implementación 'Composite' (la 'rama') del patrón de diseño.
+    /// Define el comportamiento para componentes que pueden tener hijos (otras Familias o Patentes),
+    /// almacena estos hijos y gestiona las operaciones relacionadas con ellos.
+    /// </summary>
+    public class Familia : Component {
 
 		private List<Component> hijos = new List<Component>();
 
+        /// <summary>
+        /// El nombre descriptivo de la familia (ej: "Administradores", "Auditores").
+        /// </summary>
         public string Nombre { get; set; }
+
+        /// <summary>
+        /// Hash MD5 de los datos de la fila, usado para verificar la integridad
+        /// y detectar manipulaciones. Es 'internal set' porque solo la capa
+        /// de persistencia (Adapter) debe establecerlo al leer.
+        /// </summary>
         public string VerificadorHash { get; internal set; }
 
+        /// <summary>
+        /// Constructor por defecto.
+        /// </summary>
         public Familia() { }
+
+        /// <summary>
+        /// Constructor para inicializar la familia con un ID específico.
+        /// </summary>
+        /// <param name="id">El Guid de la familia.</param>
         public Familia(Guid id){
 			Id = id;
 		}
 
 
-		/// 
-		/// <param name="component"></param>
-		public override void Add(Component component){
+        /// <summary>
+        /// Agrega un componente hijo (sea una <see cref="Patente"/> o_
+        /// otra <see cref="Familia"/>) a esta familia.
+        /// </summary>
+        /// <param name="component">El componente hijo a agregar.</param>
+        public override void Add(Component component){
 
 			hijos.Add(component);
 		}
 
+
+        /// <summary>
+        /// Agrega una colección de componentes hijos a esta familia.
+        /// </summary>
+        /// <param name="components">La colección de componentes a agregar.</param>
 		public void AddRange(IEnumerable<Component> components)
 		{
 			hijos.AddRange(components);
         }
 
-        /// 
-        /// <param name="component"></param>
+        /// <summary>
+        /// Elimina un componente hijo de esta familia.
+        /// </summary>
+        /// <param name="component">El componente hijo a eliminar.</param>
         public override void Remove(Component component){
-			component.Remove(component);
+			hijos.Remove(component);
 		}
 
+
+        /// <summary>
+        /// Obtiene la lista de todos los componentes hijos directos.
+        /// </summary>
+        /// <returns>Una <see cref="List{Component}"/> con los hijos.</returns>
 		public List<Component> GetHijos()
 		{
 			return hijos;
         }
 
+
+        /// <summary>
+        /// Convierte la familia y toda su jerarquía de hijos en un objeto
+        /// anónimo simple, ideal para serialización (ej: a JSON).
+        /// </summary>
+        /// <returns>Un objeto anónimo representando la jerarquía.</returns>
         public override object ToSerializable()
         {
             return new
