@@ -12,8 +12,6 @@ namespace DAL.Interfaces
     {
         List<Fixture> GetByCompeticion(Competicion competicion);
 
-        void UpdateFecha(Fixture fixture);
-
         List<Fixture> GetByTimeRange(DateTime dateTime);
         void Delete(Guid id);
 

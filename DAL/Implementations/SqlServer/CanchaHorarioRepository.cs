@@ -13,8 +13,21 @@ using DomainModel;
 
 namespace DAL.Implementations.SqlServer
 {
+    /// <summary>
+    /// Repositorio SQL para gestionar las reservas y horarios (<see cref="CanchaHorario"/>).
+    /// Es la clase principal para interactuar con la grilla de turnos.
+    /// </summary>
+    /// <remarks>
+    /// Opera dentro de una transacción y conexión SQL existente (Unit of Work).
+    /// </remarks>
     internal class CanchaHorarioRepository : SqlTransactRepository, ICanchaHorarioRepository
     {
+        /// <summary>
+        /// Inicializa el repositorio con el contexto de conexión y transacción de una
+        /// Unidad de Trabajo (Unit of Work) existente.
+        /// </summary>
+        /// <param name="context">La <see cref="SqlConnection"/> activa.</param>
+        /// <param name="_transaction">La <see cref="SqlTransaction"/> activa.</param>
         public CanchaHorarioRepository(SqlConnection context, SqlTransaction _transaction) : base(context, _transaction)
         {
 
@@ -26,6 +39,10 @@ namespace DAL.Implementations.SqlServer
                 FROM [DbCancha Horario] ch
                 LEFT JOIN DbEstadoReserva e ON ch.IdEstadoReserva = e.IdEstadoReserva";
 
+        /// <summary>
+        /// Agrega un nuevo registro de <see cref="CanchaHorario"/> (un turno) a la base de datos.
+        /// </summary>
+        /// <param name="entity">La entidad <see cref="CanchaHorario"/> a insertar.</param>
         public void Add(CanchaHorario entity)
         {
             
@@ -50,6 +67,10 @@ namespace DAL.Implementations.SqlServer
             );
         }
 
+        /// <summary>
+        /// Invierte (toggle) el estado de 'Abonada' (pagada) de una reserva.
+        /// </summary>
+        /// <param name="id">El ID (<c>IdCancha-Horario</c>) de la reserva a modificar.</param>
         public void CambiarHabilitado(Guid id)
         {
             string sql = @"UPDATE [DbCancha Horario] 
@@ -61,7 +82,10 @@ namespace DAL.Implementations.SqlServer
             );
         }
 
-
+        /// <summary>
+        /// Obtiene todos los registros de <see cref="CanchaHorario"/> de la base de datos.
+        /// </summary>
+        /// <returns>Una colección de <see cref="CanchaHorario"/>.</returns>
         public IEnumerable<CanchaHorario> GetAll()
         {
             var horarios = new List<CanchaHorario>();
@@ -77,6 +101,11 @@ namespace DAL.Implementations.SqlServer
             return horarios;
         }
 
+        /// <summary>
+        /// Obtiene todos los horarios reservados por un cliente específico.
+        /// </summary>
+        /// <param name="cliente">El <see cref="Cliente"/> a consultar.</param>
+        /// <returns>Una lista de <see cref="CanchaHorario"/>.</returns>
         public List<CanchaHorario> GetByCliente(Cliente cliente)
         {
             string sql = $"{_sqlSelect} WHERE ch.IdCliente = @IdCliente";
@@ -94,6 +123,12 @@ namespace DAL.Implementations.SqlServer
             return horarios;
         }
 
+        /// <summary>
+        /// Obtiene todos los horarios que se encuentran en un estado específico
+        /// (ej: 'Libre', 'Reservada').
+        /// </summary>
+        /// <param name="estadoReserva">El <see cref="EstadoReserva"/> (enum) a filtrar.</param>
+        /// <returns>Una lista de <see cref="CanchaHorario"/>.</returns>
         public List<CanchaHorario> GetByEstadoReserva(EstadoReserva estadoReserva)
         {
             string descripcion = estadoReserva.ToString();
@@ -112,6 +147,12 @@ namespace DAL.Implementations.SqlServer
             return horarios;
         }
 
+        /// <summary>
+        /// Obtiene un <see cref="CanchaHorario"/> específico por su clave primaria.
+        /// </summary>
+        /// <param name="id">El ID (<c>IdCancha-Horario</c>) de la reserva.</param>
+        /// <returns>La <see cref="CanchaHorario"/> encontrada, o <c>null</c> si no existe.</returns>
+
         public CanchaHorario GetById(Guid id)
         {
             string sql = $"{_sqlSelect} WHERE ch.[IdCancha-Horario] = @Id";
@@ -129,6 +170,12 @@ namespace DAL.Implementations.SqlServer
             return horario;
         }
 
+        /// <summary>
+        /// Obtiene todos los horarios (turnos) para una fecha específica.
+        /// La consulta filtra por DÍA (ignorando la hora de <paramref name="dateTime"/>).
+        /// </summary>
+        /// <param name="dateTime">La fecha a consultar.</param>
+        /// <returns>Una lista de <see cref="CanchaHorario"/> para esa fecha.</returns>
         public List<CanchaHorario> GetByTimeRange(DateTime dateTime)
         {
             
@@ -147,6 +194,15 @@ namespace DAL.Implementations.SqlServer
             return horarios;
         }
 
+        /// <summary>
+        /// Obtiene todos los horarios ordenados por demanda (basado en la columna 'CantReservas').
+        /// </summary>
+        /// <returns>Una lista de <see cref="CanchaHorario"/> ordenada.</returns>
+        /// <remarks>
+        /// Esta consulta asume que la tabla [DbCancha Horario] tiene una columna
+        /// llamada 'CantReservas' que se usa para ordenar, aunque no se selecciona
+        /// en el <c>_sqlSelect</c> base.
+        /// </remarks>
         public List<CanchaHorario> GetOrderByDemand()
         {
             string sql = $"{_sqlSelect} ORDER BY ch.CantReservas DESC";
@@ -164,6 +220,10 @@ namespace DAL.Implementations.SqlServer
             return horarios;
         }
 
+        /// <summary>
+        /// Actualiza un registro de <see cref="CanchaHorario"/> existente en la base de datos.
+        /// </summary>
+        /// <param name="entity">La entidad <see cref="CanchaHorario"/> con los datos modificados.</param>
         public void Update(CanchaHorario entity)
         {
             Guid idEstado = GetEstadoReservaId(entity.Estado);
@@ -191,7 +251,13 @@ namespace DAL.Implementations.SqlServer
             );
         }
 
-
+        /// <summary>
+        /// Método de ayuda (privado) para convertir un <see cref="EstadoReserva"/> (enum)
+        /// a su <see cref="Guid"/> correspondiente, consultando la tabla 'DbEstadoReserva'.
+        /// </summary>
+        /// <param name="estado">El enum a convertir.</param>
+        /// <returns>El <see cref="Guid"/> del estado.</returns>
+        /// <exception cref="InvalidOperationException">Si el estado no existe en la tabla.</exception>
         private Guid GetEstadoReservaId(EstadoReserva estado)
         {
             string descripcion = estado.ToString(); 
@@ -207,6 +273,13 @@ namespace DAL.Implementations.SqlServer
             return (Guid)result;
         }
 
+
+        /// <summary>
+        /// Obtiene el turno *exacto* para una cancha y una fecha/hora específicas.
+        /// </summary>
+        /// <param name="idCancha">El ID de la <see cref="Cancha"/>.</param>
+        /// <param name="hora">La fecha y hora exactas del turno.</param>
+        /// <returns>El <see cref="CanchaHorario"/> encontrado, o <c>null</c>.</returns>
         public CanchaHorario GetByCanchaYHora(Guid idCancha, DateTime hora)
         {
             string sql = $"{_sqlSelect} WHERE ch.IdCancha = @IdCancha AND ch.Horario = @Hora";
@@ -227,6 +300,13 @@ namespace DAL.Implementations.SqlServer
 
         }
 
+
+        /// <summary>
+        /// Obtiene la fecha y hora del último turno (máxima) reservado para una cancha,
+        /// excluyendo los turnos ocupados por torneos.
+        /// </summary>
+        /// <param name="idCancha">El ID de la <see cref="Cancha"/>.</param>
+        /// <returns>La <see cref="DateTime"/> máxima, o <see cref="DateTime.MinValue"/> si no hay horarios.</returns>
         public DateTime GetMaximaFechaHorario(Guid idCancha)
         {
             Guid idEstadoTorneo = GetEstadoReservaId(EstadoReserva.OcupadoPorTorneo);
@@ -249,6 +329,14 @@ namespace DAL.Implementations.SqlServer
             return Convert.ToDateTime(result);
         }
 
+
+        /// <summary>
+        /// Verifica si ya existe un turno creado (un <c>CanchaHorario</c>) para una
+        /// cancha en una fecha y hora exactas.
+        /// </summary>
+        /// <param name="idCancha">El ID de la <see cref="Cancha"/>.</param>
+        /// <param name="fechaHora">La fecha y hora exactas del turno a verificar.</param>
+        /// <returns><c>true</c> si el turno ya existe, <c>false</c> en caso contrario.</returns>
         public bool ExisteHorario(Guid idCancha, DateTime fechaHora)
         {
             string sql = @"SELECT COUNT(*)
@@ -265,6 +353,14 @@ namespace DAL.Implementations.SqlServer
             return count > 0;
         }
 
+
+        /// <summary>
+        /// Obtiene todos los turnos de una cancha específica dentro de un rango de fechas.
+        /// </summary>
+        /// <param name="idCancha">El ID de la <see cref="Cancha"/>.</param>
+        /// <param name="fechaDesde">La fecha/hora de inicio (inclusiva).</param>
+        /// <param name="fechaHasta">La fecha/hora de fin (exclusiva).</param>
+        /// <returns>Una colección de <see cref="CanchaHorario"/>.</returns>
         public IEnumerable<CanchaHorario> GetHorariosRango(Guid idCancha, DateTime fechaDesde, DateTime fechaHasta)
         {
             string sql = $"{_sqlSelect} WHERE ch.IdCancha = @IdCancha " +
@@ -294,6 +390,13 @@ namespace DAL.Implementations.SqlServer
 
         }
 
+
+        /// <summary>
+        /// Cuenta cuántos turnos futuros (desde ahora en adelante) para una cancha
+        /// están en estado 'Reservada', 'Espera' u 'OcupadoPorTorneo'.
+        /// </summary>
+        /// <param name="idCancha">El ID de la <see cref="Cancha"/>.</param>
+        /// <returns>El número total de turnos "no libres" a futuro.</returns>
         public int CountSlotsOcupadosFuturos(Guid idCancha)
         {
             // Obtenemos los IDs de los estados "no-libres"
@@ -321,6 +424,13 @@ namespace DAL.Implementations.SqlServer
             return 0;
         }
 
+
+        /// <summary>
+        /// Cuenta cuántas reservas activas (en estado 'Reservada' y a futuro)
+        /// tiene un cliente específico.
+        /// </summary>
+        /// <param name="idCliente">El ID del <see cref="Cliente"/>.</param>
+        /// <returns>El número de reservas activas.</returns>
         public int CountReservasActivasByCliente(Guid idCliente)
         {
             Guid idEstadoReservada = GetEstadoReservaId(EstadoReserva.Reservada);
@@ -339,6 +449,13 @@ namespace DAL.Implementations.SqlServer
             return (int)(result ?? 0);
         }
 
+
+        /// <summary>
+        /// Obtiene una lista de todos los turnos (reservas) anteriores a una fecha
+        /// que están en estado 'Reservada' pero que figuran como 'No Abonada'.
+        /// </summary>
+        /// <param name="fechaLimite">La fecha/hora límite (los turnos anteriores a esta fecha).</param>
+        /// <returns>Una colección de <see cref="CanchaHorario"/> (deudores).</returns>
         public IEnumerable<CanchaHorario> GetDeudores(DateTime fechaLimite)
         {
 
@@ -365,6 +482,15 @@ namespace DAL.Implementations.SqlServer
             return horarios;
         }
 
+
+        /// <summary>
+        /// Obtiene un informe de todos los turnos que fueron 'Abonados' (pagados)
+        /// dentro de un rango de fechas, opcionalmente filtrado por una cancha.
+        /// </summary>
+        /// <param name="desde">Fecha/hora de inicio del reporte.</param>
+        /// <param name="hasta">Fecha/hora de fin del reporte.</param>
+        /// <param name="idCancha">Opcional. Si se provee, filtra por esta cancha.</param>
+        /// <returns>Una colección de <see cref="CanchaHorario"/> pagados.</returns>
         public IEnumerable<CanchaHorario> GetHorariosAbonadosRango(DateTime desde, DateTime hasta, Guid? idCancha)
         {
             

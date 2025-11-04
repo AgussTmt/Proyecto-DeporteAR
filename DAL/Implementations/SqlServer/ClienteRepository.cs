@@ -12,8 +12,21 @@ using DomainModel;
 
 namespace DAL.Implementations.SqlServer
 {
+    /// <summary>
+    /// Repositorio SQL para gestionar las entidades <see cref="Cliente"/>.
+    /// Provee métodos de ABM (CRUD) para los clientes.
+    /// </summary>
+    /// <remarks>
+    /// Opera dentro de una transacción y conexión SQL existente (Unit of Work).
+    /// </remarks>
     internal class ClienteRepository : SqlTransactRepository, IClienteRepository
     {
+        /// <summary>
+        /// Inicializa el repositorio con el contexto de conexión y transacción de una
+        /// Unidad de Trabajo (Unit of Work) existente.
+        /// </summary>
+        /// <param name="context">La <see cref="SqlConnection"/> activa.</param>
+        /// <param name="_transaction">La <see cref="SqlTransaction"/> activa.</param>
         public ClienteRepository(SqlConnection context, SqlTransaction _transaction) : base(context, _transaction)
         {
 
@@ -21,6 +34,11 @@ namespace DAL.Implementations.SqlServer
         private const string _sqlSelect = @"SELECT 
                 IdCliente, Nombre, Telefono, Email
             FROM DbCliente";
+
+        /// <summary>
+        /// Agrega un nuevo <see cref="Cliente"/> a la base de datos.
+        /// </summary>
+        /// <param name="cliente">La entidad <see cref="Cliente"/> a insertar.</param>
         public void Add(Cliente cliente)
         {
             string sql = @"INSERT INTO DbCliente 
@@ -36,6 +54,11 @@ namespace DAL.Implementations.SqlServer
             );
         }
 
+        /// <summary>
+        /// Obtiene un <see cref="Cliente"/> específico buscando por su número de teléfono.
+        /// </summary>
+        /// <param name="Numero">El número de teléfono a buscar.</param>
+        /// <returns>El <see cref="Cliente"/> encontrado, o <c>null</c>.</returns>
         public Cliente GetByNumero(string Numero)
         {
             string sql = $"{_sqlSelect} WHERE Telefono = @Telefono";
@@ -54,6 +77,10 @@ namespace DAL.Implementations.SqlServer
             return cliente;
         }
 
+        /// <summary>
+        /// Obtiene una lista de todos los clientes registrados.
+        /// </summary>
+        /// <returns>Una colección de <see cref="Cliente"/>.</returns>
         public IEnumerable<Cliente> GetAll()
         {
             var clientes = new List<Cliente>();
@@ -74,6 +101,11 @@ namespace DAL.Implementations.SqlServer
             return clientes;
         }
 
+        /// <summary>
+        /// Obtiene un <see cref="Cliente"/> específico por su ID (PK).
+        /// </summary>
+        /// <param name="id">El ID (PK) del cliente.</param>
+        /// <returns>El <see cref="Cliente"/> encontrado, o <c>null</c>.</returns>
         public Cliente GetById(Guid id)
         {
             Cliente cliente = null;
@@ -91,6 +123,10 @@ namespace DAL.Implementations.SqlServer
             return cliente; // Devuelve null si no se encontró
         }
 
+        /// <summary>
+        /// Actualiza un registro de <see cref="Cliente"/> existente en la base de datos.
+        /// </summary>
+        /// <param name="entity">La entidad <see cref="Cliente"/> con los datos modificados.</param>
         public void Update(Cliente entity)
         {
             string sql = @"UPDATE DbCliente SET
@@ -107,6 +143,10 @@ namespace DAL.Implementations.SqlServer
             );
         }
 
+        /// <summary>
+        /// Elimina un <see cref="Cliente"/> de la base de datos.
+        /// </summary>
+        /// <param name="id">El ID (PK) del cliente a eliminar.</param>
         public void Delete(Guid id)
         {
             string sql = "DELETE FROM DbCliente WHERE IdCliente = @IdCliente";

@@ -12,8 +12,21 @@ using DomainModel;
 
 namespace DAL.Implementations.SqlServer
 {
+    /// <summary>
+    /// Repositorio SQL para gestionar las entidades <see cref="Equipo"/>.
+    /// Provee métodos de ABM (CRUD) para los equipos de las competiciones.
+    /// </summary>
+    /// <remarks>
+    /// Opera dentro de una transacción y conexión SQL existente (Unit of Work).
+    /// </remarks>
     internal class EquipoRepository : SqlTransactRepository, IEquipoRepository
     {
+        /// <summary>
+        /// Inicializa el repositorio con el contexto de conexión y transacción de una
+        /// Unidad de Trabajo (Unit of Work) existente.
+        /// </summary>
+        /// <param name="context">La <see cref="SqlConnection"/> activa.</param>
+        /// <param name="_transaction">La <see cref="SqlTransaction"/> activa.</param>
         public EquipoRepository(SqlConnection context, SqlTransaction _transaction) : base(context, _transaction)
         {
         }
@@ -28,6 +41,10 @@ namespace DAL.Implementations.SqlServer
         LEFT JOIN DbEstadoAsistencia ea ON e.IdEstadoAsistencia = ea.IdEstadoAsistencia
         ";
 
+        /// <summary>
+        /// Agrega un nuevo <see cref="Equipo"/> a la base de datos.
+        /// </summary>
+        /// <param name="equipo">La entidad <see cref="Equipo"/> a insertar.</param>
         public void Add(Equipo equipo)
         {
             Guid estadoId = GetEstadoAsistenciaId(equipo.EstadoProxPartido);
@@ -48,6 +65,12 @@ namespace DAL.Implementations.SqlServer
         }
 
 
+        /// <summary>
+        /// Obtiene la lista de equipos inscritos en una competición específica,
+        /// incluyendo la lista de jugadores de cada equipo.
+        /// </summary>
+        /// <param name="competicion">La <see cref="Competicion"/> a consultar.</param>
+        /// <returns>Una lista de <see cref="Equipo"/> completos (con jugadores).</returns>
         public List<Equipo> GetByCompeticion(Competicion competicion)
         {
             string sql = $@"SELECT e.*
@@ -57,29 +80,33 @@ namespace DAL.Implementations.SqlServer
 
             var listaEquipos = new List<Equipo>();
 
-            
-            using (var reader = base.ExecuteReader(sql, CommandType.Text, 
+
+            using (var reader = base.ExecuteReader(sql, CommandType.Text,
                 new SqlParameter("@IdCompeticion", competicion.IdCompeticion)))
             {
                 while (reader.Read())
                 {
                     object[] values = new object[reader.FieldCount];
                     reader.GetValues(values);
-                    
+
                     listaEquipos.Add(EquipoAdapter.Current.Get(values));
                 }
-            } 
+            }
 
-            
+
             foreach (var equipo in listaEquipos)
             {
-                PopulateJugadores(equipo);
+                PopulateJugadores(equipo); // N+1 consultas
             }
-            
+
 
             return listaEquipos;
         }
 
+        /// <summary>
+        /// Actualiza un registro de <see cref="Equipo"/> existente en la base de datos.
+        /// </summary>
+        /// <param name="equipo">La entidad <see cref="Equipo"/> con los datos modificados.</param>
         public void Update(Equipo equipo)
         {
             Guid estadoId = GetEstadoAsistenciaId(equipo.EstadoProxPartido);
@@ -103,6 +130,13 @@ namespace DAL.Implementations.SqlServer
         }
 
 
+        /// <summary>
+        /// Método de ayuda (privado) para obtener el <see cref="Guid"/> (IdEstadoAsistencia)
+        /// de un <see cref="EstadoAsistencia"/> (enum) a partir de su string.
+        /// </summary>
+        /// <param name="estado">El enum <see cref="EstadoAsistencia"/>.</param>
+        /// <returns>El <see cref="Guid"/> del estado.</returns>
+        /// <exception cref="InvalidOperationException">Si el estado no existe en la tabla DbEstadoAsistencia.</exception>
         private Guid GetEstadoAsistenciaId(EstadoAsistencia estado)
         {
             string desc = estado.ToString();
@@ -113,6 +147,11 @@ namespace DAL.Implementations.SqlServer
             return (Guid)result;
         }
 
+        /// <summary>
+        /// Método de ayuda (privado) que carga la lista de <see cref="Jugador"/>
+        /// para un equipo dado.
+        /// </summary>
+        /// <param name="equipo">El <see cref="Equipo"/> al que se le cargarán los jugadores.</param>
         private void PopulateJugadores(Equipo equipo)
         {
 
@@ -136,6 +175,12 @@ namespace DAL.Implementations.SqlServer
             }
         }
 
+        /// <summary>
+        /// Obtiene un <see cref="Equipo"/> específico por su ID,
+        /// incluyendo su lista de jugadores.
+        /// </summary>
+        /// <param name="idEquipo">El ID (PK) del equipo.</param>
+        /// <returns>El <see cref="Equipo"/> encontrado (con jugadores), o <c>null</c>.</returns>
         public Equipo GetById(Guid idEquipo)
         {
             Equipo equipo = null;
@@ -150,24 +195,29 @@ namespace DAL.Implementations.SqlServer
                     reader.GetValues(values);
                     equipo = EquipoAdapter.Current.Get(values);
                 }
-            } 
+            }
 
-            
+
             if (equipo != null)
             {
-               
-                PopulateJugadores(equipo);
+
+                PopulateJugadores(equipo); // Carga los jugadores (Consulta 2)
             }
             return equipo;
         }
 
+        /// <summary>
+        /// Obtiene una lista de todos los equipos HABILITADOS (<c>Habilitado = 1</c>),
+        /// incluyendo la lista de jugadores de cada equipo.
+        /// </summary>
+        /// <returns>Una colección de <see cref="Equipo"/>.</returns>
         public IEnumerable<Equipo> GetAll()
         {
             var list = new List<Equipo>();
             string sql = $"{_sqlSelect} WHERE e.Habilitado = 1";
 
 
-            using (var reader = base.ExecuteReader(_sqlSelect, CommandType.Text))
+            using (var reader = base.ExecuteReader(_sqlSelect, CommandType.Text)) // ¡OJO! No está usando el 'sql' filtrado
             {
                 while (reader.Read())
                 {
@@ -178,11 +228,16 @@ namespace DAL.Implementations.SqlServer
             }
             foreach (var equipo in list)
             {
-                PopulateJugadores(equipo); 
+                PopulateJugadores(equipo); // N+1 consultas
             }
             return list;
         }
 
+        /// <summary>
+        /// Cambia el estado de Habilitado/Deshabilitado de un equipo.
+        /// </summary>
+        /// <param name="idEquipo">El ID del equipo a modificar.</param>
+        /// <param name="habilitado">El nuevo estado (true o false).</param>
         public void CambiarHabilitado(Guid idEquipo, bool habilitado)
         {
             string sql = @"UPDATE DbEquipo SET
@@ -195,10 +250,15 @@ namespace DAL.Implementations.SqlServer
             );
         }
 
+        /// <summary>
+        /// Obtiene una lista de TODOS los equipos (habilitados y deshabilitados),
+        /// incluyendo la lista de jugadores de cada equipo.
+        /// </summary>
+        /// <returns>Una colección de <see cref="Equipo"/>.</returns>
         public IEnumerable<Equipo> GetAllIncludingDisabled()
         {
             var list = new List<Equipo>();
-            
+
             string sql = _sqlSelect;
 
             using (var reader = base.ExecuteReader(sql, CommandType.Text))
@@ -212,11 +272,16 @@ namespace DAL.Implementations.SqlServer
             }
             foreach (var equipo in list)
             {
-                PopulateJugadores(equipo);
+                PopulateJugadores(equipo); // N+1 consultas
             }
             return list;
         }
 
+        /// <summary>
+        /// Obtiene una lista de todos los equipos habilitados que pertenecen a un capitán (Cliente).
+        /// </summary>
+        /// <param name="idCliente">El ID del <see cref="Cliente"/> (capitán).</param>
+        /// <returns>Una lista de <see cref="Equipo"/>.</returns>
         public List<Equipo> GetByCapitan(Guid idCliente)
         {
             var list = new List<Equipo>();
@@ -230,6 +295,10 @@ namespace DAL.Implementations.SqlServer
                     reader.GetValues(values);
                     list.Add(EquipoAdapter.Current.Get(values));
                 }
+            }
+            foreach (var equipo in list)
+            {
+                PopulateJugadores(equipo); 
             }
             return list;
         }

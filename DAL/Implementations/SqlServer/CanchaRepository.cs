@@ -14,8 +14,21 @@ using DAL.Implementations.SqlServer.Adapters;
 
 namespace DAL.Implementations.SqlServer
 {
+    /// <summary>
+    /// Repositorio SQL para gestionar las entidades <see cref="Cancha"/>.
+    /// Provee métodos de ABM (CRUD) para las canchas.
+    /// </summary>
+    /// <remarks>
+    /// Opera dentro de una transacción y conexión SQL existente (Unit of Work).
+    /// </remarks>
     internal class CanchaRepository : SqlTransactRepository, ICanchaRepository
     {
+        /// <summary>
+        /// Inicializa el repositorio con el contexto de conexión y transacción de una
+        /// Unidad de Trabajo (Unit of Work) existente.
+        /// </summary>
+        /// <param name="context">La <see cref="SqlConnection"/> activa.</param>
+        /// <param name="_transaction">La <see cref="SqlTransaction"/> activa.</param>
         public CanchaRepository(SqlConnection context, SqlTransaction _transaction) : base(context, _transaction)
         {
         }
@@ -28,6 +41,15 @@ namespace DAL.Implementations.SqlServer
 
         private const string _sqlSelectEnabled = _sqlSelectAll + " WHERE c.EstadoCancha = 1";
 
+        /// <summary>
+        /// Agrega una nueva <see cref="Cancha"/> a la base de datos.
+        /// </summary>
+        /// <param name="entity">La entidad <see cref="Cancha"/> a insertar.</param>
+        /// <remarks>
+        /// Este método traduce el <c>entity.Deporte</c> (string) a su <see cref="Guid"/> (IdDeporte)
+        /// y convierte <c>DuracionXPartidoMin</c> (int) a <see cref="TimeSpan"/>.
+        /// También formatea el <c>Precio</c> a un string (InvariantCulture).
+        /// </remarks>
         public void Add(Cancha entity)
         {
             Guid idDeporte = GetDeporteIdByDescripcion(entity.Deporte);
@@ -52,6 +74,12 @@ namespace DAL.Implementations.SqlServer
             );
         }
 
+
+        /// <summary>
+        /// Invierte (toggle) el estado de habilitación (<c>EstadoCancha</c>) de una cancha.
+        /// </summary>
+        /// <param name="id">El ID de la <see cref="Cancha"/> a modificar.</param>
+        /// <remarks>
         public void CambiarHabilitado(Guid id)
         {
             string sql = @"UPDATE DbCancha 
@@ -64,6 +92,10 @@ namespace DAL.Implementations.SqlServer
             );
         }
 
+        /// <summary>
+        /// Obtiene una lista de todas las canchas HABILITADAS (<c>EstadoCancha = 1</c>).
+        /// </summary>
+        /// <returns>Una colección de <see cref="Cancha"/>.</returns>
         public IEnumerable<Cancha> GetAll()
         {
             var canchas = new List<Cancha>();
@@ -81,6 +113,10 @@ namespace DAL.Implementations.SqlServer
             return canchas;
         }
 
+        /// <summary>
+        /// Obtiene una lista de TODAS las canchas, incluyendo las deshabilitadas.
+        /// </summary>
+        /// <returns>Una colección de <see cref="Cancha"/>.</returns>
         public IEnumerable<Cancha> GetAllIncludingDisabled()
         {
             var canchas = new List<Cancha>();
@@ -96,6 +132,12 @@ namespace DAL.Implementations.SqlServer
             return canchas;
         }
 
+        /// <summary>
+        /// Obtiene una <see cref="Cancha"/> específica por su ID,
+        /// independientemente de si está habilitada o no.
+        /// </summary>
+        /// <param name="id">El ID de la <see cref="Cancha"/>.</param>
+        /// <returns>La <see cref="Cancha"/> encontrada, o <c>null</c>.</returns>
         public Cancha GetById(Guid id)
         {
             string sql = $"{_sqlSelectAll} WHERE c.IdCancha = @IdCancha";
@@ -113,6 +155,14 @@ namespace DAL.Implementations.SqlServer
             return cancha;
         }
 
+        /// <summary>
+        /// Actualiza un registro de <see cref="Cancha"/> existente.
+        /// </summary>
+        /// <param name="entity">La entidad <see cref="Cancha"/> con los datos modificados.</param>
+        /// <remarks>
+        /// Al igual que Add, traduce <c>Deporte</c> a Guid, <c>DuracionXPartidoMin</c> a <see cref="TimeSpan"/>
+        /// y <c>Precio</c> a string.
+        /// </remarks>
         public void Update(Cancha entity)
         {
             
@@ -143,7 +193,13 @@ namespace DAL.Implementations.SqlServer
         }
 
 
-
+        /// <summary>
+        /// Método de ayuda (privado) para obtener el <see cref="Guid"/> (IdDeporte)
+        /// de un deporte a partir de su string de descripción.
+        /// </summary>
+        /// <param name="descripcion">La descripción del deporte (ej: "Fútbol 5").</param>
+        /// <returns>El <see cref="Guid"/> del deporte.</returns>
+        /// <exception cref="InvalidOperationException">Si el deporte no existe en la tabla DbDeporte.</exception>
         private Guid GetDeporteIdByDescripcion(string descripcion)
         {
             string sql = "SELECT IdDeporte FROM DbDeporte WHERE Descripcion = @Descripcion";
