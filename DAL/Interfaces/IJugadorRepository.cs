@@ -17,5 +17,9 @@ namespace DAL.Interfaces
         IEnumerable<Jugador> GetAllIncludingDisabled();
         void CambiarHabilitado(Guid id);
 
+        void AddOrUpdateSancionStat(Guid idJugador, string tipo, int cantidadASumar);
+
+        void AddOrUpdatePuntuacionStat(Guid idJugador, string tipo, int cantidadASumar);
+
     }
 }

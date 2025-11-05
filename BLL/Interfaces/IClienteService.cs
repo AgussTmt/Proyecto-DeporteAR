@@ -12,5 +12,7 @@ namespace BLL.Interfaces
     public interface IClienteService : IGenericService <Cliente>
     {
         List<RankingClienteDTO> GetRankingClientes(int topN);
+
+        void Delete(Guid id);
     }
 }

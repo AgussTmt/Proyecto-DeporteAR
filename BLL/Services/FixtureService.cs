@@ -173,23 +173,6 @@ namespace BLL.Services
         }
 
         /// <summary>
-        /// (No implementado) Borra un partido.
-        /// </summary>
-        public void Delete(Guid id)
-        {
-            using (var context = FactoryDao.UnitOfWork.Create())
-            {
-                try
-                {
-                    // Ojo, el repo tira NotImplementedException
-                    context.Repositories.FixtureRepository.Delete(id);
-                    context.SaveChanges();
-                }
-                catch (Exception) { throw; }
-            }
-        }
-
-        /// <summary>
         /// Obtiene una lista de todos los partidos (fixtures) en el sistema.
         /// </summary>
         /// <returns>Colección de <see cref="Fixture"/>.</returns>

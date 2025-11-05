@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using DAL.Implementations.SqlServer.Adapters;
 using DAL.Implementations.SqlServer.Helper;
 using DAL.Interfaces;
@@ -40,7 +43,6 @@ namespace DAL.Implementations.SqlServer
 
         /// <summary>
         /// Agrega un nuevo <see cref="Jugador"/> a la base de datos.
-        /// También sincroniza sus colecciones de Puntuacion y Sanciones (delete-then-insert).
         /// </summary>
         /// <param name="entity">La entidad <see cref="Jugador"/> a insertar.</param>
         public void Add(Jugador entity)
@@ -59,9 +61,6 @@ namespace DAL.Implementations.SqlServer
                 new SqlParameter("@Apellido", (object)entity.Apellido ?? DBNull.Value)
             );
 
-            // Sincroniza las tablas hijas (delete-then-insert)
-            SyncPuntuacion(entity);
-            SyncSanciones(entity);
         }
 
         /// <summary>
@@ -70,29 +69,80 @@ namespace DAL.Implementations.SqlServer
         /// <returns>Una colección de <see cref="Jugador"/>.</returns>
         public IEnumerable<Jugador> GetAll()
         {
-            var lista = new List<Jugador>();
+            // 1. El SQL con 3 consultas. El orden importa.
+            // (Tu _sqlSelect ya hace el LEFT JOIN a Equipo, ¡perfecto!)
+            string sql = $@"
+                {_sqlSelect} 
+                WHERE j.Habilitado = 1;
 
-            string sql = $"{_sqlSelect} WHERE j.Habilitado = 1";
+                SELECT p.IdJugador, p.Descripcion, p.Cantidad 
+                FROM DbPuntuacion p
+                INNER JOIN DbJugador j ON p.IdJugador = j.Idjugador
+                WHERE j.Habilitado = 1;
 
+                SELECT s.IdJugador, s.Descripcion, s.Cantidad 
+                FROM DbSanciones s
+                INNER JOIN DbJugador j ON s.IdJugador = j.Idjugador
+                WHERE j.Habilitado = 1;
+            ";
+
+            // Usamos un Diccionario para "agrupar" los datos en memoria.
+            // Es la forma más rápida de encontrar a un jugador por su ID.
+            var jugadoresDictionary = new Dictionary<Guid, Jugador>();
 
             using (var reader = base.ExecuteReader(sql, CommandType.Text))
             {
+                // --- PRIMER RESULT SET (Jugadores) ---
                 while (reader.Read())
                 {
-
                     object[] values = new object[reader.FieldCount];
                     reader.GetValues(values);
                     var jugador = JugadorAdapter.Current.Get(values);
-                    lista.Add(jugador);
+
+                    // ¡IMPORTANTE! Inicializamos los diccionarios vacíos
+                    jugador.Puntuacion = new Dictionary<string, int>();
+                    jugador.Sanciones = new Dictionary<string, int>();
+
+                    jugadoresDictionary.Add(jugador.Idjugador, jugador);
+                }
+
+                // --- SEGUNDO RESULT SET (Puntuaciones) ---
+                if (reader.NextResult())
+                {
+                    while (reader.Read())
+                    {
+                        var idJugador = (Guid)reader["IdJugador"];
+                        var descripcion = reader["Descripcion"].ToString();
+                        var cantidad = (int)reader["Cantidad"];
+
+                        // Buscamos el jugador en el diccionario y le agregamos el stat
+                        if (jugadoresDictionary.TryGetValue(idJugador, out var jugador))
+                        {
+                            jugador.Puntuacion.Add(descripcion, cantidad);
+                        }
+                    }
+                }
+
+                // --- TERCER RESULT SET (Sanciones) ---
+                if (reader.NextResult())
+                {
+                    while (reader.Read())
+                    {
+                        var idJugador = (Guid)reader["IdJugador"];
+                        var descripcion = reader["Descripcion"].ToString();
+                        var cantidad = (int)reader["Cantidad"];
+
+                        // Buscamos el jugador en el diccionario y le agregamos la sanción
+                        if (jugadoresDictionary.TryGetValue(idJugador, out var jugador))
+                        {
+                            jugador.Sanciones.Add(descripcion, cantidad);
+                        }
+                    }
                 }
             }
 
-            foreach (var jugador in lista)
-            {
-                PopulatePuntuacion(jugador); // N+...
-                PopulateSanciones(jugador); // ...N consultas
-            }
-            return lista;
+            // Devolvemos solo los Valores (la lista de jugadores) del diccionario.
+            return jugadoresDictionary.Values;
         }
 
         /// <summary>
@@ -102,29 +152,67 @@ namespace DAL.Implementations.SqlServer
         /// <returns>El <see cref="Jugador"/> encontrado (con Puntuacion/Sanciones), o <c>null</c>.</returns>
         public Jugador GetById(Guid id)
         {
+            // 1. El SQL con 3 consultas, filtradas por ID.
+            string sql = $@"
+                {_sqlSelect} 
+                WHERE j.IdJugador = @Id AND j.Habilitado = 1;
+
+                SELECT p.IdJugador, p.Descripcion, p.Cantidad 
+                FROM DbPuntuacion p
+                WHERE p.IdJugador = @Id;
+
+                SELECT s.IdJugador, s.Descripcion, s.Cantidad 
+                FROM DbSanciones s
+                WHERE s.IdJugador = @Id;
+            ";
+
             Jugador jugador = null;
-            string sql = $"{_sqlSelect} WHERE j.IdJugador = @Id AND j.Habilitado = 1";
 
             using (var reader = base.ExecuteReader(sql, CommandType.Text, new SqlParameter("@Id", id)))
             {
-                if (reader.Read())
+                // --- PRIMER RESULT SET (Jugador) ---
+                if (reader.Read()) // Usamos 'if' porque es 1 solo
                 {
                     object[] values = new object[reader.FieldCount];
                     reader.GetValues(values);
                     jugador = JugadorAdapter.Current.Get(values);
+                    jugador.Puntuacion = new Dictionary<string, int>();
+                    jugador.Sanciones = new Dictionary<string, int>();
                 }
-            }
-            if (jugador != null)
-            {
-                PopulatePuntuacion(jugador); // Consulta 2
-                PopulateSanciones(jugador); // Consulta 3
+
+                // Si no encontramos al jugador, no seguimos
+                if (jugador == null)
+                    return null;
+
+                // --- SEGUNDO RESULT SET (Puntuaciones) ---
+                if (reader.NextResult())
+                {
+                    while (reader.Read())
+                    {
+                        jugador.Puntuacion.Add(
+                            reader["Descripcion"].ToString(),
+                            (int)reader["Cantidad"]
+                        );
+                    }
+                }
+
+                // --- TERCER RESULT SET (Sanciones) ---
+                if (reader.NextResult())
+                {
+                    while (reader.Read())
+                    {
+                        jugador.Sanciones.Add(
+                            reader["Descripcion"].ToString(),
+                            (int)reader["Cantidad"]
+                        );
+                    }
+                }
             }
             return jugador;
         }
 
         /// <summary>
         /// Actualiza un <see cref="Jugador"/> existente en la base de datos.
-        /// También sincroniza sus colecciones de Puntuacion y Sanciones (delete-then-insert).
         /// </summary>
         /// <param name="entity">La entidad <see cref="Jugador"/> con los datos modificados.</param>
         public void Update(Jugador entity)
@@ -148,91 +236,9 @@ namespace DAL.Implementations.SqlServer
                 new SqlParameter("@IdJ", entity.Idjugador)
             );
 
-            // Sincroniza las tablas hijas (delete-then-insert)
-            SyncPuntuacion(entity);
-            SyncSanciones(entity);
         }
 
 
-        /// <summary>
-        /// Método de ayuda (privado) que carga el diccionario <c>Puntuacion</c> de un jugador.
-        /// </summary>
-        /// <param name="jugador">El <see cref="Jugador"/> al que se le cargarán las puntuaciones.</param>
-        /// <remarks>Esta es una de las causas del problema N+2.</remarks>
-        private void PopulatePuntuacion(Jugador jugador)
-        {
-            jugador.Puntuacion.Clear();
-            string sql = "SELECT Descripcion, Cantidad FROM DbPuntuacion WHERE IdJugador = @IdJugador";
-            using (var reader = base.ExecuteReader(sql, CommandType.Text, new SqlParameter("@IdJugador", jugador.Idjugador)))
-            {
-                while (reader.Read())
-                {
-                    jugador.Puntuacion.Add(reader["Descripcion"].ToString(), (int)reader["Cantidad"]);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Método de ayuda (privado) que carga el diccionario <c>Sanciones</c> de un jugador.
-        /// </summary>
-        /// <param name="jugador">El <see cref="Jugador"/> al que se le cargarán las sanciones.</param>
-        /// <remarks>Esta es una de las causas del problema N+2.</remarks>
-        private void PopulateSanciones(Jugador jugador)
-        {
-            jugador.Sanciones.Clear();
-            string sql = "SELECT Descripcion, Cantidad FROM DbSanciones WHERE IdJugador = @IdJugador";
-            using (var reader = base.ExecuteReader(sql, CommandType.Text, new SqlParameter("@IdJugador", jugador.Idjugador)))
-            {
-                while (reader.Read())
-                {
-                    jugador.Sanciones.Add(reader["Descripcion"].ToString(), (int)reader["Cantidad"]);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Método de ayuda (privado) que sincroniza (delete-then-insert) la colección
-        /// <c>Puntuacion</c> de un jugador con la base de datos.
-        /// </summary>
-        /// <param name="jugador">El <see cref="Jugador"/> con la lista de puntuaciones a guardar.</param>
-        private void SyncPuntuacion(Jugador jugador)
-        {
-            string sqlDelete = "DELETE FROM DbPuntuacion WHERE IdJugador = @IdJugador";
-            base.ExecuteNonQuery(sqlDelete, CommandType.Text, new SqlParameter("@IdJugador", jugador.Idjugador));
-
-            string sqlInsert = "INSERT INTO DbPuntuacion (IdPuntuacion, Descripcion, Cantidad, IdJugador) VALUES (@IdP, @Desc, @Cant, @IdJ)";
-            foreach (var item in jugador.Puntuacion)
-            {
-                base.ExecuteNonQuery(sqlInsert, CommandType.Text,
-                    new SqlParameter("@IdP", Guid.NewGuid()),
-                    new SqlParameter("@Desc", item.Key),
-                    new SqlParameter("@Cant", item.Value),
-                    new SqlParameter("@IdJ", jugador.Idjugador)
-                );
-            }
-        }
-
-        /// <summary>
-        /// Método de ayuda (privado) que sincroniza (delete-then-insert) la colección
-        /// <c>Sanciones</c> de un jugador con la base de datos.
-        /// </summary>
-        /// <param name="jugador">El <see cref="Jugador"/> con la lista de sanciones a guardar.</param>
-        private void SyncSanciones(Jugador jugador)
-        {
-            string sqlDelete = "DELETE FROM DbSanciones WHERE IdJugador = @IdJugador";
-            base.ExecuteNonQuery(sqlDelete, CommandType.Text, new SqlParameter("@IdJugador", jugador.Idjugador));
-
-            string sqlInsert = "INSERT INTO DbSanciones (IdSancion, Descripcion, Cantidad, IdJugador) VALUES (@IdS, @Desc, @Cant, @IdJ)";
-            foreach (var item in jugador.Sanciones)
-            {
-                base.ExecuteNonQuery(sqlInsert, CommandType.Text,
-                    new SqlParameter("@IdS", Guid.NewGuid()),
-                    new SqlParameter("@Desc", item.Key),
-                    new SqlParameter("@Cant", item.Value),
-                    new SqlParameter("@IdJ", jugador.Idjugador)
-                );
-            }
-        }
 
         /// <summary>
         /// Invierte (toggle) el estado de Habilitado/Deshabilitado de un jugador.
@@ -256,28 +262,69 @@ namespace DAL.Implementations.SqlServer
         /// <returns>Una colección de <see cref="Jugador"/>.</returns>
         public IEnumerable<Jugador> GetByEquipo(Guid idEquipo)
         {
-            var lista = new List<Jugador>();
-            string sql = $"{_sqlSelect} WHERE j.IdEquipo = @IdEquipo AND j.Habilitado = 1";
+            string sql = $@"
+                {_sqlSelect} 
+                WHERE j.IdEquipo = @IdEquipo AND j.Habilitado = 1;
+
+                SELECT p.IdJugador, p.Descripcion, p.Cantidad 
+                FROM DbPuntuacion p
+                INNER JOIN DbJugador j ON p.IdJugador = j.Idjugador
+                WHERE j.IdEquipo = @IdEquipo AND j.Habilitado = 1;
+
+                SELECT s.IdJugador, s.Descripcion, s.Cantidad 
+                FROM DbSanciones s
+                INNER JOIN DbJugador j ON s.IdJugador = j.Idjugador
+                WHERE j.IdEquipo = @IdEquipo AND j.Habilitado = 1;
+            ";
+
+            var jugadoresDictionary = new Dictionary<Guid, Jugador>();
 
             using (var reader = base.ExecuteReader(sql, CommandType.Text, new SqlParameter("@IdEquipo", idEquipo)))
             {
-
+                // --- PRIMER RESULT SET (Jugadores) ---
                 while (reader.Read())
                 {
                     object[] values = new object[reader.FieldCount];
                     reader.GetValues(values);
                     var jugador = JugadorAdapter.Current.Get(values);
-
-                    lista.Add(jugador);
+                    jugador.Puntuacion = new Dictionary<string, int>();
+                    jugador.Sanciones = new Dictionary<string, int>();
+                    jugadoresDictionary.Add(jugador.Idjugador, jugador);
                 }
 
+                // --- SEGUNDO RESULT SET (Puntuaciones) ---
+                if (reader.NextResult())
+                {
+                    while (reader.Read())
+                    {
+                        var idJugador = (Guid)reader["IdJugador"];
+                        if (jugadoresDictionary.TryGetValue(idJugador, out var jugador))
+                        {
+                            jugador.Puntuacion.Add(
+                                reader["Descripcion"].ToString(),
+                                (int)reader["Cantidad"]
+                            );
+                        }
+                    }
+                }
+
+                // --- TERCER RESULT SET (Sanciones) ---
+                if (reader.NextResult())
+                {
+                    while (reader.Read())
+                    {
+                        var idJugador = (Guid)reader["IdJugador"];
+                        if (jugadoresDictionary.TryGetValue(idJugador, out var jugador))
+                        {
+                            jugador.Sanciones.Add(
+                                reader["Descripcion"].ToString(),
+                                (int)reader["Cantidad"]
+                            );
+                        }
+                    }
+                }
             }
-            foreach (var jugador in lista)
-            {
-                PopulatePuntuacion(jugador); // N+...
-                PopulateSanciones(jugador); // ...N consultas
-            }
-            return lista;
+            return jugadoresDictionary.Values;
         }
 
         /// <summary>
@@ -287,24 +334,69 @@ namespace DAL.Implementations.SqlServer
         /// <returns>Una colección de <see cref="Jugador"/>.</returns>
         public List<Jugador> GetSinEquipo()
         {
-            var lista = new List<Jugador>();
-            string sql = $"{_sqlSelect} WHERE j.IdEquipo IS NULL AND j.Habilitado = 1";
+            string sql = $@"
+                {_sqlSelect} 
+                WHERE j.IdEquipo IS NULL AND j.Habilitado = 1;
+
+                SELECT p.IdJugador, p.Descripcion, p.Cantidad 
+                FROM DbPuntuacion p
+                INNER JOIN DbJugador j ON p.IdJugador = j.Idjugador
+                WHERE j.IdEquipo IS NULL AND j.Habilitado = 1;
+
+                SELECT s.IdJugador, s.Descripcion, s.Cantidad 
+                FROM DbSanciones s
+                INNER JOIN DbJugador j ON s.IdJugador = j.Idjugador
+                WHERE j.IdEquipo IS NULL AND j.Habilitado = 1;
+            ";
+
+            var jugadoresDictionary = new Dictionary<Guid, Jugador>();
+
             using (var reader = base.ExecuteReader(sql, CommandType.Text))
             {
+                // --- PRIMER RESULT SET (Jugadores) ---
                 while (reader.Read())
                 {
                     object[] values = new object[reader.FieldCount];
                     reader.GetValues(values);
                     var jugador = JugadorAdapter.Current.Get(values);
-                    lista.Add(jugador);
+                    jugador.Puntuacion = new Dictionary<string, int>();
+                    jugador.Sanciones = new Dictionary<string, int>();
+                    jugadoresDictionary.Add(jugador.Idjugador, jugador);
+                }
+
+                // --- SEGUNDO RESULT SET (Puntuaciones) ---
+                if (reader.NextResult())
+                {
+                    while (reader.Read())
+                    {
+                        var idJugador = (Guid)reader["IdJugador"];
+                        if (jugadoresDictionary.TryGetValue(idJugador, out var jugador))
+                        {
+                            jugador.Puntuacion.Add(
+                                reader["Descripcion"].ToString(),
+                                (int)reader["Cantidad"]
+                            );
+                        }
+                    }
+                }
+
+                // --- TERCER RESULT SET (Sanciones) ---
+                if (reader.NextResult())
+                {
+                    while (reader.Read())
+                    {
+                        var idJugador = (Guid)reader["IdJugador"];
+                        if (jugadoresDictionary.TryGetValue(idJugador, out var jugador))
+                        {
+                            jugador.Sanciones.Add(
+                                reader["Descripcion"].ToString(),
+                                (int)reader["Cantidad"]
+                            );
+                        }
+                    }
                 }
             }
-            foreach (var jugador in lista)
-            {
-                PopulatePuntuacion(jugador); // N+...
-                PopulateSanciones(jugador); // ...N consultas
-            }
-            return lista;
+            return jugadoresDictionary.Values.ToList();
         }
 
         /// <summary>
@@ -313,27 +405,130 @@ namespace DAL.Implementations.SqlServer
         /// <returns>Una colección de <see cref="Jugador"/>.</returns>
         public IEnumerable<Jugador> GetAllIncludingDisabled()
         {
+            // 1. El SQL (sin el WHERE Habilitado = 1)
+            string sql = $@"
+                {_sqlSelect};
 
-            string sql = _sqlSelect;
+                SELECT p.IdJugador, p.Descripcion, p.Cantidad 
+                FROM DbPuntuacion p;
 
-            List<Jugador> jugadores = new List<Jugador>();
+                SELECT s.IdJugador, s.Descripcion, s.Cantidad 
+                FROM DbSanciones s;
+            ";
+
+            var jugadoresDictionary = new Dictionary<Guid, Jugador>();
 
             using (var reader = base.ExecuteReader(sql, CommandType.Text))
             {
+                // --- PRIMER RESULT SET (Jugadores) ---
                 while (reader.Read())
                 {
                     object[] values = new object[reader.FieldCount];
                     reader.GetValues(values);
-                    jugadores.Add(JugadorAdapter.Current.Get(values));
+                    var jugador = JugadorAdapter.Current.Get(values);
+                    jugador.Puntuacion = new Dictionary<string, int>();
+                    jugador.Sanciones = new Dictionary<string, int>();
+                    jugadoresDictionary.Add(jugador.Idjugador, jugador);
+                }
+
+                // --- SEGUNDO RESULT SET (Puntuaciones) ---
+                if (reader.NextResult())
+                {
+                    while (reader.Read())
+                    {
+                        var idJugador = (Guid)reader["IdJugador"];
+                        var descripcion = reader["Descripcion"].ToString();
+                        var cantidad = (int)reader["Cantidad"];
+                        if (jugadoresDictionary.TryGetValue(idJugador, out var jugador))
+                        {
+                            jugador.Puntuacion.Add(descripcion, cantidad);
+                        }
+                    }
+                }
+
+                // --- TERCER RESULT SET (Sanciones) ---
+                if (reader.NextResult())
+                {
+                    while (reader.Read())
+                    {
+                        var idJugador = (Guid)reader["IdJugador"];
+                        var descripcion = reader["Descripcion"].ToString();
+                        var cantidad = (int)reader["Cantidad"];
+                        if (jugadoresDictionary.TryGetValue(idJugador, out var jugador))
+                        {
+                            jugador.Sanciones.Add(descripcion, cantidad);
+                        }
+                    }
                 }
             }
 
-            foreach (var jugador in jugadores)
-            {
-                PopulatePuntuacion(jugador); 
-                PopulateSanciones(jugador); 
-            }
-            return jugadores;
+            return jugadoresDictionary.Values;
+        }
+
+        // <summary>
+        /// Agrega o actualiza una estadística específica (Puntuacion) para un jugador
+        /// usando un comando MERGE (UPSERT).
+        /// </summary>
+        /// <param name="idJugador">El ID del jugador.</param>
+        /// <param name="tipo">La clave (ej: "Goles").</param>
+        /// <param name="cantidadASumar">La cantidad a sumar (ej: 1).</param>
+        /// <remarks>
+        /// Esta es la forma quirúrgica y eficiente. En lugar de leer y
+        /// sincronizar toda la colección, hace 1 sola operación en la BD.
+        /// </remarks>
+        public void AddOrUpdatePuntuacionStat(Guid idJugador, string tipo, int cantidadASumar)
+        {
+            string sqlMerge = @"
+                
+                MERGE INTO DbPuntuacion AS T(Target)
+                USING(
+                    --Esta es la data 'nueva' que queremos meter
+                    VALUES(@IdJugador, @Desc, @Cant)
+                ) AS S(Source) (IdJugador, Descripcion, Cantidad)
+                ON T.IdJugador = S.IdJugador AND T.Descripcion = S.Descripcion
+
+                WHEN MATCHED THEN
+                    UPDATE SET T.Cantidad = T.Cantidad + @Cant
+
+                WHEN NOT MATCHED BY TARGET THEN
+                    INSERT(IdPuntuacion, IdJugador, Descripcion, Cantidad)
+                    VALUES(NEWID(), @IdJugador, @Desc, @Cant); ";
+
+            base.ExecuteNonQuery(sqlMerge, CommandType.Text,
+                new SqlParameter("@IdJugador", idJugador),
+                new SqlParameter("@Desc", tipo),
+                new SqlParameter("@Cant", cantidadASumar)
+            );
+        }
+
+        /// <summary>
+        /// Agrega o actualiza una Sanción específica para un jugador
+        /// usando un comando MERGE (UPSERT).
+        /// </summary>
+        /// <param name="idJugador">El ID del jugador.</param>
+        /// <param name="tipo">La clave (ej: "Amarillas").</param>
+        /// <param name="cantidadASumar">La cantidad a sumar (ej: 1).</param>
+        public void AddOrUpdateSancionStat(Guid idJugador, string tipo, int cantidadASumar)
+        {
+            string sqlMerge = @"
+                MERGE INTO DbSanciones AS T
+                USING (
+                    VALUES (@IdJugador, @Desc, @Cant)
+                ) AS S (IdJugador, Descripcion, Cantidad)
+                ON T.IdJugador = S.IdJugador AND T.Descripcion = S.Descripcion
+                
+                WHEN MATCHED THEN
+                    UPDATE SET T.Cantidad = T.Cantidad + @Cant
+                
+                WHEN NOT MATCHED BY TARGET THEN
+                    INSERT (IdSancion, IdJugador, Descripcion, Cantidad)
+                    VALUES (NEWID(), @IdJugador, @Desc, @Cant);";
+
+            base.ExecuteNonQuery(sqlMerge, CommandType.Text,
+                new SqlParameter("@IdJugador", idJugador),
+                new SqlParameter("@Desc", tipo),
+                new SqlParameter("@Cant", cantidadASumar)
+            );
         }
     }
 }

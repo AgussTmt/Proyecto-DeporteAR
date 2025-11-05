@@ -172,26 +172,7 @@ namespace BLL.Services
             {
                 try
                 {
-
-                    // 1. Lectura (N+2 consultas)
-                    var jugador = context.Repositories.JugadorRepository.GetById(idJugador);
-                    if (jugador == null)
-                        throw new KeyNotFoundException("El jugador no existe.");
-
-
-                    // 2. Modificación en memoria
-                    if (jugador.Puntuacion.ContainsKey(tipo))
-                    {
-                        jugador.Puntuacion[tipo] += cantidad;
-                    }
-                    else
-                    {
-                        jugador.Puntuacion.Add(tipo, cantidad);
-                    }
-
-
-                    // 3. Escritura (Múltiples delete/insert)
-                    context.Repositories.JugadorRepository.Update(jugador);
+                    context.Repositories.JugadorRepository.AddOrUpdatePuntuacionStat(idJugador, tipo, cantidad);
                     context.SaveChanges();
                 }
                 catch (Exception)
@@ -213,26 +194,7 @@ namespace BLL.Services
             {
                 try
                 {
-
-                    // 1. Lectura (N+2 consultas)
-                    var jugador = context.Repositories.JugadorRepository.GetById(idJugador);
-                    if (jugador == null)
-                        throw new KeyNotFoundException("El jugador no existe.");
-
-
-                    // 2. Modificación en memoria
-                    if (jugador.Sanciones.ContainsKey(tipo))
-                    {
-                        jugador.Sanciones[tipo] += cantidad;
-                    }
-                    else
-                    {
-                        jugador.Sanciones.Add(tipo, cantidad);
-                    }
-
-
-                    // 3. Escritura (Múltiples delete/insert)
-                    context.Repositories.JugadorRepository.Update(jugador);
+                    context.Repositories.JugadorRepository.AddOrUpdateSancionStat(idJugador, tipo, cantidad);
                     context.SaveChanges();
                 }
                 catch (Exception)
@@ -240,14 +202,6 @@ namespace BLL.Services
                     throw;
                 }
             }
-        }
-
-        /// <summary>
-        /// (No implementado) Borra un jugador.
-        /// </summary>
-        public void Delete(Guid id)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>
