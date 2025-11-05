@@ -28,9 +28,12 @@ namespace WinUI.WinForms.Gestiones.Canchas
 
         private void FrmCanchas_Load(object sender, EventArgs e)
         {
+            IdiomaHelper.TraducirControles(this);
             dgvCanchas.AutoGenerateColumns = false;
             RefrescarGrid();
             this.Text = "Gestión de Canchas";
+
+           
         }
 
         private void RefrescarGrid()

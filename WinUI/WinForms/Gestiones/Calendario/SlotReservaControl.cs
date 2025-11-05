@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DomainModel;
+using Services__ArqBase_.Facade;
 
 namespace WinUI.WinForms.Gestiones.Calendario
 {
@@ -18,6 +19,7 @@ namespace WinUI.WinForms.Gestiones.Calendario
         public SlotReservaControl()
         {
             InitializeComponent();
+            IdiomaHelper.TraducirControles(this);
         }
 
         public void CargarSlot(CanchaHorario slot)

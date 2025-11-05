@@ -24,6 +24,7 @@ namespace WinUI.WinForms.Gestiones.UserManagment
 
         private void FrmCrearFamilia_Load(object sender, EventArgs e)
         {
+            IdiomaHelper.TraducirControles(this);
             AllFamilias = UserManagmentService.TraerFamilias();
             AllPatentes = UserManagmentService.traerPatentes();
             CombFamilias.Items.Clear();

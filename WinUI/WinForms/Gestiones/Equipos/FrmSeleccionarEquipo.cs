@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BLL.Facade;
 using DomainModel;
+using Services__ArqBase_.Facade;
 
 
 namespace WinUI.WinForms.Gestiones.Equipos
@@ -46,6 +47,7 @@ namespace WinUI.WinForms.Gestiones.Equipos
 
         private void FrmSeleccionarEquipo_Load(object sender, EventArgs e)
         {
+            IdiomaHelper.TraducirControles(this);
             try
             {
                 if (_modoDesinscribir)

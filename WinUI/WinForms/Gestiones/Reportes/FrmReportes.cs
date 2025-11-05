@@ -6,6 +6,7 @@ using BLL.Facade;
 using BLL.Services; // Para el DTO de Ranking
 using BLL.Services.Dto;
 using DomainModel;
+using Services__ArqBase_.Facade;
 
 namespace WinUI.WinForms.Gestiones.Reportes
 {
@@ -29,6 +30,8 @@ namespace WinUI.WinForms.Gestiones.Reportes
 
         private void FormReportes_Load(object sender, EventArgs e)
         {
+
+            IdiomaHelper.TraducirControles(this);
             // 1. Cargar el ComboBox principal
             cmbTipoReporte.Items.Add("Seleccione...");
             cmbTipoReporte.Items.Add("Ranking de Clientes");

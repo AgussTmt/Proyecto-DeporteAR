@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using BLL.Facade;
 using DomainModel;
+using Services__ArqBase_.Facade;
 using WinUI.WinForms.Gestiones.Clientes; // Para FrmSeleccionarCliente
 
 namespace WinUI.WinForms.Gestiones.Reservas
@@ -50,6 +51,8 @@ namespace WinUI.WinForms.Gestiones.Reservas
 
                 // 4. Lógica de UI
                 HabilitarControlesSegunEstado();
+
+                IdiomaHelper.TraducirControles(this);
             }
             catch (Exception ex)
             {

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BLL.Facade;
 using DomainModel;
+using Services__ArqBase_.Facade;
 using WinUI.WinForms.Gestiones.Jugadores;
 
 namespace WinUI.WinForms.Gestiones.Jugadores
@@ -25,6 +26,7 @@ namespace WinUI.WinForms.Gestiones.Jugadores
 
         private void FrmJugadores_Load(object sender, EventArgs e)
         {
+            IdiomaHelper.TraducirControles(this);
             CargarGrid();
             this.Text = "Gestión de jugadores";
         }

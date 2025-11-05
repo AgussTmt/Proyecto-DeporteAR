@@ -79,17 +79,6 @@ namespace Services__ArqBase_.Facade
         }
 
         /// <summary>
-        /// Asigna un permiso/rol (ObjSecu) a una entidad principal (ObjMain) de forma genérica.
-        /// Utiliza reflexión para instanciar el repositorio de 'Join' adecuado.
-        /// </summary>
-        /// <remarks>Ver <see cref="PermisosBll.AsignarPermisos{T1, T2}(T1, T2)"/> para detalles y advertencias.</remarks>
-        public static void AsignarPermisos<T, Y>(T obj1, Y obj2)
-        {
-            _permisosBll.AsignarPermisos<T, Y>(obj1, obj2);
-        }
-
-
-        /// <summary>
         /// Obtiene la lista de patentes (hojas) asignadas directamente a una familia (rama).
         /// </summary>
         /// <param name="familia">La familia (rol) a consultar.</param>

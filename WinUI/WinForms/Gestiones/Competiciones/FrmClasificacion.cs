@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
 using BLL.Facade;
-using DomainModel; // Asegúrate de tener este using
+using DomainModel;
+using Services__ArqBase_.Facade; // Asegúrate de tener este using
 
 namespace WinUI.WinForms.Gestiones.Competiciones // O el namespace que prefieras
 {
@@ -19,6 +20,7 @@ namespace WinUI.WinForms.Gestiones.Competiciones // O el namespace que prefieras
 
         private void FrmClasificacion_Load(object sender, EventArgs e)
         {
+            IdiomaHelper.TraducirControles(this);
             lblTituloCompeticion.Text = $"Tabla de Posiciones: {_nombreCompeticion}";
             CargarDatos();
         }

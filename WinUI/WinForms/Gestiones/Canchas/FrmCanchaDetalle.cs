@@ -47,7 +47,9 @@ namespace WinUI.WinForms.Gestiones.Canchas
                 cmbDeporte.DataSource = deportes.ToList();
                 cmbDeporte.DisplayMember = "Descripcion";
                 cmbDeporte.ValueMember = "Descripcion";
-                
+
+                IdiomaHelper.TraducirControles(this);
+
             }
             catch (Exception ex)
             {

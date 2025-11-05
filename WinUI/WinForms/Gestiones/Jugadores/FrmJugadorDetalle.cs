@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BLL.Facade;
 using DomainModel;
+using Services__ArqBase_.Facade;
 
 namespace WinUI.WinForms.Gestiones.Jugadores
 {
@@ -35,12 +36,12 @@ namespace WinUI.WinForms.Gestiones.Jugadores
 
         private void FrmJugadorDetalle_Load(object sender, EventArgs e)
         {
+            IdiomaHelper.TraducirControles(this);
             if (!_esNuevo)
             {
                 this.Text = "Editar Jugador";
                 txtNombre.Text = _jugadorActual.Nombre;
                 txtApellido.Text = _jugadorActual.Apellido;
-                // No tiene sentido "Guardar y Nuevo" cuando estás editando
                 btnGuardarYNuevo.Visible = false;
             }
             else

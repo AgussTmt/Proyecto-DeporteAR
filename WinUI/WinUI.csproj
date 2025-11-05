@@ -152,12 +152,6 @@
     <Compile Include="WinForms\Gestiones\Canchas\FrmCanchas.Designer.cs">
       <DependentUpon>FrmCanchas.cs</DependentUpon>
     </Compile>
-    <Compile Include="WinForms\Gestiones\Reportes\FrmRankingClientes.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WinForms\Gestiones\Reportes\FrmRankingClientes.Designer.cs">
-      <DependentUpon>FrmRankingClientes.cs</DependentUpon>
-    </Compile>
     <Compile Include="WinForms\Gestiones\Reportes\FrmReportes.cs">
       <SubType>Form</SubType>
     </Compile>

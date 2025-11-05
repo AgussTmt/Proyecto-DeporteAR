@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using BLL.Facade;
 using DomainModel;
+using Services__ArqBase_.Facade;
 
 namespace WinUI.WinForms.Gestiones.Clientes
 {
@@ -19,7 +20,9 @@ namespace WinUI.WinForms.Gestiones.Clientes
 
         private void FrmClientes_Load(object sender, EventArgs e)
         {
+            IdiomaHelper.TraducirControles(this);
             CargarGrid();
+            
         }
 
         private void CargarGrid()

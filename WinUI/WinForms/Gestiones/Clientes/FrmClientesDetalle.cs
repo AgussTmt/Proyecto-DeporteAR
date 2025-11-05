@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using BLL.Facade;
 using DomainModel;
+using Services__ArqBase_.Facade;
 
 namespace WinUI.WinForms.Gestiones.Clientes
 {
@@ -25,12 +26,16 @@ namespace WinUI.WinForms.Gestiones.Clientes
 
         private void FrmClientesDetalle_Load(object sender, EventArgs e)
         {
+            IdiomaHelper.TraducirControles(this);
             if (_clienteActual.IdCliente != Guid.Empty) // Modo Editar
             {
+                
                 this.Text = "Editar Cliente";
                 txtNombre.Text = _clienteActual.Nombre;
                 txtTelefono.Text = _clienteActual.Telefono;
                 txtEmail.Text = _clienteActual.Email;
+
+                
             }
             else // Modo Nuevo
             {

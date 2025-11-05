@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using BLL.Facade;
 using WinUI.WinForms.Gestiones.Equipos;
+using Services__ArqBase_.Facade;
 
 namespace WinUI.WinForms.Gestiones
 {
@@ -36,6 +37,9 @@ namespace WinUI.WinForms.Gestiones
             // Cargar las grillas
             CargarYRefrescarGrilla(ref _equipoLocal, dgvLocal, "colLocal");
             CargarYRefrescarGrilla(ref _equipoVisitante, dgvVisitante, "colVisitante");
+
+
+            IdiomaHelper.TraducirControles(this);
         }
 
         /// <summary>

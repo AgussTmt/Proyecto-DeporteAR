@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BLL.Facade;
 using DomainModel;
+using Services__ArqBase_.Facade;
 
 namespace WinUI.WinForms.Gestiones.Competiciones
 {
@@ -33,6 +34,7 @@ namespace WinUI.WinForms.Gestiones.Competiciones
         {
             try
             {
+                IdiomaHelper.TraducirControles(this);
                 cmbFormato.DataSource = Enum.GetValues(typeof(FormatoEnum));
                 var canchas = BLLFacade.Current.CanchaService.GetAll().ToList();
                 cmbCanchaAsignada.DataSource = canchas;

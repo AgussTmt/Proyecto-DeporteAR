@@ -12,7 +12,6 @@ namespace BLL.Interfaces
         
         IEnumerable<CatalogItem> GetDeportes();
         IEnumerable<CatalogItem> GetFormatos();
-        IEnumerable<CatalogItem> GetEstadosFixture();
         
     }
 }

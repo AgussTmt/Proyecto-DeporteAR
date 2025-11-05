@@ -32,6 +32,7 @@ namespace WinUI.WinForms.Gestiones.UserManagment
 
         private void FrmModificarPermisos_Load(object sender, EventArgs e)
         {
+            IdiomaHelper.TraducirControles(this);
             AllFamilias = UserManagmentService.TraerFamilias();
             AllPatentes = UserManagmentService.traerPatentes();
             LblUsuario.Text = Usuario.Nombre;

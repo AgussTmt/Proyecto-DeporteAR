@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BLL.Facade; 
 using DomainModel;
+using Services__ArqBase_.Facade;
 
 namespace WinUI.WinForms.Gestiones.Clientes
 {
@@ -24,6 +25,7 @@ namespace WinUI.WinForms.Gestiones.Clientes
 
         private void FrmSeleccionarCliente_Load(object sender, EventArgs e)
         {
+            IdiomaHelper.TraducirControles(this);
             CargarGrilla();
             ConfigurarGrilla();
         }

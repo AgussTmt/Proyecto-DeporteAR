@@ -51,17 +51,5 @@ namespace BLL.Services
             }
         }
 
-        /// <summary>
-        /// Obtiene la lista de todos los Estados de Fixture (ej: "Pendiente", "Finalizado").
-        /// </summary>
-        /// <returns>Una colección de <see cref="CatalogItem"/>.</returns>
-        public IEnumerable<CatalogItem> GetEstadosFixture()
-        {
-            using (var context = FactoryDao.UnitOfWork.Create())
-            {
-                return context.Repositories.CatalogRepository.GetEstadosFixture();
-            }
-        }
-
     }
 }

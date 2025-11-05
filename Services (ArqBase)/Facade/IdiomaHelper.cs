@@ -32,16 +32,25 @@ namespace Services__ArqBase_.Facade
         /// </remarks>
         public static void TraducirControles(Control control)
         {
-            
-            if (!(control is RichTextBox))
+            // --- LA CORRECCIÓN ESTÁ ACÁ ---
+            // Le decimos que ignore los controles de entrada de datos
+            // (TextBox, DateTimePicker, etc.) para no traducir
+            // ni la fecha, ni lo que el usuario escribió.
+            if (!(control is RichTextBox) &&
+                !(control is TextBox) &&
+                !(control is DateTimePicker) &&
+                !(control is NumericUpDown) &&
+                !(control is MaskedTextBox))
             {
                 if (!string.IsNullOrEmpty(control.Text))
                 {
                     control.Text = control.Text.Traducir();
                 }
             }
+            // --- FIN DE LA CORRECCIÓN ---
 
-            
+
+            // La lógica especial para DataGridViews (traduce cabeceras)
             if (control is DataGridView dgv)
             {
                 foreach (DataGridViewColumn col in dgv.Columns)
@@ -53,7 +62,8 @@ namespace Services__ArqBase_.Facade
                 }
             }
 
-           
+
+            // La lógica especial para TabControls (traduce pestañas)
             if (control is TabControl tc)
             {
                 foreach (TabPage page in tc.TabPages)
@@ -65,7 +75,8 @@ namespace Services__ArqBase_.Facade
                 }
             }
 
-            
+
+            // La llamada recursiva para todos los controles hijos
             foreach (Control c in control.Controls)
             {
                 TraducirControles(c);

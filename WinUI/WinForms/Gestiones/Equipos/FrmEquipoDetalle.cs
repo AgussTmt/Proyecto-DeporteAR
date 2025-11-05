@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BLL.Facade;
 using DomainModel;
+using Services__ArqBase_.Facade;
 using WinUI.WinForms.Gestiones.Clientes;
 using WinUI.WinForms.Gestiones.Jugadores;
 
@@ -63,6 +64,7 @@ namespace WinUI.WinForms.Gestiones.Equipos
 
         private void FrmEquipoDetalle_Load(object sender, EventArgs e)
         {
+            IdiomaHelper.TraducirControles(this);
             ConfigurarListBoxes();
             if (!_esNuevo)
             {

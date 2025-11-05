@@ -41,11 +41,6 @@
             this.panel6 = new System.Windows.Forms.Panel();
             this.LbDataBase = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.panel8 = new System.Windows.Forms.Panel();
-            this.BtnCambiarIdioma = new System.Windows.Forms.Button();
-            this.ComboBoxIdioma = new System.Windows.Forms.ComboBox();
-            this.panel7 = new System.Windows.Forms.Panel();
-            this.LbIdiomas = new System.Windows.Forms.Label();
             this.lblStatus = new System.Windows.Forms.Label();
             this.PanelVerLogs.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -53,9 +48,6 @@
             this.panel3.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel6.SuspendLayout();
-            this.panel5.SuspendLayout();
-            this.panel8.SuspendLayout();
-            this.panel7.SuspendLayout();
             this.SuspendLayout();
             // 
             // PanelVerLogs
@@ -179,63 +171,11 @@
             // 
             // panel5
             // 
-            this.panel5.Controls.Add(this.panel8);
-            this.panel5.Controls.Add(this.panel7);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel5.Location = new System.Drawing.Point(0, 199);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(928, 95);
+            this.panel5.Size = new System.Drawing.Size(928, 65);
             this.panel5.TabIndex = 5;
-            // 
-            // panel8
-            // 
-            this.panel8.Controls.Add(this.BtnCambiarIdioma);
-            this.panel8.Controls.Add(this.ComboBoxIdioma);
-            this.panel8.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel8.Location = new System.Drawing.Point(0, 25);
-            this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(928, 44);
-            this.panel8.TabIndex = 7;
-            // 
-            // BtnCambiarIdioma
-            // 
-            this.BtnCambiarIdioma.Dock = System.Windows.Forms.DockStyle.Left;
-            this.BtnCambiarIdioma.Location = new System.Drawing.Point(328, 0);
-            this.BtnCambiarIdioma.Margin = new System.Windows.Forms.Padding(20);
-            this.BtnCambiarIdioma.Name = "BtnCambiarIdioma";
-            this.BtnCambiarIdioma.Size = new System.Drawing.Size(116, 44);
-            this.BtnCambiarIdioma.TabIndex = 1;
-            this.BtnCambiarIdioma.Text = "cambiar idioma";
-            this.BtnCambiarIdioma.UseVisualStyleBackColor = true;
-            // 
-            // ComboBoxIdioma
-            // 
-            this.ComboBoxIdioma.Dock = System.Windows.Forms.DockStyle.Left;
-            this.ComboBoxIdioma.FormattingEnabled = true;
-            this.ComboBoxIdioma.Location = new System.Drawing.Point(0, 0);
-            this.ComboBoxIdioma.Margin = new System.Windows.Forms.Padding(10);
-            this.ComboBoxIdioma.Name = "ComboBoxIdioma";
-            this.ComboBoxIdioma.Size = new System.Drawing.Size(328, 21);
-            this.ComboBoxIdioma.TabIndex = 0;
-            // 
-            // panel7
-            // 
-            this.panel7.Controls.Add(this.LbIdiomas);
-            this.panel7.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel7.Location = new System.Drawing.Point(0, 0);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(928, 25);
-            this.panel7.TabIndex = 6;
-            // 
-            // LbIdiomas
-            // 
-            this.LbIdiomas.AutoSize = true;
-            this.LbIdiomas.Dock = System.Windows.Forms.DockStyle.Top;
-            this.LbIdiomas.Location = new System.Drawing.Point(0, 0);
-            this.LbIdiomas.Name = "LbIdiomas";
-            this.LbIdiomas.Size = new System.Drawing.Size(60, 13);
-            this.LbIdiomas.TabIndex = 0;
-            this.LbIdiomas.Text = "MultiIdioma";
             // 
             // lblStatus
             // 
@@ -267,10 +207,6 @@
             this.panel4.ResumeLayout(false);
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
-            this.panel5.ResumeLayout(false);
-            this.panel8.ResumeLayout(false);
-            this.panel7.ResumeLayout(false);
-            this.panel7.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -290,11 +226,6 @@
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Button BtnRestore;
         private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Panel panel7;
-        private System.Windows.Forms.Label LbIdiomas;
-        private System.Windows.Forms.Panel panel8;
-        private System.Windows.Forms.Button BtnCambiarIdioma;
-        private System.Windows.Forms.ComboBox ComboBoxIdioma;
         private System.Windows.Forms.ComboBox ComboBoxBaseDeDatos;
         private System.Windows.Forms.Label lblStatus;
     }

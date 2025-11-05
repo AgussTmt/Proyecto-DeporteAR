@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BLL.Facade;
 using DomainModel;
+using Services__ArqBase_.Facade;
 using WinUI.WinForms.Gestiones.Calendario;
 using WinUI.WinForms.Gestiones.Competiciones;
 using WinUI.WinForms.Gestiones.Reservas;
@@ -49,6 +50,8 @@ namespace WinUI.WinForms.Gestiones
 
             RefrescarVistaSemanal();
             CargarPartidosDeCompeticion();
+
+            IdiomaHelper.TraducirControles(this);
 
         }
 

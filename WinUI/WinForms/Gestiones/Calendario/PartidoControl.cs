@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BLL.Facade;
 using DomainModel;
+using Services__ArqBase_.Facade;
 
 namespace WinUI.WinForms.Gestiones.Calendario
 {
@@ -23,6 +24,7 @@ namespace WinUI.WinForms.Gestiones.Calendario
 
         private void PartidoControl_Load(object sender, EventArgs e)
         {
+            IdiomaHelper.TraducirControles(this);
 
         }
 
