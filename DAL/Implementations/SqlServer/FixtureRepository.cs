@@ -276,14 +276,6 @@ namespace DAL.Implementations.SqlServer
         }
 
         /// <summary>
-        /// (No implementado) Elimina un fixture.
-        /// </summary>
-        public void Delete(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
         /// Obtiene una lista de todos los partidos pendientes (a futuro)
         /// de una competición, ordenados por fecha.
         /// </summary>
