@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Services.Facade;
 using Services__ArqBase_.Facade;
 
 namespace Services__ArqBase_.Bll
@@ -28,7 +29,8 @@ namespace Services__ArqBase_.Bll
         public GmailService()
         {
             senderMail = ConfigurationManager.AppSettings["SenderEmail"].ToString();
-            password = ConfigurationManager.AppSettings["ContraseñaEmail"].ToString();
+            string encryptedPassword = ConfigurationManager.AppSettings["ContraseñaEmail"].ToString();
+            password = CryptographyService.Decrypt(encryptedPassword);
             host = "smtp.gmail.com";
             port = 587;
             ssl = true;

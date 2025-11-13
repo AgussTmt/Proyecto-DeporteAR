@@ -25,7 +25,6 @@ namespace WinUI.WinForms.Gestiones
         private void Registro_Load(object sender, EventArgs e)
         {
             IdiomaHelper.TraducirControles(this);
-            // Ocultar la contraseña
             TxtContraseña.PasswordChar = '*';
         }
 
@@ -35,8 +34,6 @@ namespace WinUI.WinForms.Gestiones
             {
                 Usuario usuario = new Usuario(TxtNombre.Text, TxtEmail.Text, TxtContraseña.Text);
                 LoginService.RegistrarUsuario(usuario);
-
-                // Volver a la grilla de usuarios
                 NavegarHaciaUserManagment(sender);
             }
             catch (Exception ex)

@@ -56,6 +56,12 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WinForms\FrmConfiguracionInicial.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\FrmConfiguracionInicial.Designer.cs">
+      <DependentUpon>FrmConfiguracionInicial.cs</DependentUpon>
+    </Compile>
     <Compile Include="WinForms\Gestiones\Calendario\FrmCalendario.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -243,6 +249,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="WinForms\FrmConfiguracionInicial.resx">
+      <DependentUpon>FrmConfiguracionInicial.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WinForms\Gestiones\Calendario\FrmCalendario.resx">
       <DependentUpon>FrmCalendario.cs</DependentUpon>
     </EmbeddedResource>
@@ -324,12 +333,30 @@
     <EmbeddedResource Include="WinForms\Main\FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="Languages\Idioma.en-US">
+    <Content Include="icons\Calendario.png" />
+    <Content Include="icons\ChatGPT Image 20 oct 2025, 03_42_58 p.m..png" />
+    <Content Include="icons\ClienteIcon.png" />
+    <Content Include="icons\cross.png" />
+    <Content Include="icons\EquipoIcon2.png" />
+    <Content Include="icons\iconEquipo.png" />
+    <Content Include="icons\IconEquipo3.png" />
+    <Content Include="icons\IconEquipo4.png" />
+    <Content Include="icons\IconEquipo5.png" />
+    <Content Include="icons\IconUserManagment.png" />
+    <Content Include="icons\minus-sign.png" />
+    <Content Include="icons\output-onlinepngtools %281%29.png" />
+    <Content Include="icons\output-onlinepngtools %282%29.png" />
+    <Content Include="icons\output-onlinepngtools %283%29.png" />
+    <Content Include="icons\output-onlinepngtools %284%29.png" />
+    <Content Include="icons\output-onlinepngtools %285%29.png" />
+    <Content Include="icons\output-onlinepngtools.png" />
+    <Content Include="icons\UserManagmentIcon.png" />
+    <Content Include="Languages\Idioma.en-US">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Languages\Idioma.es-AR">
+    </Content>
+    <Content Include="Languages\Idioma.es-AR">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -359,6 +386,13 @@
       <Project>{60d15f17-0770-4b6c-89fd-b8007247bd8f}</Project>
       <Name>Services</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="ScriptsSQL\1-CrearBaseSecurity.sql" />
+    <EmbeddedResource Include="ScriptsSQL\2-SecurityDB_SchemaData.sql" />
+    <EmbeddedResource Include="ScriptsSQL\3-CrearBaseNegocio.sql" />
+    <EmbeddedResource Include="ScriptsSQL\4-DeporteAR_SchemaData.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

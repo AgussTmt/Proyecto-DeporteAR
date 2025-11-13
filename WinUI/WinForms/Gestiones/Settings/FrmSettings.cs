@@ -60,7 +60,7 @@ namespace WinUI.WinForms.Gestiones.Settings
             using (var saveDialog = new SaveFileDialog())
             {
                 saveDialog.Filter = "Backup File (*.bak)|*.bak";
-                // Sugerir un nombre de archivo por defecto (¡muy útil!)
+                // Sugerir un nombre de archivo por defecto
                 saveDialog.FileName = $"{ComboBoxBaseDeDatos.SelectedText.ToString()}_{DateTime.Now:yyyyMMdd_HHmmss}.bak";
                 saveDialog.Title = "Guardar Backup de Base de Datos";
 
@@ -88,7 +88,7 @@ namespace WinUI.WinForms.Gestiones.Settings
                     }
                     finally
                     {
-                        // 8. ¡MUY IMPORTANTE! Rehabilitar la UI, sin importar si hubo éxito o error
+                        
                         this.Enabled = true;
                         Cursor.Current = Cursors.Default;
                         lblStatus.Text = "Listo.";

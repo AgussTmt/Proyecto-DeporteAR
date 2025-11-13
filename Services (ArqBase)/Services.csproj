@@ -81,6 +81,7 @@
     <Compile Include="Bll\Interfaces\IPermisosBll.cs" />
     <Compile Include="Bll\LoggerConfiguration.cs" />
     <Compile Include="Bll\PermisosBll.cs" />
+    <Compile Include="Facade\SetupService.cs" />
     <Compile Include="Bll\UsuarioBll.cs" />
     <Compile Include="Dal\BackUpRepository.cs" />
     <Compile Include="Dal\IdiomaRepository.cs" />
