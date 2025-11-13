@@ -24,41 +24,30 @@ namespace WinUI
 
         private void btnIniciar_Click(object sender, EventArgs e)
         {
-            
-                //Validamos las credenciales del usuario
+
+            //Validamos las credenciales del usuario
+            try
+            {
                 Usuario usuario = LoginService.ValidarCredenciales(txtUsuario.Text, txtContraseña.Text);
-                //Si las credenciales son correctas, mostramos un mensaje de bienvenida
-                
-                //MessageBox.Show($"Bienvenido {usuario.Nombre} ");
-
-                //foreach (var item in usuario.Patentes)
-                //{
-                //    MessageBox.Show(item.DataKey);
-                //}
-
-                //Cerramos el formulario de login
                 this.Hide();
                 new FrmMain(usuario).ShowDialog();
                 this.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
                 txtContraseña.Clear();
                 txtUsuario.Clear();
-
-            //6f5e615b-70c2-4b05-aaf7-c12f88d3645a
-            //3075A247-1996-47F6-9ADC-B52ADB6E501E
-
-
+            }
 
         }
 
         private void Login_Load(object sender, EventArgs e)
         {
-            //Primero vamos a crear un usuario admin con una pass hasheada
-            //LoginService.RegistrarUsuario(new Usuario( "gaston", 
-            //    "gastonweingand@gmail.com", "1234" ));
             IdiomaHelper.TraducirControles(this);
-            //Console.WriteLine($"Contraseña: {CryptographyService.HashMd5("admin")}");
-            
-
         }
 
        

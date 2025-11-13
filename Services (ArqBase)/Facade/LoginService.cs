@@ -25,7 +25,15 @@ namespace Services.Facade
         /// (ej: "Usuario o contraseña incorrectos", "Usuario no habilitado").</exception>
         public static Usuario ValidarCredenciales(string user, string password)
         {
-            return UsuarioBll.ValidarCredenciales(user, password);
+            try
+            {
+                return UsuarioBll.ValidarCredenciales(user, password);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
         }
 
         /// <summary>
